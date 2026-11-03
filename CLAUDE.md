@@ -31,6 +31,10 @@ The user is **Efrat. She is not technical.** She talks to you in Hebrew.
 | `keep-design` | Any content change or new section, without design drift |
 | `site-health` | "Something looks broken", a link/payment doubt, or a periodic check |
 
+## How publishing works
+
+Pushing to `main` triggers GitHub Actions (workflow "deploy"): it runs `npm test` and `npm run check`, and deploys to GitHub Pages only if both pass. `gh` may be missing in her app; then watch runs through the public API (see `publish-change`) and never ask her to install anything.
+
 ## Layout
 
 - `index.html` (root): only redirects to `atzmaiot/index.html`. Leave alone.

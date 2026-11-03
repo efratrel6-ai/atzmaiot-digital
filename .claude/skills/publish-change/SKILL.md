@@ -14,9 +14,9 @@ Every change goes through one loop, so the live site is never broken. Pushing to
 3. **Minimal edit.** Exact-string edit of only the requested spot. Then `git diff --stat` and `git diff` (use `--word-diff` for the 3 MB file): the diff must contain only the requested change. Anything else: undo it.
 4. **Test locally if possible.** If `package.json` exists: `npm ci` (first time) then `npm test` and `npm run check`. If it does not exist yet, open `atzmaiot/index.html` in a browser (or a quick local static server) and look at the changed area, desktop and phone width.
 5. **Show Efrat** (simple Hebrew): "שיניתי X ל-Y. שום דבר אחר לא השתנה." Wait for her OK unless she already said exactly what and to publish.
-6. **Commit** with a clear Hebrew message, one change per commit: `git commit -m "עדכון מחיר הקורס ל-..."`. Add the trailer `Co-Authored-By: Claude <noreply@anthropic.com>`.
+6. **Commit** with a clear Hebrew message, one change per commit: `git commit -m "עדכון מחיר הקורס ל-..."`.
 7. **Push to main:** `git push origin main`. Rejected? `git pull --rebase` then re-run tests. Never `--force`.
-8. **Watch the run:** `gh run list --limit 1`, then `gh run watch <id> --exit-status`.
+8. **Watch the run:** `gh run list --limit 1`, then `gh run watch <id> --exit-status`. No `gh` or not logged in? Never ask her to install or log in to anything. Poll the public API (no login needed): `curl -s "https://api.github.com/repos/efratrel6-ai/atzmaiot-digital/actions/runs?per_page=1"` and read `status` / `conclusion` (wait until `completed` and `success`; sleep 20s between polls). For a failure, read the run's `html_url` page or the jobs API for the cause.
 9. **Verify live** (after the deploy finishes; Pages can lag 1-2 minutes): `curl -sI https://efrat-cohen.co.il/atzmaiot/` returns 200, and `curl -s` the page contains the new text (or open it in a browser and look). Check the registration button link still works.
 10. **Report** in simple Hebrew: what changed, that it is live, link to the page.
 
