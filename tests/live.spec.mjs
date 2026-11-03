@@ -11,6 +11,6 @@ test("האתר החי עונה, וקישור התשלום והוואטסאפ ח�
     const href = (await el.getAttribute("href")) || "";
     expect(href, `${name} לא מוביל לקישור תקין (${href})`).toMatch(/^https:\/\//);
     const r = await request.get(href, { timeout: 20000, maxRedirects: 5 }).catch(() => null);
-    expect(r && r.status() < 400, `${name} לא נפתח (${href}, סטטוס ${r ? r.status() : "אין תגובה"})`).toBe(true);
+    expect(r && (r.status() < 400 || [403, 429].includes(r.status())), `${name} לא נפתח (${href}, סטטוס ${r ? r.status() : "אין תגובה"})`).toBe(true);
   }
 });

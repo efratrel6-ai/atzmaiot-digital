@@ -7,7 +7,7 @@ test("עמוד הקורס נטען בלי שגיאות", async ({ page }) => {
     if (m.type() !== "error") return;
     const url = m.location().url || "";
     // משאבים חיצוניים (גופנים וכד') לא אמורים להפיל פריסה
-    if (url && !url.startsWith("http://127.0.0.1")) return;
+    if (url && new URL(url).origin !== new URL(page.url()).origin) return;
     errors.push(`שגיאה בקונסולה: ${m.text()}`);
   });
   const resp = await page.goto("/atzmaiot/");

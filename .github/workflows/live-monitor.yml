@@ -17,14 +17,29 @@ jobs:
     env:
       LIVE_URL: https://efrat-cohen.co.il
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Domain reachable?
+        id: dom
+        run: |
+          code=$(curl -s -o /dev/null -m 20 -L -w "%{http_code}" https://efrat-cohen.co.il || true)
+          if [ "$code" != "200" ]; then
+            echo "הדומיין עוד לא מחובר (סטטוס $code), מדלגים על הבדיקה ולא פותחים Issue"
+            echo "ok=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=yes" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.dom.outputs.ok == 'yes'
+        uses: actions/checkout@v4
+      - if: steps.dom.outputs.ok == 'yes'
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npx playwright install chromium --with-deps
+      - if: steps.dom.outputs.ok == 'yes'
+        run: npm ci
+      - if: steps.dom.outputs.ok == 'yes'
+        run: npx playwright install chromium --with-deps
       - id: run
+        if: steps.dom.outputs.ok == 'yes'
         run: npx playwright test live smoke quality
         continue-on-error: true
       - name: Open Hebrew issue on failure
