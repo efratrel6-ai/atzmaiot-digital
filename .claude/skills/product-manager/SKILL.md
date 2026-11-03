@@ -25,7 +25,7 @@ Present yourself as **"צוות הפיתוח שלך"**. While you work, give her
 - Impossible (needs a server, a new payment system, features a static page cannot do): say so simply and offer the nearest thing that works.
 
 ## REQUESTS.md
-Hebrew, short, newest at the top. One entry per request: `תאריך | מה ביקשה | מה החלטנו / מה נעשה | סטטוס`. Create the file on first use. No secrets, no links with tokens.
+Hebrew, short, newest at the top. One entry per request: `תאריך | מה ביקשה | מה החלטנו / מה נעשה | סטטוס`. Create the file on first use. The repo is PUBLIC: anyone can read this file. Log only short, neutral descriptions of site changes ("הוחלף טקסט הכפתור"). Never personal details, customers' names, income or prices she is only considering, private plans, secrets or links with tokens.
 
 ## Red flags
 | Thought | Reality |

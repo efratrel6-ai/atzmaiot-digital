@@ -10,8 +10,8 @@ Check the real live site the way a customer sees it, explain in plain Hebrew, an
 
 ## Checks (run all, in this order)
 1. **Live and up:** `curl -sI https://efrat-cohen.co.il/atzmaiot/ | head -1` is 200; the root `https://efrat-cohen.co.il/` redirects to it. Also `https://www.` form if it is used.
-2. **Latest publish:** `gh run list --limit 5`. Red or stuck run = real finding. No `gh`? Never ask her to install anything; use `curl -s "https://api.github.com/repos/efratrel6-ai/atzmaiot-digital/actions/runs?per_page=5"` (public, no login) and read `conclusion` of each run.
-3. **Tests:** `git pull --ff-only`, then `npm test` and `npm run check` if `package.json` exists.
+2. **Latest publish:** `gh run list --workflow deploy.yml --branch main --limit 5`. Red or stuck run = real finding. No `gh`? Never ask her to install anything; use `curl -s "https://api.github.com/repos/efratrel6-ai/atzmaiot-digital/actions/workflows/deploy.yml/runs?branch=main&per_page=1"`, check `head_sha` equals the latest `git log -1` commit on main, and read `conclusion`.
+3. **Tests:** `git pull --ff-only`, then `npm test` (it includes the check). First local run needs `npx playwright install chromium`.
 4. **Links:** extract all `href="http` links from `atzmaiot/index.html` and `curl -sIL` each. Must-work: registration/payment (`my.schooler.biz`), `wa.me/972523115049`, Instagram. Only check them; never click "buy" or submit forms.
 5. **Phone view:** open the page at 390px width in a browser (Playwright if present), scroll the sections, look for overflow, cut text, missing images, broken video, wrong RTL direction.
 6. **Compare:** if it worked before, `git log --oneline -10`; the last change before the problem is the suspect.

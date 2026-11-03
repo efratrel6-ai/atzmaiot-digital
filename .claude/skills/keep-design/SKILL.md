@@ -11,7 +11,10 @@ The page is one hand-designed file (`atzmaiot/index.html`, CSS inlined). The des
 Never open the whole file; locate with grep and read only the needed lines. Any subagent you spawn uses model `haiku`.
 
 ## Content change
-1. Find the exact spot: `grep -n "<exact old text>" atzmaiot/index.html` (match must be unique; use `-o` with a short context, the lines are huge).
+1. Find the exact spot: `grep -n -o -E '.{0,80}TEXT.{0,80}' atzmaiot/index.html` (must match once). Never print or `sed -n` lines containing `data:image` (inline images, up to ~1 MB per line). The Edit tool needs a Read first and fails on 3 MB, so edit with a node one-liner that checks the old string occurs exactly once:
+   ```
+   node -e "const fs=require('fs');const f='atzmaiot/index.html';let s=fs.readFileSync(f,'utf8');const o=process.argv[1],n=process.argv[2];if(s.split(o).length!==2){console.error('not exactly once');process.exit(1)}fs.writeFileSync(f,s.replace(o,()=>n))" "OLD" "NEW"
+   ```
 2. Replace only the words inside the existing tags. Keep tags, classes, attributes, emojis, line breaks and spacing as they were.
 3. Hebrew text stays RTL; if mixing numbers/English, do not add direction tags unless the old text had them.
 4. Check: `git diff --stat` shows one file, a few changed characters.
