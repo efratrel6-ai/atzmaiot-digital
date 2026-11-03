@@ -8,6 +8,16 @@ description: Use when Efrat asks for any change to the site (text, price, link, 
 ## Overview
 Every change goes through one loop, so the live site is never broken. Pushing to `main` deploys only if the automatic checks pass. You do all steps; Efrat only describes what she wants and approves.
 
+## Status lines (one per stage, simple Hebrew, warm, never more)
+| Stage | Tell Efrat (adapt) |
+| --- | --- |
+| Understand | "הבנתי, מתחיל לעבוד על זה." |
+| Change | "עושה את השינוי עכשיו, רק במקום שביקשת." |
+| Checks | "האתר עובר בדיקות, זה לוקח כדקה-שתיים." (or "עכשיו אני בודק שהכפתור לתשלום עדיין עובד") |
+| Publish | "מעלה לאתר, עוד רגע זה באוויר." |
+| Verified live | "זה באוויר! בדקתי ועכשיו בעמוד מופיע ..." |
+Delays or failures: use `explain-simply`; always end with what happens next and that she needs to do nothing (unless true).
+
 ## The loop
 1. **Understand.** Restate the request in one simple Hebrew sentence. Unclear or touches more than she said? Ask one question. Design-looking requests: read `keep-design`.
 2. **Sync.** `git status` clean? `git pull --ff-only`. Not clean and not yours: stop and ask.

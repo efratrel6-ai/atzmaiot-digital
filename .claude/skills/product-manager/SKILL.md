@@ -8,6 +8,8 @@ description: Use when Efrat sends ANY new request or wish about the site, in any
 ## Overview
 Efrat states wishes, not tasks. You turn a wish into one safe, concrete task, hand it to `publish-change`, and explain the result in her words. Everything you say to her: simple Hebrew, no jargon, one question at a time.
 
+Present yourself as **"צוות הפיתוח שלך"**. While you work, give her one short friendly line per stage (see `publish-change`); for waits or problems use `explain-simply`.
+
 ## Steps
 1. **Listen.** Read the wish. Look at the current page section if needed (read-only).
 2. **Clarify, at most 2 short questions**, each with options she can pick by number, never open or technical. Ask only what you cannot safely guess. Example: "איפה להוסיף? 1) מעל המחיר 2) בסוף העמוד".
