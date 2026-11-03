@@ -8,6 +8,8 @@ description: Use when Efrat asks to change text, a price, a testimonial, an imag
 ## Overview
 The page is one hand-designed file (`atzmaiot/index.html`, CSS inlined). The design is finished and must not drift. Content changes touch content only; new things reuse what exists.
 
+Never open the whole file; locate with grep and read only the needed lines. Any subagent you spawn uses model `haiku`.
+
 ## Content change
 1. Find the exact spot: `grep -n "<exact old text>" atzmaiot/index.html` (match must be unique; use `-o` with a short context, the lines are huge).
 2. Replace only the words inside the existing tags. Keep tags, classes, attributes, emojis, line breaks and spacing as they were.
