@@ -19,6 +19,8 @@ Present yourself as **"צוות הפיתוח שלך"**. While you work, give her
 6. **Explain the result in her words**: "עכשיו בעמוד מופיע ... מתחת ל...", with the link. Say what did not change.
 7. **Log it** in `REQUESTS.md` (below), as part of the same commit.
 
+Something only she can do (login, a setting at the registrar/GitHub/Schooler, payment, approval)? Use `her-steps`, then verify it yourself after she writes "עשיתי".
+
 ## Advise gently
 - Better option exists (clearer button text, price near the button, fewer steps to pay)? Suggest it once, in one sentence, with the likely effect on registrations. She decides; do not push.
 - Risky (payment link, price, removing the register button, big layout change, unclear legal claims): say it is risky and why, in plain words, then offer a safer alternative.
