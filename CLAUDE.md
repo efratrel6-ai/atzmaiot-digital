@@ -58,6 +58,7 @@ This repo is PUBLIC. Never commit secrets, private files or personal details. `R
 | `product-manager` | FIRST for every new request: listen, clarify, restate, hand off, explain result, log |
 | `explain-simply` | Any wait, failure, delay, or "can't do" message to her |
 | `first-time-hello` | Her first session or "how does this work" |
+| `clean-code` | Any new or changed markup, link, button, image or section: clean, tested, no leftovers |
 | `publish-change` | Every request that changes the site: edit, test, publish, verify live |
 | `keep-design` | Any content change or new section, without design drift |
 | `site-health` | "Something looks broken", a link/payment doubt, or a periodic check |
