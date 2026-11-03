@@ -1,6 +1,6 @@
 // בדיקות סטטיות ללא תלויות: קישורים מקומיים, CNAME, הפניה מ-index.html.
 // קישורים חיצוניים נבדקים באזהרה בלבד (לא מפילים את הפריסה).
-import { readFileSync, existsSync, statSync } from "node:fs";
+import { readFileSync, existsSync, statSync, readdirSync } from "node:fs";
 import { dirname, resolve, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -43,6 +43,17 @@ for (const page of ["index.html", "atzmaiot/index.html"]) {
     if (!ok) fail(`בעמוד ${page} יש קישור לקובץ שלא קיים: "${raw}"`);
   }
 }
+
+// 3ב. תקציב משקל (אזהרה בלבד)
+const mb = (n) => (n / 1048576).toFixed(1);
+const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) =>
+  e.isDirectory() ? walk(join(d, e.name)) : [[join(d, e.name), statSync(join(d, e.name)).size]]);
+const files = walk(join(root, "atzmaiot"));
+const total = files.reduce((a, [, s]) => a + s, 0);
+const htmlSize = statSync(join(root, "atzmaiot/index.html")).size;
+if (htmlSize > 6 * 1048576) warnings.push(`קובץ העמוד atzmaiot/index.html כבד (${mb(htmlSize)}MB, התקציב 6MB). זה יאט את הטעינה.`);
+if (total > 40 * 1048576) warnings.push(`התיקייה atzmaiot כבדה (${mb(total)}MB, התקציב 40MB).`);
+for (const [f, s] of files) if (s > 12 * 1048576) warnings.push(`קובץ גדול מאוד (${mb(s)}MB): ${f.replace(root + "/", "")}`);
 
 // 4. קישורים חיצוניים: אזהרה בלבד
 const skip = /^https:\/\/fonts\.(googleapis|gstatic)\.com\/?$/;
