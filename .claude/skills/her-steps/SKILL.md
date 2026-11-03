@@ -15,6 +15,8 @@ Publish one HTML page: Hebrew, RTL, big readable text, works on a phone. Structu
 3. A **copy button** next to every value she must paste (a link, a name, a code).
 4. **Last line:** "כשסיימת, כתבי לי: עשיתי".
 
+**Template:** copy `example.html` (same folder) and change only the content; keep its style, color tokens and copy-button script.
+
 No secrets on the page (page link is shareable): she types passwords herself on the real site, you never ask her to send them to you. Keep the repo free of it too.
 
 ## After she says "עשיתי"

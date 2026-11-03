@@ -1,0 +1,116 @@
+<title>האתר של אפרת: מה עושים</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one calm reading column, three short steps with copy buttons */
+:root {
+  --bg: #f6f8f5; --card: #ffffff; --fg: #1d2a22; --muted: #5d6b62;
+  --accent: #2f7a52; --accent-soft: #e3f1e8; --line: #dbe4dd;
+  --f-body: "Heebo", "Arial Hebrew", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121814; --card: #1a221d; --fg: #e6eee8; --muted: #9db0a3;
+  --accent: #6cc495; --accent-soft: #1f3528; --line: #2c3a31; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121814; --card: #1a221d; --fg: #e6eee8; --muted: #9db0a3;
+  --accent: #6cc495; --accent-soft: #1f3528; --line: #2c3a31; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 18px; line-height: 1.7; }
+.wrap { max-width: 600px; margin: 0 auto; padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 20px; }
+h1 { font-size: 30px; font-weight: 800; margin: 0; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: grid; gap: 12px; min-width: 0; }
+.head { display: flex; align-items: center; gap: 12px; }
+.num { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--card); display: grid; place-items: center; font-weight: 800; flex: none; }
+h2 { font-size: 22px; margin: 0; }
+ol { margin: 0; padding-inline-start: 22px; display: grid; gap: 8px; }
+p { margin: 0; }
+.val { display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; min-width: 0; }
+.val .txt { display: grid; min-width: 0; }
+.val .k { font-size: 14px; color: var(--muted); }
+code { font-family: var(--f-mono); font-size: 16px; direction: ltr; unicode-bidi: isolate; word-break: break-all; }
+.vals { display: grid; gap: 8px; }
+button { font: inherit; font-size: 15px; font-weight: 700; border: 1px solid var(--accent); color: var(--accent); background: transparent; border-radius: 8px; padding: 6px 14px; cursor: pointer; flex: none; }
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+button.ok { background: var(--accent); color: var(--card); }
+.note { font-size: 16px; color: var(--muted); }
+.say { background: var(--accent-soft); border-radius: 10px; padding: 10px 14px; }
+.ltr { direction: ltr; unicode-bidi: isolate; }
+.done { text-align: center; font-weight: 700; }
+</style>
+
+<div class="wrap" dir="rtl" lang="he">
+  <h1>האתר שלך: 3 צעדים</h1>
+  <p class="lead">עושים פעם אחת, וזהו. בערך 10 דקות.</p>
+
+  <section class="card">
+    <div class="head"><span class="num">1</span><h2>מחברים את הכתובת</h2></div>
+    <ol>
+      <li>נכנסים ל-<b class="ltr">domainthenet.com</b> ← <b>Account Manager</b>. מתחברים עם <b class="ltr">efrat-cohen.co.il</b> והסיסמה מהמייל.</li>
+      <li>לוחצים על <b>DNS</b>.</li>
+      <li>מוחקים את מה שכתוב בו <code>62.219.91.45</code></li>
+      <li>מוסיפים 4 שורות מסוג <b>A</b>, אחת לכל מספר:</li>
+    </ol>
+    <div class="vals">
+      <div class="val"><code>185.199.108.153</code><button type="button" data-copy="185.199.108.153">העתקה</button></div>
+      <div class="val"><code>185.199.109.153</code><button type="button" data-copy="185.199.109.153">העתקה</button></div>
+      <div class="val"><code>185.199.110.153</code><button type="button" data-copy="185.199.110.153">העתקה</button></div>
+      <div class="val"><code>185.199.111.153</code><button type="button" data-copy="185.199.111.153">העתקה</button></div>
+    </div>
+    <ol start="5"><li>מוסיפים שורה אחת מסוג <b>CNAME</b>. בשם כותבים <code>www</code>, ובערך:</li></ol>
+    <div class="val"><code>efratrel6-ai.github.io</code><button type="button" data-copy="efratrel6-ai.github.io">העתקה</button></div>
+    <ol start="6"><li>שומרים.</li></ol>
+    <p class="note">לא מוצאים איפה? מעתיקים את ההודעה הזו ושולחים במייל ל-<b class="ltr">support@domainthenet.com</b>, והם יעשו את זה:</p>
+    <div class="val"><code id="mail" style="white-space:pre-line">שלום, אבקש להגדיר לדומיין efrat-cohen.co.il את הרשומות הבאות ולמחוק את רשומת ה-A הקיימת:
+A @ 185.199.108.153
+A @ 185.199.109.153
+A @ 185.199.110.153
+A @ 185.199.111.153
+CNAME www efratrel6-ai.github.io
+תודה, אפרת כהן</code><button type="button" data-copy-from="mail">העתקה</button></div>
+  </section>
+
+  <section class="card">
+    <div class="head"><span class="num">2</span><h2>לחיצה אחת ב-GitHub</h2></div>
+    <ol>
+      <li>נכנסים ל-<b class="ltr">github.com/efratrel6-ai/atzmaiot-digital</b></li>
+      <li>לוחצים <b>Settings</b> (למעלה), ואז <b>Pages</b> (בצד).</li>
+      <li>איפה שכתוב <b>Source</b>, בוחרים <b>GitHub Actions</b>.</li>
+      <li>אם אפשר לסמן <b>Enforce HTTPS</b>, מסמנים. אם זה אפור, לא נורא, אפשר לסמן מחר.</li>
+      <li>כדי לא לקבל מיילים מ-GitHub: נכנסים ל-<b class="ltr">github.com/settings/notifications</b>, יורדים ל-<b>Actions</b>, ומורידים את הסימון מ-<b>Email</b>. אם משהו נכשל, Claude מטפל בזה לבד.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <div class="head"><span class="num">3</span><h2>מעכשיו מבקשים מ-Claude</h2></div>
+    <ol>
+      <li>פותחים את <b class="ltr">claude.ai/code</b> ובוחרים <b class="ltr">atzmaiot-digital</b>.</li>
+      <li>כותבים מה רוצים, במילים רגילות:</li>
+    </ol>
+    <p class="say">"תוסיף המלצה חדשה מדנה"</p>
+    <p class="say">"תשנה את המחיר ל-390 ש"ח"</p>
+    <p class="say">"משהו נראה שבור בטלפון"</p>
+    <p>Claude בודק ומעלה לאתר לבד. אם משהו לא תקין, האתר נשאר כמו שהיה. העיצוב לא משתנה, אלא אם מבקשים.</p>
+  </section>
+
+  <p class="done">סיימת? שולחים ליואל "עשיתי".</p>
+</div>
+
+<script>
+document.querySelectorAll('button[data-copy], button[data-copy-from]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var src = b.getAttribute('data-copy-from');
+    var text = src ? document.getElementById(src).textContent : b.getAttribute('data-copy');
+    var done = function () { b.textContent = 'הועתק'; b.classList.add('ok'); setTimeout(function () { b.textContent = 'העתקה'; b.classList.remove('ok'); }, 1500); };
+    var fallback = function () {
+      var code = src ? document.getElementById(src) : b.parentElement.querySelector('code');
+      var r = document.createRange(); r.selectNodeContents(code);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      b.textContent = 'סומן';
+    };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  });
+});
+</script>
