@@ -1,6 +1,6 @@
 name: Weekly live check
 
-# פעם בשבוע בודק את האתר החי https://efrat-cohen.co.il ופותח Issue בעברית אם משהו נשבר.
+# פעם בשבוע בודק את האתר החי https://efrat-cohen.co.il . אם משהו נשבר הריצה נשארת אדומה (בלי Issue ובלי מיילים מהמערכת שלנו), ו-Claude בודק אותה.
 on:
   schedule:
     - cron: "0 6 * * 0"
@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
 
 jobs:
   live:
@@ -38,21 +37,5 @@ jobs:
         run: npm ci
       - if: steps.dom.outputs.ok == 'yes'
         run: npx playwright install chromium --with-deps
-      - id: run
-        if: steps.dom.outputs.ok == 'yes'
+      - if: steps.dom.outputs.ok == 'yes'
         run: npx playwright test live smoke quality
-        continue-on-error: true
-      - name: Open Hebrew issue on failure
-        if: steps.run.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh label create "live-check" --color B60205 --description "בדיקה שבועית של האתר החי" 2>/dev/null || true
-          if [ -n "$(gh issue list --label live-check --state open --json number --jq '.[0].number')" ]; then
-            echo "כבר יש Issue פתוח, לא פותחים עוד אחד"; exit 0
-          fi
-          gh issue create --label live-check \
-            --title "הבדיקה השבועית של האתר החי נכשלה" \
-            --body "הבדיקה האוטומטית של https://efrat-cohen.co.il נכשלה. יש לבדוק: האתר נפתח? כפתור התשלום (Schooler) עובד? ראו את הפירוט בריצה: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-      - if: steps.run.outcome == 'failure'
-        run: exit 1
