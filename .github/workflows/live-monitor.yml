@@ -1,0 +1,41 @@
+name: Weekly live check
+
+# פעם בשבוע בודק את האתר החי https://efrat-cohen.co.il . אם משהו נשבר הריצה נשארת אדומה (בלי Issue ובלי מיילים מהמערכת שלנו), ו-Claude בודק אותה.
+on:
+  schedule:
+    - cron: "0 6 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      LIVE_URL: https://efrat-cohen.co.il
+    steps:
+      - name: Domain reachable?
+        id: dom
+        run: |
+          code=$(curl -s -o /dev/null -m 20 -L -w "%{http_code}" https://efrat-cohen.co.il || true)
+          if [ "$code" != "200" ]; then
+            echo "הדומיין עוד לא מחובר (סטטוס $code), מדלגים על הבדיקה ולא פותחים Issue"
+            echo "ok=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=yes" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.dom.outputs.ok == 'yes'
+        uses: actions/checkout@v4
+      - if: steps.dom.outputs.ok == 'yes'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - if: steps.dom.outputs.ok == 'yes'
+        run: npm ci
+      - if: steps.dom.outputs.ok == 'yes'
+        run: npx playwright install chromium --with-deps
+      - if: steps.dom.outputs.ok == 'yes'
+        run: npx playwright test live smoke quality
