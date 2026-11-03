@@ -13,6 +13,7 @@ Every change goes through one loop, so the live site is never broken. Pushing to
 2. **Sync.** `git status` clean? `git pull --ff-only`. Not clean and not yours: stop and ask.
 3. **Minimal edit.** Exact-string edit of only the requested spot. Then `git diff --stat` and `git diff` (use `--word-diff` for the 3 MB file): the diff must contain only the requested change. Anything else: undo it.
 4. **Test locally if possible.** If `package.json` exists: `npm ci` (first time) then `npm test` and `npm run check`. If it does not exist yet, open `atzmaiot/index.html` in a browser (or a quick local static server) and look at the changed area, desktop and phone width.
+4b. **Visual snapshots.** If the test suite has screenshot baselines and a snapshot test fails: update the baselines (the project's update-snapshots command) ONLY when Efrat asked for a visual change, and only after looking at the new screenshots to confirm they show exactly what she asked. For a text/link/content-only request, a snapshot failure means unintended drift: undo the cause, never update.
 5. **Show Efrat** (simple Hebrew): "שיניתי X ל-Y. שום דבר אחר לא השתנה." Wait for her OK unless she already said exactly what and to publish.
 6. **Commit** with a clear Hebrew message, one change per commit: `git commit -m "עדכון מחיר הקורס ל-..."`.
 7. **Push to main:** `git push origin main`. Rejected? `git pull --rebase` then re-run tests. Never `--force`.
@@ -27,6 +28,7 @@ Read the log: `gh run view <id> --log-failed`. Name the cause. Fix the real caus
 | Thought | Reality |
 | --- | --- |
 | "The test is flaky, skip it / add `[skip ci]`" | Never. A red check means the site would break. Fix or revert. |
+| "Snapshot test fails, just update the baseline" | Only for a visual change she asked for. Otherwise it caught drift. |
 | "Re-run the failed run to see" | Read the log first. Re-running hides the cause. |
 | "Force push, it's faster" | Never. Use `git revert`. |
 | "I'll tidy the formatting while here" | That is design drift and a 3 MB diff. Don't. |

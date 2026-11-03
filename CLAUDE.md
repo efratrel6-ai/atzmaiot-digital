@@ -13,6 +13,8 @@ The user is **Efrat. She is not technical.** She talks to you in Hebrew.
 - After every change, tell her in plain words what changed and what did not. Offer to show the live page.
 - If something went wrong, say so honestly and simply, and say what you did about it.
 
+**Every new request from Efrat starts with skill `product-manager`**, before reading or editing anything. It then hands off to `publish-change`. Requests are logged in `REQUESTS.md`.
+
 ## Absolute rules
 
 1. **Never change design, colors, fonts, layout, spacing, images or text unless she explicitly asks for that exact change. Then change only that.** No "while I'm here" cleanups, no reformatting, no renaming, no minifying, no image recompression. Use skill `keep-design`.
@@ -27,6 +29,7 @@ The user is **Efrat. She is not technical.** She talks to you in Hebrew.
 
 | Skill | Use for |
 | --- | --- |
+| `product-manager` | FIRST for every new request: listen, clarify, restate, hand off, explain result, log |
 | `publish-change` | Every request that changes the site: edit, test, publish, verify live |
 | `keep-design` | Any content change or new section, without design drift |
 | `site-health` | "Something looks broken", a link/payment doubt, or a periodic check |
