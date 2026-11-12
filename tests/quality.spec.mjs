@@ -63,3 +63,11 @@ test("נגישות בסיסית: אין הפרות קריטיות", async ({ pag
     "נמצאו בעיות נגישות קריטיות:",
   ).toEqual([]);
 });
+
+test("העמוד נטען מהר: התמונות בקבצים נפרדים ולא בתוך העמוד", async ({ request }) => {
+  const res = await request.get("/atzmaiot/");
+  const kb = (await res.body()).length / 1024;
+  expect(kb, `קובץ העמוד כבד (${Math.round(kb)}KB). תמונות חדשות צריכות להיות קובץ נפרד בתיקייה img, לא בתוך העמוד`).toBeLessThan(600);
+  const img = await request.get("/atzmaiot/img/welcome.jpg");
+  expect(img.ok(), "תמונת הפתיחה img/welcome.jpg לא נטענת").toBeTruthy();
+});
