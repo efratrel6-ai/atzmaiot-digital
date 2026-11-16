@@ -31,3 +31,14 @@ test("כפתור הרכישה קיים ומוביל לעמוד תשלום תקי
   const href = (await buy.getAttribute("href")) || "";
   expect(href, `הקישור של כפתור התשלום אינו קישור https תקין (כרגע: "${href}")`).toMatch(/^https:\/\/[^\s/]+\.[^\s/]+\/\S*$/);
 });
+
+test("הצהרת הנגישות קיימת ויש אליה קישור מדף הקורס", async ({ page }) => {
+  await page.goto("/atzmaiot/");
+  const link = page.locator('a[href="accessibility.html"]');
+  expect(await link.count(), "הקישור להצהרת הנגישות חסר בדף הקורס").toBeGreaterThan(0);
+  const resp = await page.goto("/atzmaiot/accessibility.html");
+  expect(resp?.status(), "דף הצהרת הנגישות לא נטען").toBe(200);
+  await expect(page.locator("h1"), "כותרת הדף הצהרת נגישות חסרה").toHaveText("הצהרת נגישות");
+  await expect(page.locator('a[href^="mailto:"]'), "חסרה כתובת מייל לפניות נגישות").toHaveCount(1);
+  await expect(page.locator('a[href^="https://wa.me/"]'), "חסר קישור וואטסאפ לפניות נגישות").toHaveCount(1);
+});

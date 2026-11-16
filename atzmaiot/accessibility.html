@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>הצהרת נגישות – עצמאיות באינסטגרם</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Varela+Round&display=swap">
+<style>
+/* Layout: one readable column, matching the course page's burgundy and sage palette. Single light look, as on the main page. */
+:root {
+  --ink: #332B28; --muted: #6E625C; --line: #E8DCD3; --paper: #FFFFFF;
+  --ground: #F6EFE8; --burgundy: #8E4556; --sage: #7F8C6E;
+  --f-head: "Rubik", "Arial Hebrew", Arial, sans-serif;
+  --f-body: "Varela Round", "Rubik", "Arial Hebrew", Arial, sans-serif;
+  color-scheme: light; box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+*, *::before, *::after { box-sizing: inherit; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--f-body); font-size: 1rem; line-height: 1.75;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 1.5rem 3rem; }
+.wrap { max-width: 42rem; margin-inline: auto; display: flex; flex-direction: column; gap: 1.25rem; }
+.back { align-self: flex-start; display: inline-flex; align-items: center; gap: .4rem; font-family: var(--f-head); font-weight: 700; font-size: .95rem;
+  color: var(--burgundy); text-decoration: none; background: var(--paper); border: 1px solid var(--line); border-radius: 2rem; padding: .45rem 1rem; }
+.back:hover { border-color: var(--burgundy); }
+.back svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.doc { background: var(--paper); border: 1px solid var(--line); border-radius: 1.2rem; padding: clamp(1.25rem, 5vw, 2.5rem); display: flex; flex-direction: column; gap: 1.6rem; }
+h1 { margin: 0; font-family: var(--f-head); font-weight: 800; font-size: clamp(1.6rem, 6vw, 2.1rem); line-height: 1.2; text-wrap: balance; }
+h1::after { content: ""; display: block; width: 3rem; height: 4px; border-radius: 4px; margin-top: .9rem; background: linear-gradient(90deg, var(--burgundy), var(--sage)); }
+section { display: flex; flex-direction: column; gap: .6rem; }
+h2 { margin: 0; font-family: var(--f-head); font-weight: 700; font-size: 1.18rem; line-height: 1.35; color: var(--burgundy); text-wrap: balance; }
+p { margin: 0; overflow-wrap: anywhere; }
+a { color: var(--burgundy); }
+ul { margin: 0; padding-inline-start: 1.25rem; display: flex; flex-direction: column; gap: .35rem; }
+.sel { user-select: all; direction: ltr; unicode-bidi: isolate; }
+:focus-visible { outline: 3px solid var(--burgundy); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<a class="back" id="back" href="./"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>חזרה לדף הקורס</a>
+<article class="doc">
+<h1>הצהרת נגישות</h1>
+<section>
+<h2>המחויבות שלנו</h2>
+<p>חשוב לי שכל אחת תוכל להכיר את הקורס ״עצמאיות באינסטגרם״ ולהירשם אליו בנוחות, כולל נשים עם מוגבלות. האתר נבנה בשאיפה לעמוד בהנחיות התקן הישראלי ת״י 5568 (המבוסס על הנחיות WCAG 2.0) ברמה AA, ככל שהדבר אפשרי.</p>
+</section>
+<section>
+<h2>מה נעשה כדי שהאתר יהיה נגיש</h2>
+<ul>
+<li>האתר מוגדר בעברית ומוצג מימין לשמאל, כך שקוראי מסך מקריאים אותו נכון.</li>
+<li>אפשר לנווט בכל האתר באמצעות המקלדת בלבד, ותמיד מוצגת מסגרת ברורה סביב הרכיב שנבחר.</li>
+<li>לתמונות יש תיאור טקסטואלי, ולכפתורים יש שמות ברורים לקוראי מסך.</li>
+<li>הכותרות בעמוד מסודרות לפי היררכיה, כדי להקל על ההתמצאות.</li>
+<li>אפשר להגדיל את הטקסט בדפדפן ובטלפון בלי לאבד תוכן.</li>
+<li>מי שהגדירה במכשיר ״הפחתת תנועה״ תקבל עמוד עם פחות אנימציות.</li>
+<li>הסרטונים לא מתנגנים עם קול מעצמם, והקול מופעל רק בלחיצה.</li>
+<li>באתר אין תוסף נגישות אוטומטי; הנגישות מובנית בעמוד עצמו.</li>
+</ul>
+</section>
+<section>
+<h2>מגבלות נגישות ידועות</h2>
+<ul>
+<li>לסרטוני ההמלצות של הבוגרות אין עדיין כתוביות.</li>
+<li>הרכישה, הצפייה בקורס, וואטסאפ ואינסטגרם מתבצעים באתרים חיצוניים, שהנגישות שלהם באחריות מפעיליהם.</li>
+</ul>
+<p>אם משהו מאלה מקשה עלייך, אשמח לעזור באופן אישי ולתת לך את המידע בדרך אחרת.</p>
+</section>
+<section>
+<h2>נתקלת בבעיית נגישות? אשמח לשמוע</h2>
+<p>אם משהו באתר לא נגיש לך, או שאת צריכה התאמה כדי להכיר את הקורס או להירשם אליו, אפשר לפנות אליי בכל אחת מהדרכים האלה:</p>
+<ul>
+<li>בדוא״ל: <a href="mailto:efratrel6@gmail.com" class="sel">efratrel6@gmail.com</a></li>
+<li>בוואטסאפ: <a href="https://wa.me/972523115049" target="_blank" rel="noopener">שליחת הודעה לאפרת</a></li>
+</ul>
+<p>כדי שאוכל לעזור מהר, כדאי לכתוב באיזה חלק באתר נתקלת בבעיה ומה ניסית לעשות. אחזור אלייך בהקדם.</p>
+</section>
+<section>
+<h2>פרטי ההצהרה</h2>
+<p>האתר מופעל על ידי אפרת כהן. ההצהרה עודכנה בתאריך 17.11.2026.</p>
+</section>
+</article>
+</main>
+<script>
+document.getElementById("back").addEventListener("click", e => {
+  try { if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) { e.preventDefault(); history.back(); } } catch (err) {}
+});
+</script>
+</body>
+</html>
