@@ -1,6 +1,6 @@
 ---
 name: team-builder
-description: Builds a personal AI "team" page in Hebrew for a small-business owner. Each member has a photo, a role and skills; the page has a private chat with each member, a team group chat, a task board with reminders, and a "what to push now" strategy meeting. Starts with a friendly one-question-at-a-time interview. Use when someone asks for "צוות אישי", "צוות עובדים של AI", "דשבורד צוות", "תבני לי צוות כמו של אפרת", or wants AI employees they can chat with.
+description: Builds a personal AI "team" page in Hebrew for a small-business owner. Each member has a photo, a role and skills; the page has a private chat with each member, a team group chat, a task board with reminders, and a "what to push now" strategy meeting. Starts with a friendly one-question-at-a-time interview. Use when someone asks for "צוות אישי", "צוות עובדים של AI", "דשבורד צוות", or wants AI employees they can chat with.
 ---
 
 # Team Builder: a personal AI team page
@@ -53,14 +53,14 @@ The design is fixed in the template: Hebrew RTL, cream dotted paper, sage rings,
   "owner": "מיכל",
   "biz": "2-4 public-safe sentences about the business, third person",
   "team": [
-    {"id":"tamar","name":"תמר","f":true,"role":"מנהלת הצוות · תכנון שבועי","lead":true,"cal":true,
+    {"id":"manager","name":"מאיה","f":true,"role":"מנהלת הצוות · תכנון שבועי","lead":true,"cal":true,
      "color":"#7a2e4a","voice":"buttery",
      "about":"what I do for you, first person, one sentence",
      "skills":["chip 1","chip 2","chip 3"],
      "how":"persona + rules + condensed skill knowledge; may use {{OWNER}}"}
   ],
-  "roles": {"marketing":"noa","sales":"lia","strategy":"tamar","product":"tamir"},
-  "stack": ["tamar","noa","lia","yaron"],
+  "roles": {"marketing":"marketing","sales":"sales","strategy":"manager","product":"strategy"},
+  "stack": ["manager","marketing","sales","finance"],
   "alwaysSections": []
 }
 ```
@@ -96,7 +96,7 @@ The design is fixed in the template: Hebrew RTL, cream dotted paper, sage rings,
 
 1. **iOS returns frozen snapshot data.** Always clone (`JSON.parse(JSON.stringify(...))`) before mutating chats, tasks or the brief. Otherwise the send arrow silently does nothing.
 2. **Streamed answers can stop without resolving in the iPhone app.** There is a watchdog that finishes after 12 seconds of no new text and aborts the call, a 2-minute timeout, a ■ stop button, and a "🔄 לקבל תשובה" button for a message left unanswered.
-3. **A db doc path has an even number of segments.** For example, `data/users/<uid>/chat-noa` is valid, but `.../chats/noa` is not.
+3. **A db doc path has an even number of segments.** For example, `data/users/<uid>/chat-marketing` is valid, but `.../chats/marketing` is not.
 4. **Dictation and speech return null in the iPhone app.** The page shows a keyboard-mic tip there instead.
 5. **When she reports "נתקע",** ask her to try once and write "ניסיתי". Then read the private doc `debug` (`ArtifactData get`, `data/users/me`, `debug`) and fix the real cause. Don't guess.
 6. **The owner of a shared page cannot read a viewer's private data,** and Claude reads it as the user it runs for. So each friend builds and seeds her **own** copy.

@@ -9,11 +9,11 @@ await p.addInitScript(()=>{ 'use strict';
  const db={doc:(path)=>{ if(path.split('/').length%2) throw new TypeError('bad doc path '+path); return {get:async()=>{await ready;return snap(path)},set:async(d)=>{store[path]=JSON.parse(JSON.stringify(d))},delete:async()=>{delete store[path]}} },
    collection:(c)=>({onSnapshot:(cb)=>{setTimeout(()=>cb({docs:[]}),50);return()=>{}},get:async()=>({docs:[]}),doc:(id)=>db.doc(c+'/'+id)})};
  const sample=async(input,opts)=>{ window.__lastInput=input; window.__lastOpts=opts; const len=JSON.stringify(input).length; if(new Blob([JSON.stringify(input)]).size>262144) throw {code:'prompt_too_large'}; opts&&opts.onText&&opts.onText({text:'תשובה לדוגמה',delta:''}); return {text:'תשובה לדוגמה ('+len+' תווים)'} };
- sample.json=async()=>({replies:[{id:'tamar',text:'שלום'}]}); sample.limits=async()=>({maxPromptBytes:262144});
+ sample.json=async()=>({replies:[{id:'manager',text:'שלום'}]}); sample.limits=async()=>({maxPromptBytes:262144});
  window.claude={use:async(n)=>({sample, db, user:{id:async()=>'U',can:async()=>true}}[n]||null)};
 });
 await p.goto('http://127.0.0.1:8765/local.html');await p.waitForTimeout(800);
-for(const who of JSON.parse(process.env.IDS||'["noa","tamar"]')){
+for(const who of JSON.parse(process.env.IDS||'["marketing","manager"]')){
  await p.evaluate(()=>{});await p.click(`.m[data-id="${who}"], .lead-card[data-id="${who}"]`);await p.waitForTimeout(500);
  await p.fill('#input','בדיקה');await p.click('#send');await p.waitForTimeout(1500);
  const r=await p.evaluate(()=>({busy, last:[...document.querySelectorAll('.bubble')].slice(-1)[0]?.textContent.slice(0,60), note:[...document.querySelectorAll('.note')].map(n=>n.textContent).join('|')}));
