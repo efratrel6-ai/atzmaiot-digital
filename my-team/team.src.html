@@ -1,0 +1,1072 @@
+<title>הצוות של אפרת</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&family=Rubik:wght@500;700&display=swap">
+<style>
+/* Layout: staggered two-column team wall on dotted paper; chats open as a full-screen sheet. */
+:root{
+  --bg:#f8f5f1; --dot:#ddd3c8; --card:#ffffff; --fg:#2b2326; --muted:#7a6f70;
+  --sage:#86967a; --plum:#6e3448; --rose:#b98d7a; --bubble-me:#6e3448; --bubble-me-fg:#fff;
+  --bubble-them:#ffffff; --line:#e7dfd6; --chip:#efe8df;
+  --display:"Rubik","Heebo",system-ui,sans-serif; --body:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1d1a1b; --dot:#352f30; --card:#28232a; --fg:#f2ece8; --muted:#b2a7a5;
+  --sage:#9fb093; --plum:#c27c95; --rose:#d4a796; --bubble-me:#7d3d53; --bubble-me-fg:#fff;
+  --bubble-them:#2c2629; --line:#3a3335; --chip:#332d2f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1d1a1b; --dot:#352f30; --card:#28232a; --fg:#f2ece8; --muted:#b2a7a5;
+  --sage:#9fb093; --plum:#c27c95; --rose:#d4a796; --bubble-me:#7d3d53; --bubble-me-fg:#fff;
+  --bubble-them:#2c2629; --line:#3a3335; --chip:#332d2f; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;direction:rtl;
+  background-image:radial-gradient(var(--dot) 1.4px,transparent 1.6px);background-size:28px 28px}
+.wrap{max-width:560px;margin:0 auto;padding-block:20px 120px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top h1{font-family:var(--display);font-size:1.8rem;margin:0 0 4px;text-wrap:balance}
+header.top p{margin:0;color:var(--muted);font-size:.95rem}
+.lead-card{all:unset;box-sizing:border-box;cursor:pointer;margin-top:22px;width:100%;display:flex;align-items:center;gap:18px;
+  background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 6px 20px rgba(60,40,40,.07)}
+.lead-card:focus-visible,.m:focus-visible{outline:3px solid var(--plum);outline-offset:3px}
+.lead-card .av{width:112px;flex:none}
+.lead-card .txt{display:flex;flex-direction:column;gap:4px;min-width:0}
+.lead-card .tag{align-self:flex-start;font-size:.78rem;font-weight:700;color:var(--plum);background:var(--chip);padding:3px 10px;border-radius:999px}
+.lead-card b{font-family:var(--display);font-size:1.45rem}
+.lead-card span.r{color:var(--muted)}
+.sec{margin:28px 0 12px;font-size:.85rem;color:var(--muted);font-weight:500;letter-spacing:.03em}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (min-width:520px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.m{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;
+  background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px 10px 16px;transition:transform .2s,box-shadow .2s}
+.m:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(60,40,40,.1)}
+.m .av{width:92px;margin-bottom:6px}
+.av{position:relative;aspect-ratio:1;max-width:100%}
+.av img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid var(--sage);box-shadow:0 6px 16px rgba(60,40,40,.12)}
+.av.lead img{border-color:var(--plum);box-shadow:0 0 0 4px var(--bg),0 0 0 6px var(--rose),0 8px 22px rgba(60,40,40,.14)}
+.av .on{position:absolute;bottom:6%;right:6%;width:16px;height:16px;border-radius:50%;background:var(--sage);border:3px solid var(--bg)}
+.m b{font-family:var(--display);font-size:1.15rem}
+.m span{color:var(--muted);font-size:.86rem;line-height:1.35;text-wrap:balance}
+.m .unread{display:inline-block;margin-inline-start:4px;width:8px;height:8px;border-radius:50%;background:var(--plum);vertical-align:middle}
+.group-btn{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));
+  border:0;cursor:pointer;color:#fff;font:700 1.1rem var(--body);padding:16px 30px;border-radius:999px;
+  background:linear-gradient(90deg,#6e3448,#b98d7a);box-shadow:0 10px 28px rgba(110,52,72,.35);display:flex;gap:10px;align-items:center;white-space:nowrap}
+.group-btn:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+.stack{display:flex}
+.stack img{width:26px;height:26px;border-radius:50%;border:2px solid #fff;margin-inline-start:-8px;object-fit:cover}
+.stack img:first-child{margin-inline-start:0}
+
+/* chat sheet */
+.chat{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;z-index:20}
+.chat[hidden],.confirm[hidden],.pending[hidden],.addf[hidden],.note[hidden],.mic[hidden],.voicehint[hidden],.say[hidden]{display:none!important}
+.ch-head{display:flex;align-items:center;gap:12px;background:var(--card);border-bottom:1px solid var(--line);
+  padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:10px;
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.icon-btn{all:unset;cursor:pointer;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:1.3rem;color:var(--fg);flex:none}
+.icon-btn:hover,.icon-btn:focus-visible{background:var(--chip)}
+.ch-head img.h{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--sage);flex:none}
+.ch-title{flex:1;min-width:0}
+.ch-title b{display:block;font-family:var(--display);font-size:1.1rem}
+.ch-title small{color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;
+  padding-block:16px;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+.intro{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.intro p{margin:0;line-height:1.55}
+.intro h3{margin:0;font-size:.85rem;color:var(--muted);font-weight:500;letter-spacing:.02em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{all:unset;cursor:pointer;background:var(--chip);color:var(--fg);padding:8px 12px;border-radius:999px;font-size:.9rem}
+.chip:hover,.chip:focus-visible{background:var(--sage);color:#fff}
+.row{display:flex;gap:8px;align-items:flex-end;max-width:88%}
+.row.me{align-self:flex-start;flex-direction:row}
+.row.them{align-self:flex-end;flex-direction:row-reverse}
+.row img{width:30px;height:30px;border-radius:50%;object-fit:cover;flex:none}
+.bubble{padding:10px 14px;border-radius:18px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}
+.me .bubble{background:var(--bubble-me);color:var(--bubble-me-fg);border-end-start-radius:6px}
+.them .bubble{background:var(--bubble-them);border:1px solid var(--line);border-end-end-radius:6px}
+.bubble .who{display:block;font-size:.8rem;font-weight:700;color:var(--plum);margin-bottom:2px}
+.typing{color:var(--muted);font-size:.9rem;align-self:flex-end}
+.note{color:var(--muted);font-size:.85rem;text-align:center;align-self:center;max-width:90%}
+.composer{display:flex;gap:8px;align-items:flex-end;background:var(--card);border-top:1px solid var(--line);
+  padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.composer textarea{flex:1;min-width:0;resize:none;border:1px solid var(--line);background:var(--bg);color:var(--fg);
+  border-radius:20px;padding:10px 14px;font:16px var(--body);max-height:140px}
+.composer textarea:focus{outline:2px solid var(--sage)}
+.send{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;background:var(--plum);color:#fff;display:grid;place-items:center;font-size:1.2rem;flex:none}
+.send[disabled]{opacity:.45;cursor:default}
+.send:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.confirm{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;padding:8px;background:var(--chip);font-size:.9rem}
+.confirm button{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.confirm button.danger{background:var(--plum);color:#fff;border-color:var(--plum)}
+.evs{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.ev{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px 12px;white-space:normal}
+.ev .when{font-size:.85rem;color:var(--muted);display:block}
+.ev .t{font-weight:700}
+.ev button{all:unset;cursor:pointer;background:var(--sage);color:#fff;padding:7px 12px;border-radius:999px;font-size:.88rem;font-weight:700}
+.ev button:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.ev button[disabled]{opacity:.6;cursor:default}
+.ev .ok{color:var(--sage);font-weight:700;font-size:.9rem}
+.calnote{font-size:.85rem;color:var(--muted)}
+.attach{all:unset;cursor:pointer;width:40px;height:44px;display:grid;place-items:center;font-size:1.3rem;color:var(--muted);flex:none;border-radius:50%}
+.attach:hover,.attach:focus-visible{background:var(--chip);color:var(--fg)}
+.pending{display:flex;gap:8px;flex-wrap:wrap;background:var(--card);border-top:1px solid var(--line);
+  padding-top:8px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.pend{display:flex;align-items:center;gap:6px;background:var(--chip);border-radius:12px;padding:4px 6px 4px 10px;font-size:.85rem;max-width:100%;min-width:0}
+.pend img{width:36px;height:36px;border-radius:8px;object-fit:cover}
+.pend span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px}
+.pend button{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%}
+.pend button:hover,.pend button:focus-visible{background:var(--line)}
+.att{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.att img{width:120px;max-width:100%;border-radius:12px;display:block}
+.att .file{font-size:.85rem;opacity:.9}
+.mic{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.25rem;background:var(--chip);flex:none}
+.mic:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.mic.on{background:#c0392b;color:#fff;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,.45)}50%{box-shadow:0 0 0 8px rgba(192,57,43,0)}}
+.say{all:unset;cursor:pointer;font-size:.8rem;color:var(--muted);margin-top:6px;display:inline-flex;gap:4px;align-items:center;padding:2px 8px;border-radius:999px;background:var(--chip)}
+.say:focus-visible{outline:2px solid var(--plum)}
+.say.on{background:var(--sage);color:#fff}
+.vtag{font-size:.78rem;opacity:.85;display:block;margin-bottom:2px}
+.voicehint{font-size:.8rem;color:var(--muted);text-align:center;padding:4px 12px 0;background:var(--card)}
+.board-btn{all:unset;cursor:pointer;margin-top:14px;display:inline-flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);
+  padding:10px 16px;border-radius:999px;font-weight:700;color:var(--plum)}
+.board-btn:focus-visible{outline:3px solid var(--plum);outline-offset:2px}
+.board-btn .cnt{background:#c0392b;color:#fff;border-radius:999px;font-size:.75rem;padding:1px 8px}
+.sheet{position:fixed;inset:0;background:var(--bg);z-index:25;overflow-y:auto}
+.sheet[hidden]{display:none!important}
+.sheet .inner{max-width:880px;margin:0 auto;padding-block:16px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bhead{display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--bg);padding-block:calc(8px + env(safe-area-inset-top,0px)) 8px;z-index:2}
+.bhead h2{margin:0;font-family:var(--display);font-size:1.4rem;flex:1}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-top:8px}
+.tile{all:unset;box-sizing:border-box;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:2px}
+.tile:focus-visible{outline:3px solid var(--plum)}
+.tile.sel{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
+.tile b{font-size:1.6rem;font-family:var(--display);font-variant-numeric:tabular-nums}
+.tile span{font-size:.85rem;color:var(--muted)}
+.tile i{width:10px;height:10px;border-radius:50%;display:inline-block;margin-inline-end:6px}
+.st-todo{--st:#8a8f98}.st-doing{--st:#3b7dd8}.st-stuck{--st:#c0392b}.st-rework{--st:#d68910}.st-done{--st:#5e8c4a}
+.tile i,.pill i{background:var(--st)}
+.btools{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 4px}
+.bt{all:unset;cursor:pointer;background:var(--plum);color:#fff;padding:9px 14px;border-radius:999px;font-weight:700;font-size:.92rem}
+.bt.ghost{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+.bt:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.bt[disabled]{opacity:.5;cursor:default}
+.addf{display:grid;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:10px;grid-template-columns:1fr}
+@media (min-width:640px){.addf{grid-template-columns:2fr 1fr 1fr 1fr auto}}
+.addf input,.addf select,.task select,.task textarea{font:15px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+.review{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px;white-space:pre-wrap;line-height:1.6}
+.review .rh{display:flex;gap:10px;align-items:center;margin-bottom:6px;white-space:normal}
+.review .rh img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.lane{margin-top:18px}
+.lane h3{display:flex;align-items:center;gap:10px;margin:0 0 8px;font-size:1.05rem}
+.lane h3 img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid var(--sage)}
+.lane h3 small{color:var(--muted);font-weight:400}
+.lane h3 .sh{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--chip)}
+.tasks{display:grid;gap:8px}
+.task{background:var(--card);border:1px solid var(--line);border-inline-start:5px solid var(--st);border-radius:14px;padding:10px 12px;display:grid;gap:6px}
+.task .top{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.task .tt{font-weight:700;min-width:0;overflow-wrap:anywhere;flex:1}
+.task .meta{font-size:.82rem;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.task .late{color:#c0392b;font-weight:700}
+.task .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.task .note2{font-size:.9rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.lnk{all:unset;cursor:pointer;font-size:.85rem;color:var(--muted);text-decoration:underline}
+.lnk:focus-visible{outline:2px solid var(--plum)}
+.empty{color:var(--muted);font-size:.9rem;padding:6px 2px}
+.tks{display:flex;flex-direction:column;gap:6px;margin-top:10px;white-space:normal}
+.tk{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:8px 10px;font-size:.9rem}
+.tk button{all:unset;cursor:pointer;background:var(--plum);color:#fff;padding:5px 10px;border-radius:999px;font-size:.82rem;font-weight:700}
+.tk .ok{color:var(--sage);font-weight:700;font-size:.85rem}
+.ro #addToggle,.ro #addForm,.ro .task select,.ro .task .lnk,.ro .tk button{display:none!important}
+.cats{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.cat{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 12px;border-radius:999px;font-size:.85rem;background:var(--card);border:1px solid var(--line)}
+.cat i{width:10px;height:10px;border-radius:50%;background:var(--oc)}
+.cat.sel{background:var(--oc);color:#fff;border-color:var(--oc)}
+.cat.sel i{background:#fff}
+.cat:focus-visible{outline:2px solid var(--fg)}
+.viewtog{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-inline-start:auto}
+.viewtog button{all:unset;cursor:pointer;padding:8px 12px;font-size:.88rem;background:var(--card)}
+.viewtog button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.viewtog button:focus-visible{outline:2px solid var(--plum);outline-offset:-2px}
+.task{border-inline-start-color:var(--oc)!important}
+.ochip{display:inline-flex;align-items:center;gap:6px;padding:2px 10px 2px 4px;border-radius:999px;background:color-mix(in srgb,var(--oc) 18%,transparent);font-size:.85rem;font-weight:700;white-space:nowrap}
+.ochip img,.ochip .sh{width:22px;height:22px;border-radius:50%;object-fit:cover;font-size:.75rem}
+.stdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--st);margin-inline-end:4px}
+.task .due,.tbl .due{font:14px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.remind{display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:8px}
+.remind input{font:14px var(--body);color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.rmtag{font-size:.82rem;font-weight:700;color:var(--plum)}
+.rmtag.due{color:#c0392b}
+.tblwrap{overflow-x:auto;margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.tbl{border-collapse:collapse;width:100%;min-width:720px;font-size:.9rem}
+.tbl th{text-align:start;font-weight:700;color:var(--muted);font-size:.8rem;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tr td:first-child{border-inline-start:5px solid var(--oc);font-weight:700;min-width:180px}
+.tbl select{font:14px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.tbl tr:last-child td{border-bottom:0}
+.toprow{display:flex;gap:8px;flex-wrap:wrap}
+.brief-btn{all:unset;cursor:pointer;margin-top:14px;display:inline-flex;gap:8px;align-items:center;background:linear-gradient(90deg,#6e3448,#b98d7a);color:#fff;padding:10px 16px;border-radius:999px;font-weight:700}
+.brief-btn:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.bsum{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;line-height:1.6;margin-top:8px}
+.bfocus{background:color-mix(in srgb,var(--plum) 12%,var(--card));border:1px solid var(--plum);border-radius:16px;padding:14px;margin-top:12px;line-height:1.55}
+.barea{margin-top:18px}
+.barea h3{display:flex;align-items:center;gap:10px;margin:0 0 8px;font-size:1.1rem}
+.barea h3 img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid var(--oc)}
+.bitem{background:var(--card);border:1px solid var(--line);border-inline-start:5px solid var(--oc);border-radius:14px;padding:12px;display:grid;gap:6px;margin-bottom:8px;line-height:1.5}
+.bitem b{font-size:1rem}
+.bitem .why,.bitem .step{font-size:.92rem}
+.bitem .step{color:var(--muted)}
+.bitem .act{display:flex;justify-content:flex-start}
+.bitem .act button{all:unset;cursor:pointer;background:var(--plum);color:#fff;padding:6px 12px;border-radius:999px;font-size:.85rem;font-weight:700}
+.bitem .act .ok{color:var(--sage);font-weight:700;font-size:.88rem}
+.bmeta{color:var(--muted);font-size:.85rem;margin-top:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>הצוות שלי</h1>
+    <p>לחצי על מישהו מהצוות כדי לדבר איתו בפרטי, או על הכפתור למטה כדי לכתוב לכולם.</p>
+    <div class="toprow">
+      <button class="brief-btn" id="briefBtn" type="button">💡 מה כדאי לי לקדם עכשיו?</button>
+      <button class="board-btn" id="boardBtn" type="button">📋 לוח המשימות <span class="cnt" id="boardCnt" hidden></span></button>
+    </div>
+  </header>
+  <div id="leadSlot"></div>
+  <h2 class="sec">הצוות</h2>
+  <div class="grid" id="grid"></div>
+</div>
+<button class="group-btn" id="groupBtn" type="button"><span class="stack" id="stack"></span> הקבוצה של הצוות</button>
+
+<section class="sheet" id="brief" hidden aria-label="מה לקדם עכשיו">
+  <div class="inner">
+    <div class="bhead">
+      <button class="icon-btn" id="briefBack" type="button" aria-label="חזרה לצוות">→</button>
+      <h2>מה לקדם עכשיו</h2>
+    </div>
+    <p class="bmeta">הצוות עובר על תיק העסק, לוח המשימות והיומן, ומייעץ לך מה הכי כדאי לעשות עכשיו בפיתוח, שיווק, אסטרטגיה ומכירות.</p>
+    <div class="btools"><button class="bt" id="briefRun" type="button">✨ ישיבת צוות עכשיו</button></div>
+    <div id="briefOut"></div>
+  </div>
+</section>
+
+<section class="sheet" id="board" hidden aria-label="לוח המשימות">
+  <div class="inner">
+    <div class="bhead">
+      <button class="icon-btn" id="boardBack" type="button" aria-label="חזרה לצוות">→</button>
+      <h2>לוח המשימות</h2>
+    </div>
+    <div class="tiles" id="tiles"></div>
+    <div class="btools">
+      <button class="bt" id="addToggle" type="button">+ משימה חדשה</button>
+      <button class="bt ghost" id="reviewBtn" type="button">🔎 בקרה של תמר</button>
+      <span class="viewtog" role="group" aria-label="תצוגה"><button type="button" data-view="cards" aria-pressed="true">כרטיסים</button><button type="button" data-view="table" aria-pressed="false">טבלה</button></span>
+    </div>
+    <div class="cats" id="cats" aria-label="סינון לפי איש צוות"></div>
+    <form class="addf" id="addForm" hidden>
+      <input id="newTitle" placeholder="מה צריך לעשות?" aria-label="שם המשימה" maxlength="160" required>
+      <select id="newOwner" aria-label="אחראי/ת"></select>
+      <select id="newStatus" aria-label="סטטוס"></select>
+      <input id="newDue" type="date" aria-label="תאריך יעד">
+      <button class="bt" type="submit">הוספה</button>
+    </form>
+    <div id="boardMsg" class="note" hidden></div>
+    <div id="review"></div>
+    <div id="lanes"></div>
+  </div>
+</section>
+
+<section class="chat" id="chat" hidden aria-live="polite">
+  <div class="ch-head">
+    <button class="icon-btn" id="back" type="button" aria-label="חזרה לצוות">→</button>
+    <span id="headPic"></span>
+    <div class="ch-title"><b id="headName"></b><small id="headRole"></small></div>
+    <button class="icon-btn" id="clearBtn" type="button" aria-label="ניקוי השיחה" title="ניקוי השיחה">🗑</button>
+  </div>
+  <div class="confirm" id="confirm" hidden>
+    <span>למחוק את כל השיחה הזאת?</span>
+    <button type="button" class="danger" id="confirmYes">כן, למחוק</button>
+    <button type="button" id="confirmNo">ביטול</button>
+  </div>
+  <div class="msgs" id="msgs"></div>
+  <div class="voicehint" id="voiceHint" hidden></div>
+  <div class="pending" id="pending" hidden></div>
+  <form class="composer" id="form">
+    <button class="attach" id="attachBtn" type="button" aria-label="צירוף קובץ או תמונה" title="צירוף קובץ או תמונה">📎</button>
+    <input type="file" id="fileIn" multiple accept="image/jpeg,image/png,image/webp,image/gif,.txt,.csv,.md,.json,text/plain,text/csv,.pdf,application/pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+    <textarea id="input" rows="1" placeholder="כתבי הודעה…" aria-label="הודעה"></textarea>
+    <button class="mic" id="micBtn" type="button" aria-label="הודעה קולית" title="הודעה קולית: לחצי, דברי, ולחצי שוב לשליחה" hidden>🎤</button>
+    <button class="send" id="send" type="submit" aria-label="שליחה">➤</button>
+  </form>
+</section>
+
+<script>
+const PHOTOS = __PHOTOS__;
+/* temporary avatar until a photo arrives */
+if(!PHOTOS.shiran) PHOTOS.shiran="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#6e3448"/><stop offset="1" stop-color="#b98d7a"/></linearGradient></defs><rect width="100" height="100" fill="url(#g)"/><text x="50" y="50" dy=".35em" text-anchor="middle" font-family="Heebo,Arial,sans-serif" font-size="46" font-weight="700" fill="#fff">ש</text></svg>');
+const BIZ = "אפרת כהן היא עצמאית שבנתה עסק דרך אינסטגרם, ומוכרת קורס דיגיטלי בשם 'עצמאיות באינסטגרם' שמלמד נשים עצמאיות להביא לקוחות מאינסטגרם ולהיות עצמאיות כלכלית. יש לה אתר נחיתה לקורס, קהילה, מפגשים וליווי. היא לא טכנית ומעדיפה הסברים פשוטים.";
+const TEAM = [
+  {id:"tamar", name:"תמר", f:true, role:"מנהלת הצוות · תכנון שבועי", lead:true, cal:true,
+   about:"אני מנהלת את הצוות. אני עוזרת לך לתכנן את השבוע, להחליט מה הכי חשוב, ומחלקת עבודה לשאר הצוות.",
+   skills:["תכנון השבוע לפי היומן","מה יש לי השבוע ביומן","מה הכי דחוף עכשיו","חלוקת משימות לצוות"],
+   how:"את מנהלת צוות חמה ומסודרת. את עוזרת לאפרת לתכנן את השבוע, לקבוע סדר עדיפויות, ולפרק מטרות למשימות קטנות. כשמשהו שייך לתחום של חבר צוות אחר, את אומרת למי להפנות (נועה שיווק, ליה שירות לקוחות, יואל טכנולוגיה, ירון כספים, יעל ניהול זמן, תמיר אסטרטגיה, הילה אוטומציות, דנה שיתופי פעולה, שירן משאבי אנוש)."},
+  {id:"noa", name:"נועה", f:true, role:"שיווק וקריאייטיב",
+   about:"אני ממציאה רעיונות לתוכן, כותבת פוסטים וכיתובים בעברית מדוברת, בוחרת האשטגים ומתי לפרסם, מכינה מודעות ממומנות באינסטגרם, בפייסבוק ובגוגל, ועוזרת לך למכור את הקורס בלי להרגיש שאת 'מוכרת'.",
+   skills:["רעיונות לרילס","כתיבת פוסט או כיתוב","משפט פתיחה שתופס","האשטגים לפוסט","מתי לפרסם השבוע","פוסט לקבוצות בפייסבוק","מודעה ממומנת","תקציב לקמפיין","תוכנית להשקה","תסריט מתוך 40 יחידות התוכן","מיילים אחרי הורדת המדריך","מה הכי חשוב לשווק עכשיו"],
+   how:`את אשת שיווק ותוכן לרשתות בישראל (אינסטגרם, פייסבוק, טיקטוק). את נותנת רעיונות מוחשיים לרילס, סטוריז, קרוסלות ופוסטים, וכותבת כיתובים מוכנים להעתקה. הכללים שלך:
+- כתיבה: עברית מדוברת ודוגרית, אישית וכנה, לא מתלהמת ולא תאגידית. השורה הראשונה היא ההוק (טענה נועזת, שאלה או סיפור אישי). פסקאות קצרות עם שורה ריקה ביניהן, רעיון אחד בכל פסקה.
+- כל שורה בעברית מתחילה באות עברית, לא במילה באנגלית (אחרת השורה מתהפכת). האשטגים באנגלית בשורה נפרדת בסוף.
+- האשטגים: 3 עד 5, בלי קו תחתון ובלי רווחים (#עסקיםקטנים ולא #עסקים_קטנים), שילוב של 2-3 פופולריים ו-2-3 ממוקדים לנישה.
+- קישור: לכתוב "קישור בביו" ולא לשים קישור בתוך הכיתוב.
+- רילס: אנכי 9:16, כתוביות בעברית תמיד (רוב הצפייה בלי סאונד), טקסט על המסך באמצע ולמעלה, לא ב-20% התחתונים. סאונד מקורי או קריינות בעברית עדיפים על שיר טרנדי.
+- תזמון: ימים א'-ה', ראשון בבוקר הכי חזק. שעות טובות להתחלה: 8-9, 12-13, 19-21 (ולשפר לפי הנתונים שלה). לא לפרסם משישי אחה"צ עד מוצאי שבת. בלי תוכן מכירתי ביום כיפור, יום הזיכרון, יום השואה ו-7 באוקטובר. סוכות ופסח שבועות חלשים, עדיף לתכנן דחיפה ל"אחרי החגים". אם קורה אירוע ביטחוני, לעצור פרסומים מתוזמנים.
+- קבוצות פייסבוק: לקרוא את חוקי הקבוצה ולבקש אישור מנהלת לפני פוסט מסחרי, לא להעתיק אותו טקסט לכמה קבוצות (כל קבוצה גרסה אחרת), ולציין גילוי נאות שזה הקורס שלה.
+- תמונות או סרטונים מציאותיים שנוצרו בבינה מלאכותית צריכים סימון לפי כללי הרשתות.
+- לא לצטט סטטיסטיקות או "חוקים של האלגוריתם" כעובדות.
+שיווק ממומן (מודעות בתשלום) בישראל:
+- פלטפורמות: לקורס דיגיטלי לנשים עצמאיות, מטא (אינסטגרם ופייסבוק) היא הבסיס; גוגל חיפוש למי שכבר מחפשת. לידים: מודעות לידים במטא זולות יותר אבל פחות איכותיות מגוגל חיפוש.
+- טקסט למודעה: עברית מדוברת וישירה בפנייה אישית ("את"), עם קריאה ברורה לפעולה ("להצטרפות", "לפרטים"). במטא: הטקסט הראשי עד בערך 125 תווים לפני "עוד", כותרת קצרה (כ-27 תווים). בגוגל: כותרת עד 30 תווים, תיאור עד 90. להציע 3-5 גרסאות לבדיקה. להזכיר לבדוק בתצוגה המקדימה שהעברית לא מתהפכת.
+- חוק: מחיר במודעה תמיד כולל מע"מ (18%) ובש"ח, ומתאים בדיוק למחיר בדף הנחיתה. בלי הבטחות מטעות (למשל הבטחת הכנסה). שיתוף פעולה עם משפיענית מסומן ב-#פרסומת שנראה בלי ללחוץ "עוד". בדף הנחיתה: מדיניות ביטול ברורה (בעסקה מרחוק בדרך כלל 14 יום, ולעולים חדשים, אנשים עם מוגבלות ובני 65 ומעלה לעיתים עד 4 חודשים) ומדיניות פרטיות.
+- קהלים: העלאת רשימת לקוחות או טלפונים, קהל דומה ורימרקטינג דורשים הסכמה מפורשת ונפרדת של כל אחת לשימוש הזה (תיקון 13 לחוק הגנת הפרטיות); לשלוח SMS או מייל ללידים רק עם הסכמה מראש, עם המילה "פרסומת" ואפשרות הסרה. על זה ממליצים להתייעץ עם עורכת דין. גיל: קהל "צעיר מקצועי" בישראל מתחיל בערך ב-22-23.
+- תזמון: לעצור או להוריד תקציב משישי 14:00 עד מוצאי שבת, לעצור ביום כיפור, לא לפרסם מכירתי בימי זיכרון.
+- מדידה לפני תקציב: לוודא שהפיקסל של מטא והמדידה של גוגל מותקנים ומודדים הרשמה אמיתית, ולבדוק המרת ניסיון לפני שמוציאים כסף. אם משהו באתר צריך התקנה, להגיד לה שצוות הפיתוח שלה יטפל.
+- תקציב: מספרי עלות לקליק או לאלף חשיפות הם הערכה בלבד ולא נתון ישראלי מדויק; להמליץ להתחיל בתקציב קטן לבדיקה, לתת לקמפיין 2-4 שבועות ללמוד, ולהחליט לפי הנתונים שלה. החזר על השקעה מחשבים על אותו בסיס משני הצדדים (שניהם בלי מע"מ או שניהם עם). בשאלות מע"מ וחשבוניות להפנות לרואה חשבון (ולירון בצוות).`},
+  {id:"lia", name:"ליה", f:true, role:"שירות לקוחות ומכירות",
+   about:"אני עוזרת לך לענות ללקוחות ולמתעניינות, ולהפוך שיחות למכירות: הודעות בפרטי, פולואפ, התנגדויות ושיחות מכירה, בלי לחץ.",
+   skills:["תשובה להודעה בפרטי","פולואפ למתעניינת","תשובה להתנגדות","שיחת מכירה","שאלות נפוצות על הקורס","לקוחה לא מרוצה"],
+   how:"את אחראית שירות לקוחות ומכירות. את מנסחת לאפרת תשובות מוכנות לשליחה ללקוחות ולמתעניינות, בטון חם, אישי וקצר. את גם אשת מכירות מצוינת בסגנון של אפרת: מכירה היא הזמנה ולא שכנוע. את בונה תהליכי פולואפ, עונה להתנגדויות בכנות, מזהה מי חמה לקנות, ומציעה איך להגדיל המרה (הצעה ברורה, דדליין אמיתי, הוכחות, הסרת חסמים). אם חסר לך מידע (מחיר, תאריך), את משאירה מקום ריק בסוגריים ולא ממציאה."},
+  {id:"yoel", name:"יואל", f:false, role:"טכנולוגיה",
+   about:"אני מסביר דברים טכניים בפשטות: האתר, אפליקציות, הגדרות באינסטגרם ותקלות.",
+   skills:["משהו לא עובד","הגדרות באינסטגרם","איזה כלי כדאי","האתר ודף הנחיתה"],
+   how:"אתה איש טכנולוגיה סבלני. אתה מסביר לאפרת צעד אחרי צעד, במילים פשוטות בלי מונחים טכניים, איך לעשות דברים בטלפון, באינסטגרם ובכלים דיגיטליים. אם משהו בעייתי באתר עצמו, אתה אומר לה שצוות הפיתוח שלה מטפל בזה."},
+  {id:"yaron", name:"ירון", f:false, role:"כספים ותמחור",
+   about:"אני עוזר לך עם מספרים: כמה לגבות, כמה נשאר לך ביד, ואיך לעקוב אחרי הכסף.",
+   skills:["כמה לגבות","חישוב רווח","מעקב הכנסות והוצאות","מבצע או הנחה"],
+   how:"אתה יועץ כספים ותמחור לעסקים קטנים. אתה עוזר בתמחור, חישובי רווח ותזרים, בדוגמאות מספריות פשוטות. אתה לא נותן ייעוץ מס מחייב, ובשאלות מס אתה ממליץ לבדוק עם רואה חשבון."},
+  {id:"yael", name:"יעל", f:true, role:"ניהול זמן", cal:true,
+   about:"אני עוזרת לך לבנות סדר יום שעובד, להפסיק לדחות דברים, ולמצוא זמן גם לעצמך.",
+   skills:["לשבץ זמנים קבועים ביומן","סדר יום למחר","אני דוחה משהו","איזון עבודה ובית"],
+   how:"את מאמנת לניהול זמן. את בונה לאפרת לוחות זמנים מציאותיים, טכניקות קטנות נגד דחיינות, ושגרות עבודה קבועות. את רגישה לעומס ולבית."},
+  {id:"tamir", name:"תמיר", f:false, role:"אסטרטגיה ופיתוח עסקי",
+   about:"אני חושב איתך על התמונה הגדולה: לאן העסק הולך, איך מגיעים ליעד ההכנסות, מה המוצר הבא ואיך מפתחים את מה שיש.",
+   skills:["איך מגיעים ליעד ההכנסות","מה המוצר הבא","לשפר את הקורס","מי הלקוחה שלי","יעדים לשלושה חודשים","מה הכי כדאי לקדם עכשיו"],
+   how:"אתה יועץ אסטרטגיה ופיתוח עסקי ברמה הגבוהה ביותר לעסקים קטנים מבוססי ידע. אתה חושב במספרים (כמה מכירות, מאיזה מוצר, באיזה מחיר, כדי להגיע ליעד), בסולם מוצרים (מוצר כניסה, קורס, ייעוץ, שירות פרימיום), בפיתוח מוצר (מה לשפר בקורס לפי מה שהלקוחות צריכות), ובמיקוד: מה לעשות עכשיו ומה לא. אתה שואל שאלה חכמה אחת כשצריך, נותן כיוון ברור, ומתרגם אותו לצעדים מעשיים."},
+  {id:"hila", name:"הילה", f:true, role:"התייעלות ואוטומציות",
+   about:"אני מוצאת דרכים לחסוך לך זמן: תשובות אוטומטיות, כלי בינה מלאכותית ותבניות קבועות.",
+   skills:["תשובות אוטומטיות בפרטי","כלי בינה מלאכותית","תבנית קבועה","איפה הולך לי הזמן"],
+   how:"את מומחית להתייעלות ואוטומציות לעסקים קטנים. את מציעה כלים פשוטים (כמו תשובות שמורות באינסטגרם, ManyChat, כלי בינה מלאכותית) ומסבירה איך להפעיל אותם בצעדים פשוטים, בלי קוד."},
+  {id:"dana", name:"דנה", f:true, role:"שיתופי פעולה ו-UGC",
+   about:"אני עוזרת לך לעבוד עם מותגים: לפנות, להציע שיתוף פעולה, לתמחר תוכן ולבנות מדיה קיט.",
+   skills:["פנייה למותג","הצעה לשיתוף פעולה","כמה לגבות על UGC","מדיה קיט"],
+   how:"את מומחית לשיתופי פעולה עם מותגים ותוכן UGC. את כותבת הודעות פנייה מוכנות לשליחה, מבנה להצעה, טווחי מחיר מקובלים בישראל (עם הסתייגות שזה משתנה), ותוכן למדיה קיט."},
+  {id:"shiran", name:"שירן", f:true, role:"משאבי אנוש · טיסות",
+   about:"אני דואגת לכל מה שקשור לאנשים שעובדים איתך: מציאת עזרה, פרילנסריות, קליטה טובה ואווירה טובה. אני גם מוצאת לך טיסות זולות מנתב\"ג.",
+   skills:["אני צריכה עזרה, את מי לגייס","מודעת דרושים","שאלות לראיון","קליטה של פרילנסרית חדשה","למצוא טיסה זולה","כמה עולה מזוודה","מה צריך לטוס לחו\"ל"],
+   how:`את אחראית משאבי אנוש לעסק קטן של עצמאית. את עוזרת לאפרת להבין איזו עזרה היא צריכה (עוזרת וירטואלית, עורכת וידאו, מנהלת סושיאל ועוד), לכתוב מודעת דרושים, להכין שאלות לראיון, לבנות תהליך קליטה פשוט, ולהגדיר משימות וציפיות ברורות. בנושאי שכר, חוזים וזכויות עובדים בישראל את נותנת כיוון כללי וממליצה לבדוק עם רואה חשבון או עורכת דין, בלי לתת ייעוץ משפטי מחייב.
+את גם אחראית טיסות מנתב"ג (TLV). כך את עובדת בטיסות:
+- קודם אוספת מה חסר, שאלה אחת בכל פעם: יעד, תאריכים (או חודש גמיש), כמה נוסעים וגילאי ילדים, מזוודות או רק תיק, טיסה ישירה או עם עצירה, האם מישהו שומר שבת.
+- את לא יכולה לראות מחירים בזמן אמת. לכן לעולם לא כותבת מחיר כרטיס ולא ממציאה מחירים. במקום זה בונה לה קישורי חיפוש מוכנים לתאריכים שלה, כל קישור בשורה נפרדת:
+  Google Flights: https://www.google.com/travel/flights?q=Flights+from+TLV+to+{CITY}+on+{YYYY-MM-DD}+returning+{YYYY-MM-DD}&curr=ILS&gl=IL&hl=he (שם עיר באנגלית)
+  Skyscanner: https://www.skyscanner.co.il/transport/flights/tlv/{dest}/{YYMMDD}/{YYMMDD}/ (קוד שדה באותיות קטנות, למשל ath, lca)
+  KAYAK: https://il.kayak.com/flights/TLV-{DEST}/{YYYY-MM-DD}/{YYYY-MM-DD}?sort=price_a (קוד IATA, למשל ATH, ROM, PAR)
+  לכיוון אחד משמיטים את התאריך השני. מזכירה לה לעדכן מספר נוסעים בטופס, ולהשוות לפחות שני אתרים.
+- המחיר האמיתי = כרטיס + מזוודות + מושבים, לכל נוסע ולכל כיוון. אל על: Lite בלי מזוודה (ולאירופה תיק העלייה למטוס נשלח לבטן בשער), Classic כולל מזוודה 23 ק"ג. ישראייר: מזוודה ותיק בתשלום (חוץ מניו יורק), זול יותר לקנות מראש באתר. וויז: רק תיק קטן חינם. ארקיע: לבדוק באתר. הרבה פעמים אל על Classic משתלם יותר מטיסה "זולה" אחרי שמוסיפים מזוודה. מחירי מזוודות משתנים, להגיד לבדוק באתר החברה.
+- שבת וחגים: אל על לא טסה בשבת ובחגים. מי ששומרת שבת צריכה לנחות לפני כניסת שבת עם מרווח.
+- עונות: יקר לפני החגים, בקיץ, בחנוכה ובפורים. זול יותר בינואר-פברואר ובאמצע נובמבר עד תחילת דצמבר. לא לחכות כשהחג קרוב, ולהפעיל התראת מחיר בגוגל פלייטס.
+- מסמכים: דרכון בתוקף (להרבה מדינות 6 חודשים אחרי החזרה), לארה"ב ESTA, לבריטניה ETA, לקנדה eTA. לבדוק אזהרות מסע באתר המל"ל. להגיע לנתב"ג 3 שעות לפני.
+- מצב חברות התעופה בנתב"ג משתנה מהר: להגיד לה לוודא באתר החברה שהקו פעיל. עדיף לקנות מחברת התעופה או מסוכנות ישראלית ולא מאתר זר לא מוכר.`},
+];
+const byId = Object.fromEntries(TEAM.map(m=>[m.id,m]));
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = s=>esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/^#+\s*/gm,"")
+  .replace(/https?:\/\/[^\s<>"')\]]+/g,u=>`<a href="${u}" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">${u.length>48?u.slice(0,45)+"…":u}</a>`);
+const img = (id,cls="")=>`<img src="${PHOTOS[id]}" alt="${esc(byId[id].name)}" class="${cls}">`;
+
+/* ---------- storage: private per-viewer db, with browser fallback ---------- */
+let db=null, uid=null; const KB={};
+const EXCEL=`רמת עבודה: את/ה ברמה של היועצים הטובים בישראל בתחום שלך, ואת/ה כאן כדי שהעסק של אפרת יצליח בגדול. אל תסתפק/י בלענות על השאלה: תחשוב/י צעד קדימה.
+- כשמתאים, תן/תני: המלצה ברורה אחת ולמה, צעד ראשון שאפשר לעשות היום או השבוע, ומה למדוד כדי לדעת שזה עובד.
+- אם את/ה רואה הזדמנות, סיכון או משהו שכדאי לקדם שהיא לא שאלה עליו, ציין/צייני אותו בקצרה.
+- אל תהיה/י "כן-אדם": אם רעיון פחות טוב, אמור/אמרי את זה בעדינות ובכנות, והצע/הציעי חלופה טובה יותר.
+- תמקד/י: עדיף דבר אחד חזק על פני עשרה טיפים. תחשוב/י על הכנסות, על הלקוחה ועל הזמן המוגבל של אפרת.
+- השתמש/י בתיק העסק, בלוח המשימות ובהיסטוריה של השיחה. אל תמציא/י נתונים; אם חסר נתון חשוב, שאל/י עליו.`;
+/* private troubleshooting log: what happened on this device, readable only by the viewer (and Claude via the owner) */
+const DBG=[]; let dbgTimer=null;
+function dlog(ev,extra){ try{ DBG.push({t:Date.now(),ev,...(extra||{})}); if(DBG.length>120) DBG.splice(0,DBG.length-120);
+  if(db&&uid&&!dbgTimer) dbgTimer=setTimeout(()=>{ dbgTimer=null; db.doc(`data/users/${uid}/debug`).set({log:DBG.slice(-120),ua:navigator.userAgent.slice(0,160),v:"v21"}).catch(()=>{}) },1500) }catch(e){} }
+window.addEventListener("error",e=>dlog("page_error",{m:String(e.message).slice(0,200)}));
+window.addEventListener("unhandledrejection",e=>dlog("unhandled",{m:String(e.reason&&(e.reason.code||e.reason.message)||e.reason).slice(0,200)}));
+let MB=[]; // Noa's marketing brief, split into sections
+async function loadMB(){ try{ const out=[]; for(const k of ["mb1","mb2","mb3"]){ const s=await db.doc(`data/users/${uid}/${k}`).get(); if(s.exists&&Array.isArray(s.data().sections)) out.push(...s.data().sections) } MB=out }catch(e){} }
+function mbWords(t){ return String(t).toLowerCase().replace(/[^\u0590-\u05FFa-z0-9 ]+/g," ").split(/\s+/).filter(w=>w.length>=3).flatMap(w=>/^[והבלמשכ]/.test(w)&&w.length>=4?[w,w.slice(1)]:[w]) }
+function mbPick(query,budget=14000,always=["איך נשמע טקסט של אפרת","עריכה שמקרבת לקול שלה"]){
+  if(!MB.length) return "";
+  const q=new Set(mbWords(query)); const nums=(String(query).match(/\b([1-9]|[1-3][0-9]|40)\b/g)||[]).map(n=>n.padStart(2,"0"));
+  const scored=MB.map((x,i)=>{ let sc=0; const tw=mbWords(x.t), bw=mbWords(x.b);
+    for(const w of tw) if(q.has(w)) sc+=4; for(const w of bw) if(q.has(w)) sc+=0.15;
+    if(nums.some(n=>x.t.startsWith(n+" "))) sc+=50; if(always.includes(x.t)) sc+=1000; return {x,sc,i} })
+    .filter(o=>o.sc>0).sort((a,b)=>b.sc-a.sc);
+  const pick=[]; let used=0;
+  for(const o of scored){ const block=`### ${o.x.t}${o.x.p?" ("+o.x.p+")":""}\n${o.x.b}`; if(used+block.length>budget) continue; pick.push(block); used+=block.length; if(pick.length>=7) break }
+  const toc=MB.map(x=>x.t).join(" · ");
+  return `\n=== מסמך העבודה לסוכנת השיווק (נכתב בשבילך, נועה). תוכן העניינים: ${toc}\nהקטעים הרלוונטיים לשיחה: ===\n${pick.join("\n\n")}\n=== סוף הקטעים. ציטוט ישיר = דבריה של אפרת; הצעה/תסריט = טיוטה שעוד לא אושרה לפרסום. מחירים במסמך הם לשימוש פנימי: לא לפרסם מחיר בלי אישור שלה. ===\n`;
+}
+async function loadKB(){ try{ const s=await db.doc(`data/users/${uid}/kb`).get(); const x=s.exists?s.data():{}; for(const k in x){ if((byId[k]||k==="all")&&x[k]&&x[k].text) KB[k]=String(x[k].text) } }catch(e){} }
+const store = {
+  async get(chat){
+    if(db&&uid){ try{ const s=await db.doc(`data/users/${uid}/chat-${chat}`).get(); if(s.exists) return JSON.parse(JSON.stringify(s.data().messages||[])) }catch(e){} }
+    try{ return JSON.parse(localStorage.getItem("team-"+chat)||"[]") }catch(e){ return [] }
+  },
+  async put(chat,messages){
+    const m = messages.slice(-80);
+    if(db&&uid){ try{ await Promise.race([db.doc(`data/users/${uid}/chat-${chat}`).set({messages:m,updated:Date.now()}),new Promise((_,bad)=>setTimeout(()=>bad(new Error("slow")),10000))]); try{ localStorage.removeItem("team-"+chat) }catch(e){} return }catch(e){} }
+    try{ localStorage.setItem("team-"+chat,JSON.stringify(m)) }catch(e){}
+  }
+};
+const cache = {};
+async function load(chat){ if(!cache[chat]) cache[chat]=await store.get(chat); return cache[chat] }
+
+/* ---------- team wall ---------- */
+function renderGrid(){
+  const L=TEAM.find(m=>m.lead);
+  $("#leadSlot").innerHTML=`<button class="lead-card" type="button" data-id="${L.id}" aria-label="שיחה עם ${esc(L.name)}, ${esc(L.role)}">
+      <span class="av lead">${img(L.id)}<i class="on"></i></span>
+      <span class="txt"><span class="tag">מנהלת הצוות</span><b>${esc(L.name)}</b><span class="r">תכנון שבועי וחלוקת משימות</span></span></button>`;
+  $("#grid").innerHTML = TEAM.filter(m=>!m.lead).map(m=>`
+    <button class="m" type="button" data-id="${m.id}" aria-label="שיחה עם ${esc(m.name)}, ${esc(m.role)}">
+      <span class="av ${m.lead?"lead":""}">${img(m.id)}<i class="on"></i></span>
+      <b>${esc(m.name)}</b><span>${esc(m.role)}</span>
+    </button>`).join("");
+  $("#stack").innerHTML = ["tamar","noa","yaron","lia"].map(id=>img(id)).join("");
+}
+document.querySelector(".wrap").addEventListener("click",e=>{ const b=e.target.closest(".m,.lead-card"); if(b) openChat(b.dataset.id) });
+$("#groupBtn").addEventListener("click",()=>openChat("group"));
+
+/* ---------- chat ---------- */
+let current=null, busy=false, ctl=null;
+async function openChat(id){
+  current=id; $("#chat").hidden=false; $("#confirm").hidden=true;
+  if(id==="group"){
+    $("#headPic").innerHTML=`<span class="stack">${["tamar","noa","yaron"].map(x=>img(x)).join("")}</span>`;
+    $("#headName").textContent="הקבוצה של הצוות";
+    $("#headRole").textContent=TEAM.map(m=>m.name).join(", ");
+    $("#input").placeholder="כתבי לכל הצוות…";
+  }else{
+    const m=byId[id];
+    $("#headPic").innerHTML=img(id,"h");
+    $("#headName").textContent=m.name; $("#headRole").textContent=m.role;
+    $("#input").placeholder=`כתבי ל${m.name}…`;
+  }
+  document.body.style.overflow="hidden";
+  await render();
+  $("#input").focus({preventScroll:true});
+}
+function closeChat(){ ctl?.abort(); try{ tts?.stop(); if(dict?.active()) dict.stop().catch(()=>{}) }catch(e){} hint(""); $("#chat").hidden=true; current=null; document.body.style.overflow="" }
+$("#back").addEventListener("click",closeChat);
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#chat").hidden) closeChat() });
+
+function introHTML(id){
+  if(id==="group") return `<div class="intro"><p>כאן כל הצוות ביחד. כתבי מה את צריכה, ותמר תחלק את העבודה. מי שזה בתחום שלו יענה לך.</p>
+    <h3>אפשר להתחיל מכאן</h3><div class="chips">${["בואו נתכנן את השבוע","אני רוצה להשיק מחזור חדש של הקורס","יש לי מעט זמן השבוע, מה הכי חשוב?","רעיונות להגדיל הרשמות לקורס"].map(s=>`<button class="chip" type="button" data-say="${esc(s)}">${esc(s)}</button>`).join("")}</div></div>`;
+  const m=byId[id];
+  return `<div class="intro"><p>${esc(m.about)}</p><h3>במה ${m.f?"אני יכולה":"אני יכול"} לעזור</h3>
+    <div class="chips">${m.skills.map(s=>`<button class="chip" type="button" data-say="${esc(s)}">${esc(s)}</button>`).join("")}</div>
+    ${m.cal?`<p class="calnote">📅 ${m.f?"אני רואה":"אני רואה"} את היומן שלך. אני לא מכניסה שום דבר ליומן ולא משנה כלום, רק מציעה. משהו נכנס ליומן רק כשאת לוחצת "להכניס ליומן".</p>`:""}</div>`;
+}
+async function render(extra=""){
+  const id=current, msgs=await load(id); if(id!==current) return;
+  const html=[introHTML(id)];
+  if(!dict&&!msgs.length) html.push(`<div class="note">🎤 רוצה לדבר במקום לכתוב? לחצי על המיקרופון שבמקלדת של הטלפון ודברי בעברית.</div>`);
+  for(const x of msgs){
+    if(x.r==="me") html.push(`<div class="row me"><div class="bubble">${x.v?'<span class="vtag">🎤 הודעה קולית</span>':""}${attHTML(x.a)}${fmt(x.t)}</div></div>`);
+    else{ const w=x.who||id, i=msgs.indexOf(x); html.push(`<div class="row them">${img(w)}<div class="bubble">${id==="group"?`<span class="who">${esc(byId[w]?.name||"")}</span>`:""}${fmt(x.t)}${evHTML(x,i)}${tkHTML(x,i)}${tts?`<br><button class="say" type="button" data-say-i="${i}" aria-label="להשמיע בקול">🔊 להשמיע</button>`:""}</div></div>`) }
+  }
+  if(!extra&&!busy&&msgs.length&&msgs[msgs.length-1].r==="me") html.push(`<div class="note">עוד לא התקבלה תשובה להודעה הזאת. <button class="lnk" type="button" id="retryBtn">🔄 לקבל תשובה</button></div>`);
+  $("#msgs").innerHTML=html.join("")+extra;
+  $("#msgs").scrollTop=$("#msgs").scrollHeight;
+}
+$("#msgs").addEventListener("click",e=>{ const c=e.target.closest(".chip"); if(!c) return;
+  const s=c.dataset.say; $("#input").value = current==="group"? s : `בואי נעבוד על: ${s}`.replace("בואי", byId[current].f?"בואי":"בוא"); $("#input").focus(); grow() });
+
+const input=$("#input");
+function grow(){ input.style.height="auto"; input.style.height=Math.min(input.scrollHeight,140)+"px" }
+input.addEventListener("input",grow);
+input.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing&&window.matchMedia("(pointer:fine)").matches){ e.preventDefault(); $("#form").requestSubmit() } });
+$("#msgs").addEventListener("click",e=>{ if(e.target.closest("#retryBtn")) send(true) });
+$("#form").addEventListener("submit",e=>{ e.preventDefault(); if(busy&&ctl&&e.submitter&&e.submitter.id==="send"){ ctl.abort(); return } send() });
+
+$("#clearBtn").addEventListener("click",()=>{ $("#confirm").hidden=false });
+$("#confirmNo").addEventListener("click",()=>{ $("#confirm").hidden=true });
+$("#confirmYes").addEventListener("click",async()=>{ $("#confirm").hidden=true; cache[current]=[]; await store.put(current,[]); render() });
+
+let sample=null, TIER=null;
+function tierOpt(){ return TIER?{modelTier:TIER}:{} }
+const ERR={not_granted:"צריך לאשר לצוות לענות (חלון האישור שקופץ). אפשר לנסות שוב בפתיחה הבאה של הדף.",
+  rate_limited:"הצוות קצת עמוס כרגע. נסי שוב בעוד כמה דקות.",
+  refused:"על זה לא נוכל לענות. נסי לנסח אחרת.",
+  images_unavailable:"כרגע לא הצלחתי לשלוח את התמונה. נסי שוב, או כתבי במילים מה יש בה.",
+  image_rejected:"את התמונה הזאת לא הצלחתי לפתוח. נסי צילום מסך אחר.",
+  prompt_too_large:"הקובץ ארוך מדי. נסי לצרף רק את החלק החשוב."};
+const errText=c=>ERR[c]||`משהו לא עבד הפעם. נסי לשלוח שוב.${c?" (קוד: "+c+")":""}`;
+
+function personaPrompt(m){
+  return `את/ה ${m.name}, ${m.role} בצוות האישי של אפרת. ${BIZ}
+איך את/ה עובד/ת: ${m.how}
+כללים: כתוב/כתבי בעברית פשוטה, חמה וקצרה, בלשון ${m.f?"נקבה":"זכר"} על עצמך ופנייה לאפרת בלשון נקבה. בלי מונחים טכניים. תשובה קצרה (עד כ-8 שורות) אלא אם ביקשה טקסט ארוך. כשזה עוזר, תני רשימה קצרה של צעדים. אל תמציא/י עובדות על העסק שלה (מחירים, תאריכים, מספרים); אם חסר מידע, שאל/י שאלה אחת. אל תזכיר/י שאת/ה בינה מלאכותית אלא אם היא שואלת.
+${EXCEL}
+${KB.all?"\n=== תיק העסק של אפרת ===\n"+KB.all+"\n=== סוף תיק העסק ===\n":""}
+${KB[m.id]?"\n=== הידע המקצועי שלך על העסק של אפרת ===\n"+KB[m.id]+"\n=== סוף הידע ===\n":""}
+${tasksContext(m.id)}
+כשאת/ה ואפרת מסכמים משימה ברורה לביצוע, הוסף/הוסיפי בסוף התשובה בלוק בדיוק בצורה הזאת (שורה לכל משימה, עד 5; אחראי/ת = id של חבר צוות מהרשימה ${TEAM.map(x=>x.id).join(", ")}, או shared למשימה משותפת, או efrat למשימה שלה):
+[משימות]
+noa | לכתוב 3 כיתובים לרילס של השבוע
+[/משימות]
+היא תחליט אם להוסיף אותן ללוח המשימות.`;
+}
+function turns(m,msgs){
+  const out=[];
+  for(const x of msgs){ const role=x.r==="me"?"user":"assistant"; const last=out[out.length-1];
+    if(last&&last.role===role) last.content+="\n\n"+x.t; else out.push({role,content:x.t}) }
+  while(out.length&&out[0].role!=="user") out.shift();
+  let cut=out.slice(-20); while(cut.length&&cut[0].role!=="user") cut.shift();
+  if(cut.length) cut[0]={role:"user",content:personaPrompt(m)+"\n\n---\nההודעה של אפרת:\n"+cut[0].content};
+  return cut;
+}
+function groupPrompt(msgs,text){
+  const roster=TEAM.map(m=>`- ${m.id}: ${m.name} (${m.f?"אישה":"גבר"}), ${m.role}. ${m.how}`).join("\n");
+  const hist=msgs.slice(-24).map(x=>`${x.r==="me"?"אפרת":(byId[x.who]?.name||"")}: ${x.t}`).join("\n");
+  return `זו קבוצת וואטסאפ של הצוות האישי של אפרת. ${BIZ}
+חברי הצוות:
+${roster}
+
+השיחה עד עכשיו:
+${hist||"(אין עדיין)"}
+
+אפרת כתבה עכשיו: ${text}
+
+כתוב/כתבי את התגובות של הצוות. תמר (tamar) מנהלת הצוות עונה ראשונה: בקצרה, מחלקת את העבודה ואומרת למי היא מעבירה. אחריה עונים 1 עד 3 חברי צוות שהנושא באמת בתחום שלהם, כל אחד עם תרומה מעשית קצרה מהתחום שלו (עד 6 שורות), בגוף ראשון, בלשון המתאימה למגדר שלו, ופונים לאפרת בלשון נקבה. עברית פשוטה וחמה, בלי מונחים טכניים, בלי להמציא מחירים או תאריכים. אם זו רק ברכה או שאלה קטנה, מספיקה תשובה של תמר לבד.
+${EXCEL}
+${KB.all?"\n=== תיק העסק של אפרת ===\n"+KB.all+"\n=== סוף ===":""}
+${Object.keys(KB).filter(k=>byId[k]).map(k=>`\n=== הידע של ${byId[k].name} על העסק (להשתמש בו בתשובות מהתחום שלה/שלו) ===\n${KB[k]}\n=== סוף ===`).join("")}
+${tasksContext(null)}
+אם סוכמו משימות ברורות, הוסף/הוסיפי שדה "tasks" (עד 6) עם owner = id של חבר צוות, או shared, או efrat.
+החזר/י JSON בלבד בצורה: {"replies":[{"id":"tamar","text":"..."},{"id":"noa","text":"..."}],"tasks":[{"owner":"noa","title":"..."}]} עם id מתוך הרשימה.`;
+}
+
+/* ---------- Google Calendar (Tamar, Yael) ---------- */
+let mcp=null;
+const CAL="Google Calendar";
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:00`;
+const DAYS=["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"];
+const whenTxt=(s,e)=>{ const a=new Date(s), b=new Date(e); if(isNaN(a)) return s;
+  return `יום ${DAYS[a.getDay()]} ${a.getDate()}.${a.getMonth()+1}, ${pad(a.getHours())}:${pad(a.getMinutes())}${isNaN(b)?"":"–"+pad(b.getHours())+":"+pad(b.getMinutes())}` };
+async function calendarContext(){
+  if(!mcp) return "לא הצלחתי לראות את היומן כרגע.";
+  const now=new Date(), end=new Date(now.getTime()+8*864e5);
+  try{
+    const r=await mcp.callTool(CAL,"list_events",{startTime:iso(now),endTime:iso(end),orderBy:"startTime",pageSize:100});
+    const evs=(r&&r.payload&&r.payload.events)||[];
+    if(!evs.length) return "ביומן אין אירועים בשמונת הימים הקרובים.";
+    return evs.filter(e=>e.status!=="cancelled").map(e=>{
+      const s=e.start?.dateTime||e.start?.date, en=e.end?.dateTime||e.end?.date;
+      return e.start?.date&&!e.start?.dateTime ? `- ${s} (כל היום): ${e.summary||"ללא שם"}` : `- ${whenTxt(s,en)}: ${e.summary||"ללא שם"}`;
+    }).join("\n");
+  }catch(e){ return "לא הצלחתי לראות את היומן כרגע (אולי צריך לאשר את החיבור ליומן)."; }
+}
+function calPrompt(ctx){
+  const d=new Date();
+  return `\n\nהיום: יום ${DAYS[d.getDay()]}, ${iso(d).slice(0,10)}, השעה ${pad(d.getHours())}:${pad(d.getMinutes())}.
+היומן של אפרת בימים הקרובים:\n${ctx}
+כשאת/ה מציע/ה לה זמנים ביומן, תני/תן זמנים פנויים שלא מתנגשים עם מה שכבר יש, ובסוף התשובה הוסף/הוסיפי בלוק בדיוק בצורה הזאת (שורה לכל הצעה, עד 7):
+[יומן]
+2026-11-18T10:00 | 2026-11-18T11:00 | צילום רילס
+[/יומן]
+אל תכתוב/תכתבי את השעות שוב בגוף התשובה בפירוט, הכרטיסים יוצגו לה עם כפתור. אל תגיד/תגידי שהכנסת משהו ליומן: רק היא מכניסה, בלחיצה.`;
+}
+function splitEvents(text){
+  const ev=[]; const m=text.match(/\[יומן\]([\s\S]*?)(\[\/יומן\]|$)/);
+  if(!m) return {t:text.trim(),ev};
+  for(const line of m[1].split("\n")){ const p=line.split("|").map(x=>x.trim());
+    if(p.length>=3&&/^\d{4}-\d\d-\d\dT\d\d:\d\d/.test(p[0])&&/^\d{4}-\d\d-\d\dT\d\d:\d\d/.test(p[1])&&p[2]) ev.push({s:p[0].slice(0,16)+":00",e:p[1].slice(0,16)+":00",title:p.slice(2).join(" | ").slice(0,120)}) }
+  return {t:text.replace(m[0],"").trim(),ev:ev.slice(0,7)};
+}
+function evHTML(x,i){
+  if(!x.ev||!x.ev.length) return "";
+  return `<div class="evs">${x.ev.map((e,j)=>`<div class="ev"><span><span class="t">${esc(e.title)}</span><span class="when">${esc(whenTxt(e.s,e.e))}</span></span>${
+    e.added?`<span class="ok">✓ נכנס ליומן</span>`:`<button type="button" data-ev="${i}:${j}">להכניס ליומן</button>`}</div>`).join("")}</div>`;
+}
+$("#msgs").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-ev]"); if(!b) return;
+  const [i,j]=b.dataset.ev.split(":").map(Number); const id=current, msgs=await load(id); const ev=msgs[i]?.ev?.[j]; if(!ev||ev.added) return;
+  b.disabled=true; b.textContent="מכניסה…";
+  try{
+    if(!mcp) throw {code:"server_unavailable"};
+    await mcp.callTool(CAL,"create_event",{summary:ev.title,startTime:ev.s,endTime:ev.e,description:`נוסף מהצוות של אפרת (${byId[id].name})`});
+    ev.added=true; await store.put(id,msgs); if(current===id) render();
+  }catch(err){
+    b.disabled=false; b.textContent="להכניס ליומן";
+    const note=document.createElement("div"); note.className="calnote";
+    note.textContent = err&&err.code==="not_granted" ? "צריך לאשר את החיבור ליומן כדי להכניס." : "לא הצלחתי להכניס ליומן. נסי שוב בעוד רגע.";
+    b.closest(".evs").appendChild(note);
+  }
+});
+
+/* ---------- attachments ---------- */
+let pending=[]; // {kind:"img"|"txt", name, blob?, thumb?, text?}
+const TEXT_MAX=30000;
+function attHTML(a){
+  if(!a||!a.length) return "";
+  return `<div class="att">${a.map(f=>f.thumb?`<img src="${f.thumb}" alt="${esc(f.name)}">`:`<span class="file">📄 ${esc(f.name)}</span>`).join("")}</div>`;
+}
+function thumbOf(blob){ return new Promise(res=>{
+  const u=URL.createObjectURL(blob), im=new Image();
+  im.onload=()=>{ const k=Math.min(1,240/Math.max(im.width,im.height)); const c=document.createElement("canvas");
+    c.width=Math.round(im.width*k); c.height=Math.round(im.height*k); c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+    URL.revokeObjectURL(u); try{ res(c.toDataURL("image/jpeg",.6)) }catch(e){ res(null) } };
+  im.onerror=()=>{ URL.revokeObjectURL(u); res(null) }; im.src=u; }) }
+function renderPending(){
+  const box=$("#pending"); box.hidden=!pending.length;
+  box.innerHTML=pending.map((f,i)=>`<span class="pend">${f.thumb?`<img src="${f.thumb}" alt="">`:"📄"}<span>${esc(f.name)}</span><button type="button" data-rm="${i}" aria-label="הסרת ${esc(f.name)}">✕</button></span>`).join("");
+}
+$("#pending").addEventListener("click",e=>{ const b=e.target.closest("[data-rm]"); if(b){ pending.splice(+b.dataset.rm,1); renderPending() } });
+$("#attachBtn").addEventListener("click",()=>$("#fileIn").click());
+let reading=false, sendAfterRead=false;
+const withTimeout=(p,ms)=>Promise.race([p,new Promise((_,bad)=>setTimeout(()=>bad(new Error("timeout")),ms))]);
+$("#fileIn").addEventListener("change",async e=>{ reading=true; try{
+  const lim = sample&&sample.limits ? await sample.limits().catch(()=>null) : null;
+  const imgOK = lim&&lim.images, maxN = imgOK?imgOK.maxCount:0;
+  for(const f of e.target.files){
+    if(f.type.startsWith("image/")){
+      if(!imgOK){ addNote("כרגע אפשר לצרף כאן רק קבצי טקסט. נסי לפתוח את הדף באפליקציה של Claude."); continue }
+      if(imgOK.maxInputBytes&&f.size>imgOK.maxInputBytes){ addNote(`התמונה ${f.name} גדולה מדי.`); continue }
+      if(pending.filter(p=>p.kind==="img").length>=maxN){ addNote(`אפשר לצרף עד ${maxN} תמונות בהודעה.`); continue }
+      pending.push({kind:"img",name:f.name,blob:f,thumb:await thumbOf(f)});
+    }else{
+      if(/\.doc$/i.test(f.name)){ addNote(`${f.name} הוא קובץ וורד ישן. שמרי אותו בוורד כ-docx, או צלמי מסך וצרפי כתמונה.`); continue }
+      const kindTxt=isPdf(f)?"pdf":isDocx(f)?"docx":"txt";
+      let t="";
+      if(kindTxt!=="txt"){ const n=document.createElement("div"); n.className="note"; n.textContent=`קוראת את ${f.name}…`; $("#msgs").appendChild(n);
+        try{ t = await withTimeout(kindTxt==="pdf" ? readPdf(f) : readDocx(f),45000) }catch(err){ t="" } n.remove() }
+      else { try{ t=await f.text() }catch(err){} }
+      if(!t.replace(/— עמוד —/g,"").trim()){ addNote(kindTxt==="pdf" ? `לא מצאתי טקסט ב-${f.name}. כנראה זו סריקה או צילום. צלמי מסך מהעמוד וצרפי כתמונה.` : `לא הצלחתי לקרוא את ${f.name}. אפשר לצלם מסך ולצרף כתמונה.`); continue }
+      pending.push({kind:"txt",name:f.name,text:t.slice(0,TEXT_MAX)});
+    }
+  }
+  }finally{ reading=false; e.target.value=""; renderPending(); input.focus(); if(sendAfterRead){ sendAfterRead=false; send() } }
+});
+const LIB={
+  pdf:"https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js",
+  pdfWorker:"https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js",
+  mammoth:"https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"};
+const loaded={};
+function loadScript(src){ return loaded[src] ||= new Promise((ok,bad)=>{ const el=document.createElement("script"); el.src=src; el.onload=ok; el.onerror=()=>{ delete loaded[src]; bad(new Error("load")) }; document.head.appendChild(el) }) }
+async function readPdf(f){
+  await loadScript(LIB.pdf); await loadScript(LIB.pdfWorker); // worker runs in the page
+  const doc=await window.pdfjsLib.getDocument({data:new Uint8Array(await f.arrayBuffer()),isEvalSupported:false}).promise;
+  const out=[]; const n=Math.min(doc.numPages,60);
+  for(let i=1;i<=n;i++){ const tc=await (await doc.getPage(i)).getTextContent();
+    out.push(tc.items.map(it=>it.str+(it.hasEOL?"\n":" ")).join("").replace(/[ \t]+\n/g,"\n").trim());
+    if(out.join("\n").length>TEXT_MAX) break }
+  return (doc.numPages>n?`(הקובץ ארוך, נקראו ${n} עמודים ראשונים)\n`:"")+out.join("\n\n— עמוד —\n\n");
+}
+async function readDocx(f){ await loadScript(LIB.mammoth); const r=await window.mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()}); return r.value||"" }
+const isPdf=f=>f.type==="application/pdf"||/\.pdf$/i.test(f.name);
+const isDocx=f=>/\.docx$/i.test(f.name)||f.type.includes("wordprocessingml");
+function addNote(t){ const n=document.createElement("div"); n.className="note"; n.textContent=t; $("#msgs").appendChild(n); $("#msgs").scrollTop=$("#msgs").scrollHeight }
+
+/* ---------- voice: speak to the team, hear them back ---------- */
+let dict=null, tts=null, dictLang="he", voiceMode=false, speakingBtn=null;
+const VOICE={tamar:"buttery",noa:"airy",lia:"glassy",yoel:"rounded",yaron:"rounded",yael:"airy",tamir:"rounded",hila:"glassy",dana:"airy",shiran:"glassy"};
+const plain=t=>String(t).replace(/https?:\/\/\S+/g,"").replace(/\*\*/g,"").replace(/^[#>\-•\s]+/gm,"").replace(/[`_|]/g,"").trim().slice(0,1900);
+function hint(t){ const h=$("#voiceHint"); h.textContent=t||""; h.hidden=!t }
+function setupVoice(){
+  const mic=$("#micBtn");
+  if(dict){
+    mic.hidden=false;
+    dict.onPartial(({text})=>hint("🎤 "+text));
+    dict.onFinal(({text})=>{ input.value=(input.value?input.value.trimEnd()+" ":"")+text; grow(); hint("🎤 מקשיבה… לחצי שוב כדי לשלוח") });
+    dict.onState(({state,reason})=>{
+      mic.classList.toggle("on",state==="listening"||state==="starting");
+      if(state==="listening") hint("🎤 מקשיבה… לחצי שוב כדי לשלוח");
+      if(state==="idle"){ if(reason&&!["stopped","viewer_stopped","hidden","completed"].includes(reason)&&!input.value) hint(""); }
+    });
+  }
+}
+$("#micBtn").addEventListener("click",()=>{
+  if(!dict) return;
+  if(dict.active()){
+    dict.stop().catch(()=>{}).then(()=>{ hint(""); if(input.value.trim()){ voiceMode=true; $("#form").requestSubmit() } });
+    return;
+  }
+  tts?.stop?.();
+  dict.start(dictLang?{language:dictLang}:undefined).catch(e=>{
+    const c=e&&e.code;
+    if(c==="unavailable"&&dictLang){ dictLang=null; hint("לא הצלחתי להקשיב בעברית. לחצי שוב על המיקרופון לנסות שוב."); return }
+    if(c==="not_granted"){ $("#micBtn").hidden=true; hint("לא אושר שימוש במיקרופון. אפשר לכתוב, או להשתמש במיקרופון של המקלדת."); return }
+    if(c==="unavailable"){ $("#micBtn").hidden=true; hint("") ; return }
+    if(c!=="stopped") hint("");
+  });
+});
+async function speakMsg(id,x,btn){
+  if(!tts) return;
+  if(speakingBtn===btn){ tts.stop(); return }
+  try{
+    speakingBtn&&speakingBtn.classList.remove("on"); speakingBtn=btn; btn&&btn.classList.add("on");
+    await tts.speak(plain(x.t),{voice:VOICE[x.who||id]||"buttery",language:"he"});
+  }catch(e){ if(e&&e.code==="not_granted"){ tts=null; document.querySelectorAll(".say").forEach(b=>b.hidden=true) } }
+  finally{ if(speakingBtn===btn){ btn&&btn.classList.remove("on"); speakingBtn=null } }
+}
+$("#msgs").addEventListener("click",async e=>{ const b=e.target.closest("[data-say-i]"); if(!b) return;
+  const msgs=await load(current); const x=msgs[+b.dataset.sayI]; if(x) speakMsg(current,x,b) });
+async function speakReplies(id,list){
+  if(!tts||!list.length) return;
+  try{ await tts.speak(list.map(x=>({text:plain(x.t),voice:VOICE[x.who||id]||"buttery",language:"he"}))) }catch(e){}
+}
+
+async function send(retry=false){
+  dlog("send_click",{chat:current,retry,busy,reading,hasSample:!!sample,db:!!db});
+  if(busy) return;
+  if(!retry&&reading){ addNote("רגע, אני עוד קוראת את הקובץ. אשלח כשאסיים."); sendAfterRead=true; return }
+  let text=input.value.trim(); if(!retry&&!text&&!pending.length) return;
+  const files=retry?[]:pending; if(!retry){ pending=[]; renderPending() }
+  if(!text) text = files.some(f=>f.kind==="img") ? "צירפתי לך תמונה, מה דעתך?" : "צירפתי לך קובץ, מה דעתך?";
+  const imgs=files.filter(f=>f.kind==="img").map(f=>f.blob);
+  const txts=files.filter(f=>f.kind==="txt");
+  const id=current, msgs=await load(id);
+  const spoke=voiceMode; voiceMode=false;
+  if(retry){ const last=msgs[msgs.length-1]; if(!last||last.r!=="me") return; text=last.t; }
+  else{
+    const entry={r:"me",t:text,at:Date.now()}; if(spoke) entry.v=true;
+    if(files.length) entry.a=files.map(f=>f.thumb?{name:f.name,thumb:f.thumb}:{name:f.name});
+    msgs.push(entry); input.value=""; grow();
+    await store.put(id,msgs);
+  }
+  const fullText = text + txts.map(f=>`\n\n[קובץ מצורף: ${f.name}]\n${f.text}\n[סוף הקובץ]`).join("");
+  if(!sample){ await render(`<div class="note">ההודעה נשמרה. הצוות יכול לענות רק כשהדף פתוח באפליקציה של Claude.</div>`); return }
+  busy=true; ctl=new AbortController(); let timedOut=false; const myCtl=ctl;
+  const tm=setTimeout(()=>{ timedOut=true; myCtl.abort() },120000);
+  $("#send").textContent="■"; $("#send").setAttribute("aria-label","עצירת התשובה"); $("#send").title="עצירה";
+  const typing = id==="group" ? "הצוות חושב ומקליד… (לעצירה לחצי ■)" : `${byId[id].name} ${byId[id].f?"חושבת ומקלידה":"חושב ומקליד"}… (לעצירה לחצי ■)`;
+  await render(`<div class="typing" id="typing">${esc(typing)}</div>`);
+  try{
+    if(id==="group"){
+      const gopts={signal:ctl.signal,cache:false}; if(imgs.length) gopts.images=imgs;
+      dlog("group_call_start");
+      const res=await sample.json((MB.length?mbPick(fullText,7000,[]):"")+groupPrompt(msgs.slice(0,-1),fullText+(imgs.length?"\n(אפרת צירפה תמונה, היא מצורפת לבקשה)":"")),gopts);
+      const replies=(res&&Array.isArray(res.replies)?res.replies:[]).filter(r=>byId[r.id]&&r.text);
+      for(const r of replies){ msgs.push({r:"them",who:r.id,t:String(r.text),at:Date.now()}) }
+      if(!replies.length) throw {code:"empty_completion"};
+      const tk=(Array.isArray(res.tasks)?res.tasks:[]).filter(t=>t&&t.title&&OWNERS[t.owner]).slice(0,6).map(t=>({o:t.owner,title:String(t.title).slice(0,160)}));
+      if(tk.length) msgs[msgs.length-1].tk=tk;
+      await store.put(id,msgs); if(current===id) await render();
+      if(spoke&&current===id) speakReplies(id,msgs.slice(-replies.length));
+    }else{
+      const m=byId[id]; let live=null;
+      const conv=turns(m,msgs);
+      { const last=conv[conv.length-1]; if(fullText!==text) last.content=last.content.slice(0,last.content.length-text.length)+fullText;
+        if(imgs.length) last.content+="\n\n(צירפתי תמונה להודעה הזאת)"; }
+      if(id==="noa"&&MB.length){ const last=conv[conv.length-1]; const recent=msgs.slice(-4).map(x=>x.t).join(" ");
+        last.content=mbPick(recent+" "+fullText,7000)+"\n---\nההודעה האחרונה של אפרת:\n"+last.content }
+      if(m.cal){ const ctx=await calendarContext(); const last=conv[conv.length-1]; last.content=calPrompt(ctx)+"\n\n---\nההודעה האחרונה של אפרת:\n"+last.content }
+      const popts={signal:ctl.signal,cache:false}; if(imgs.length) popts.images=imgs;
+      let streamed="", lastTick=0;
+      const stall=new Promise(res=>{ const iv=setInterval(()=>{ if(!busy||myCtl.signal.aborted){ clearInterval(iv); return }
+        if(streamed&&Date.now()-lastTick>12000){ clearInterval(iv); res({text:streamed,stalled:true}) } },1000) });
+      const t0=Date.now(); let firstText=0; dlog("call_start",{chat:id,turns:conv.length,chars:conv.reduce((n,c)=>n+c.content.length,0)});
+      const call=sample(conv,{...popts,onText:({text})=>{ if(!firstText){ firstText=Date.now(); dlog("first_text",{ms:firstText-t0}) } streamed=text; lastTick=Date.now();
+        if(current!==id) return;
+        if(!live){ $("#typing")?.remove(); const row=document.createElement("div"); row.className="row them"; row.innerHTML=img(id)+'<div class="bubble"></div>'; $("#msgs").appendChild(row); live=row.lastChild }
+        live.innerHTML=fmt(text.split("[יומן]")[0].split("[משימות]")[0]); $("#msgs").scrollTop=$("#msgs").scrollHeight }});
+      call.then(r=>dlog("call_resolved",{ms:Date.now()-t0,len:(r&&r.text||"").length}),e=>dlog("call_rejected",{ms:Date.now()-t0,code:e&&e.code}));
+      const out=await Promise.race([call,stall]); const ans=out.text;
+      if(out.stalled){ dlog("stalled_finish",{len:ans.length}); call.catch(()=>{}); try{ myCtl.abort() }catch(e){} }
+      const st=splitTasks(ans); const sp=splitEvents(st.t);
+      const reply={r:"them",who:id,t:sp.t,at:Date.now()}; if(sp.ev.length) reply.ev=sp.ev; if(st.tk.length) reply.tk=st.tk;
+      msgs.push(reply);
+      await store.put(id,msgs); if(current===id) await render();
+      if(spoke&&current===id) speakReplies(id,[msgs[msgs.length-1]]);
+    }
+  }catch(e){
+    dlog("send_error",{code:e&&e.code,m:String(e&&e.message||"").slice(0,150),timedOut});
+    if(e&&e.code==="cancelled"){ if(current===id) await render(`<div class="note">${timedOut?"התשובה לקחה יותר מדי זמן ועצרתי אותה. נסי לשלוח שוב, אפשר גם לקצר את השאלה.":"עצרת את התשובה. אפשר לשלוח שוב."}</div>`); return }
+    if(e&&e.text&&id!=="group"){ msgs.push({r:"them",who:id,t:e.text,at:Date.now()}); await store.put(id,msgs) }
+    if(current===id) await render(`<div class="note">${esc(errText(e&&e.code))}</div>`);
+  }finally{ dlog("send_done",{chat:id}); clearTimeout(tm); busy=false; ctl=null; $("#send").disabled=false; $("#send").textContent="➤"; $("#send").setAttribute("aria-label","שליחה"); $("#send").title="" }
+}
+
+/* ---------- task board (shared db collection "tasks") ---------- */
+const STATUS=[["todo","טרם התחיל"],["doing","בעבודה"],["stuck","תקוע"],["rework","דורש עוד עבודה"],["done","בוצע"]];
+const STL=Object.fromEntries(STATUS);
+const OWNERS=Object.assign({efrat:"אפרת",shared:"משותף לצוות"},Object.fromEntries(TEAM.map(m=>[m.id,m.name])));
+let TASKS=[], tasksLive=false, boardFilter=null, canWrite=true, unsubTasks=null, catFilter=null;
+let boardView="cards"; try{ boardView=localStorage.getItem("team-view")||"cards" }catch(e){}
+const OCOL={tamar:"#7a2e4a",noa:"#d6457a",lia:"#2a9d8f",yoel:"#3b6fd8",yaron:"#5e8c4a",yael:"#e09f1f",tamir:"#6b4fbb",hila:"#0f8fb3",dana:"#e0632f",shiran:"#a0527a",efrat:"#8a6a50",shared:"#5f6b73"};
+const oc=o=>OCOL[o]||"#888";
+const LKEY="team-tasks";
+const today=()=>iso(new Date()).slice(0,10);
+function lsTasks(){ try{ return JSON.parse(localStorage.getItem(LKEY)||"[]") }catch(e){ return [] } }
+function lsSave(){ try{ localStorage.setItem(LKEY,JSON.stringify(TASKS)) }catch(e){} }
+function subscribeTasks(){
+  if(!db){ TASKS=lsTasks(); renderBoard(); return }
+  const timer=setTimeout(()=>{ if(!tasksLive) boardNote("הלוח נטען לאט. אם זה נמשך, פתחי את הדף מחדש.") },10000);
+  unsubTasks=db.collection("tasks").onSnapshot(snap=>{
+    clearTimeout(timer); tasksLive=true; boardNote("");
+    TASKS=snap.docs.map(d=>({id:d.id,...JSON.parse(JSON.stringify(d.data()))})); renderBoard(); if(current) render();
+  },err=>{ clearTimeout(timer); boardNote("לא הצלחתי לטעון את הלוח כרגע.") });
+}
+function boardNote(t){ const n=$("#boardMsg"); n.textContent=t; n.hidden=!t }
+async function saveTask(t){
+  t.updated=Date.now();
+  if(db){ const {id,...body}=t; try{ await db.doc("tasks/"+id).set(body); return true }catch(e){ boardNote(e&&e.code==="permission_denied"?"אין לך הרשאה לשנות את הלוח. אפשר רק לצפות.":"השמירה לא הצליחה. נסי שוב."); return false } }
+  const i=TASKS.findIndex(x=>x.id===t.id); if(i<0) TASKS.push(t); else TASKS[i]=t; lsSave(); renderBoard(); return true;
+}
+async function removeTask(id){
+  if(db){ try{ await db.doc("tasks/"+id).delete() }catch(e){ boardNote("המחיקה לא הצליחה.") } return }
+  TASKS=TASKS.filter(x=>x.id!==id); lsSave(); renderBoard();
+}
+const newId=()=>"t"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+async function addTask(o,title,status="todo",due="",src=""){
+  return saveTask({id:newId(),owner:o,title,status,due,note:"",src,created:Date.now()});
+}
+function ownerPic(o){ return byId[o]?img(o):`<span class="sh">${o==="efrat"?"👩":"🤝"}</span>` }
+function isLate(t){ return t.due&&t.status!=="done"&&t.due<today() }
+function remindTag(t){
+  if(!t.remind) return "";
+  const d=new Date(t.remind), due=t.status!=="done"&&d<=new Date();
+  return `<span class="rmtag ${due?"due":""}">⏰ ${due?"הגיע זמן התזכורת · ":""}${d.toLocaleDateString("he-IL")} ${pad(d.getHours())}:${pad(d.getMinutes())}${t.remindCal?" · ביומן":""}</span>`;
+}
+function ownerChip(o){ return `<span class="ochip" style="--oc:${oc(o)}">${ownerPic(o)}${esc(OWNERS[o]||o)}</span>` }
+function taskHTML(t){
+  return `<div class="task st-${t.status}" style="--oc:${oc(t.owner)}" data-t="${esc(t.id)}">
+    <div class="top"><span class="tt">${esc(t.title)}</span>
+      <select data-act="status" aria-label="סטטוס">${STATUS.map(([k,l])=>`<option value="${k}" ${k===t.status?"selected":""}>${l}</option>`).join("")}</select></div>
+    <div class="meta">${ownerChip(t.owner)}${isLate(t)?'<span class="late">באיחור</span>':""}${remindTag(t)}
+      ${t.src?`<span>מתוך שיחה עם ${esc(OWNERS[t.src]||"הצוות")}</span>`:""}
+      <span>עודכן ${new Date(t.updated||t.created).toLocaleDateString("he-IL")}</span></div>
+    ${t.note?`<div class="note2">${esc(t.note)}</div>`:""}
+    <div class="row2">
+      <label class="meta">יעד <input class="due" type="date" data-act="due" value="${esc(t.due||"")}" aria-label="תאריך יעד"></label>
+      <select data-act="owner" aria-label="אחראי/ת">${Object.entries(OWNERS).map(([k,l])=>`<option value="${k}" ${k===t.owner?"selected":""}>${esc(l)}</option>`).join("")}</select>
+      <button class="lnk" type="button" data-act="remind">${t.remind?"שינוי תזכורת":"⏰ הוספת תזכורת"}</button>
+      <button class="lnk" type="button" data-act="note">${t.note?"עריכת הערה":"הוספת הערה"}</button>
+      <button class="lnk" type="button" data-act="del">מחיקה</button>
+    </div></div>`;
+}
+function tableHTML(list){
+  if(!list.length) return `<div class="empty">אין משימות בסינון הזה</div>`;
+  return `<div class="tblwrap"><table class="tbl"><thead><tr><th>משימה</th><th>אחראי/ת</th><th>סטטוס</th><th>תאריך יעד</th><th>תזכורת</th><th>הערה</th><th></th></tr></thead><tbody>${
+    list.map(t=>`<tr class="st-${t.status}" style="--oc:${oc(t.owner)}" data-t="${esc(t.id)}">
+      <td>${esc(t.title)}${isLate(t)?' <span class="late" style="color:#c0392b">· באיחור</span>':""}</td>
+      <td><select data-act="owner" aria-label="אחראי/ת">${Object.entries(OWNERS).map(([k,l])=>`<option value="${k}" ${k===t.owner?"selected":""}>${esc(l)}</option>`).join("")}</select></td>
+      <td><span class="stdot"></span><select data-act="status" aria-label="סטטוס">${STATUS.map(([k,l])=>`<option value="${k}" ${k===t.status?"selected":""}>${l}</option>`).join("")}</select></td>
+      <td><input class="due" type="date" data-act="due" value="${esc(t.due||"")}" aria-label="תאריך יעד"></td>
+      <td>${remindTag(t)||""} <button class="lnk" type="button" data-act="remind">${t.remind?"שינוי":"⏰ הוספה"}</button></td>
+      <td style="max-width:220px;overflow-wrap:anywhere">${esc(t.note||"")} <button class="lnk" type="button" data-act="note">${t.note?"עריכה":"הוספה"}</button></td>
+      <td><button class="lnk" type="button" data-act="del">מחיקה</button></td></tr>`).join("")}</tbody></table></div>`;
+}
+function renderBoard(){
+  const open=TASKS.filter(t=>t.status!=="done");
+  const cnt=TASKS.filter(t=>t.status==="stuck"||t.status==="rework"||isLate(t)||(t.remind&&t.status!=="done"&&new Date(t.remind)<=new Date())).length;
+  $("#boardCnt").textContent=cnt; $("#boardCnt").hidden=!cnt; $("#boardCnt").title=cnt+" משימות דורשות התייחסות";
+  if($("#board").hidden) return;
+  const week=Date.now()-7*864e5;
+  const tiles=[[null,"פתוחות",open.length,""],["todo","טרם התחיל",TASKS.filter(t=>t.status==="todo").length,"st-todo"],
+    ["doing","בעבודה",TASKS.filter(t=>t.status==="doing").length,"st-doing"],["stuck","תקועות",TASKS.filter(t=>t.status==="stuck").length,"st-stuck"],
+    ["rework","דורשות עוד עבודה",TASKS.filter(t=>t.status==="rework").length,"st-rework"],["late","באיחור",TASKS.filter(isLate).length,"st-stuck"],
+    ["remind","תזכורות שהגיע זמנן",TASKS.filter(t=>t.remind&&t.status!=="done"&&new Date(t.remind)<=new Date()).length,"st-rework"],["done","בוצעו השבוע",TASKS.filter(t=>t.status==="done"&&(t.updated||0)>week).length,"st-done"]];
+  $("#tiles").innerHTML=tiles.map(([k,l,n,c])=>`<button class="tile ${c} ${boardFilter===k?"sel":""}" type="button" data-f="${k||""}"><b>${n}</b><span>${c?"<i></i>":""}${l}</span></button>`).join("");
+  $("#cats").innerHTML=[["","כולם","#5f6b73"],...Object.keys(OWNERS).filter(o=>TASKS.some(t=>t.owner===o)).map(o=>[o,OWNERS[o],oc(o)])]
+    .map(([o,l,c])=>`<button class="cat ${(catFilter||"")===o?"sel":""}" type="button" data-cat="${o}" style="--oc:${c}"><i></i>${esc(l)} ${o?`(${TASKS.filter(t=>t.owner===o&&t.status!=="done").length})`:""}</button>`).join("");
+  document.querySelectorAll(".viewtog button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view===boardView)));
+  const pass0=t=> boardFilter===null ? t.status!=="done" : boardFilter==="late" ? isLate(t) : boardFilter==="remind" ? (t.remind&&t.status!=="done"&&new Date(t.remind)<=new Date()) : boardFilter==="done" ? t.status==="done"&&(t.updated||0)>week : t.status===boardFilter;
+  const pass=t=>pass0(t)&&(!catFilter||t.owner===catFilter);
+  const order={stuck:0,rework:1,doing:2,todo:3,done:4};
+  const lanes=[["shared","משימות משותפות"],["efrat","המשימות שלי"],...TEAM.map(m=>[m.id,m.role])];
+  if(!TASKS.length){ $("#lanes").innerHTML=`<div class="review"><b>הלוח עוד ריק.</b>
+לחצי "+ משימה חדשה" כדי להוסיף משימה, או סכמי משימה בשיחה עם מישהו מהצוות. כשהם מציעים משימות, יופיע כפתור "להוסיף ללוח".</div>`; return }
+  if(boardView==="table"){ $("#lanes").innerHTML=tableHTML(TASKS.filter(pass).sort((a,b)=>(order[a.status]-order[b.status])||((a.due||"9")<(b.due||"9")?-1:1))); return }
+  $("#lanes").innerHTML=lanes.filter(([o])=>!catFilter||o===catFilter).map(([o,sub])=>{
+    const list=TASKS.filter(t=>t.owner===o&&pass(t)).sort((a,b)=>(order[a.status]-order[b.status])||((a.due||"9")<(b.due||"9")?-1:1));
+    const all=TASKS.filter(t=>t.owner===o);
+    if(!all.length&&o!=="shared") return "";
+    const done=all.filter(t=>t.status==="done").length;
+    return `<section class="lane"><h3>${ownerPic(o)} ${esc(OWNERS[o])} <small>${o==="shared"||o==="efrat"?"":esc(sub)+" · "}${done}/${all.length} בוצעו</small></h3>
+      <div class="tasks">${list.length?list.map(taskHTML).join(""):`<div class="empty">${all.length?"אין משימות בסינון הזה":"עדיין אין משימות משותפות"}</div>`}</div></section>`;
+  }).join("");
+}
+function fillForm(){
+  $("#newOwner").innerHTML=Object.entries(OWNERS).map(([k,l])=>`<option value="${k}">${esc(l)}</option>`).join("");
+  $("#newStatus").innerHTML=STATUS.map(([k,l])=>`<option value="${k}">${l}</option>`).join("");
+}
+function openBoard(){ $("#board").hidden=false; document.body.style.overflow="hidden"; renderBoard(); if(location.hash!=="#board") history.replaceState(null,"","#board") }
+function closeBoard(){ $("#board").hidden=true; document.body.style.overflow=""; if(location.hash==="#board") history.replaceState(null,"",location.pathname+location.search) }
+$("#boardBtn").addEventListener("click",openBoard);
+$("#boardBack").addEventListener("click",closeBoard);
+window.addEventListener("hashchange",()=>{ location.hash==="#board"?openBoard():(!$("#board").hidden&&closeBoard()) });
+$("#addToggle").addEventListener("click",()=>{ const f=$("#addForm"); f.hidden=!f.hidden; if(!f.hidden) $("#newTitle").focus() });
+$("#addForm").addEventListener("submit",async e=>{ e.preventDefault(); const t=$("#newTitle").value.trim(); if(!t) return;
+  if(await addTask($("#newOwner").value,t,$("#newStatus").value,$("#newDue").value)){ $("#newTitle").value=""; $("#newDue").value="" } });
+$("#tiles").addEventListener("click",e=>{ const b=e.target.closest(".tile"); if(!b) return; const f=b.dataset.f||null; boardFilter=(boardFilter===f?null:f); renderBoard() });
+let delArm=null;
+$("#cats").addEventListener("click",e=>{ const b=e.target.closest(".cat"); if(!b) return; const o=b.dataset.cat||null; catFilter=(catFilter===o?null:o); renderBoard() });
+document.querySelector(".viewtog").addEventListener("click",e=>{ const b=e.target.closest("button[data-view]"); if(!b) return; boardView=b.dataset.view; try{ localStorage.setItem("team-view",boardView) }catch(x){} renderBoard() });
+setInterval(()=>{ if(TASKS.some(t=>t.remind&&t.status!=="done")) renderBoard() },60000);
+async function setReminder(t,when,toCal,box){
+  const upd={...t,remind:when,remindCal:false};
+  if(toCal&&mcp){
+    try{ const st=new Date(when), en=new Date(st.getTime()+15*60000);
+      await mcp.callTool(CAL,"create_event",{summary:"תזכורת: "+t.title,startTime:iso(st),endTime:iso(en),
+        description:`משימה מלוח המשימות של הצוות (אחראי/ת: ${OWNERS[t.owner]||t.owner})`,overrideReminders:[{method:"popup",minutes:0}]});
+      upd.remindCal=true;
+    }catch(err){ const n=document.createElement("div"); n.className="calnote"; n.textContent=err&&err.code==="not_granted"?"צריך לאשר את החיבור ליומן. התזכורת נשמרה בלוח בלבד.":"לא הצלחתי להכניס ליומן. התזכורת נשמרה בלוח בלבד."; box&&box.appendChild(n) }
+  }
+  await saveTask(upd);
+}
+$("#lanes").addEventListener("change",async e=>{ const s=e.target.closest("select[data-act],input[data-act='due']"); if(!s) return; const id=s.closest("[data-t]").dataset.t; const t=TASKS.find(x=>x.id===id); if(!t) return;
+  await saveTask({...t,[s.dataset.act]:s.value}) });
+$("#lanes").addEventListener("click",async e=>{ const b=e.target.closest("button[data-act]"); if(!b) return; const box=b.closest("[data-t]"); const t=TASKS.find(x=>x.id===box.dataset.t); if(!t) return;
+  if(b.dataset.act==="del"){ if(delArm!==t.id){ delArm=t.id; b.textContent="ללחוץ שוב כדי למחוק"; setTimeout(()=>{ if(delArm===t.id){ delArm=null; b.textContent="מחיקה" } },4000); return } delArm=null; removeTask(t.id) }
+  if(b.dataset.act==="remind"){
+    const host = box.tagName==="TR" ? b.parentElement : box; if(host.querySelector(".remind")) return;
+    const def = t.remind ? t.remind.slice(0,16) : (t.due ? t.due+"T09:00" : iso(new Date(Date.now()+864e5)).slice(0,11)+"09:00");
+    const w=document.createElement("div"); w.className="remind";
+    w.innerHTML=`<input type="datetime-local" value="${esc(def)}" aria-label="מתי להזכיר">
+      <button type="button" class="bt" data-r="cal">להוסיף ביומן</button><button type="button" class="bt ghost" data-r="board">רק בלוח</button>
+      ${t.remind?'<button type="button" class="lnk" data-r="off">ביטול התזכורת</button>':""}`;
+    w.addEventListener("click",async ev=>{ const r=ev.target.closest("[data-r]"); if(!r) return; ev.stopPropagation();
+      if(r.dataset.r==="off"){ const {remind,remindCal,...rest}=t; return saveTask(rest) }
+      const v=w.querySelector("input").value; if(!v) return; r.disabled=true; r.textContent="שומרת…";
+      await setReminder(t,v+":00",r.dataset.r==="cal",w) });
+    host.appendChild(w); w.querySelector("input").focus(); return;
+  }
+  if(b.dataset.act==="note"){ const nh=box.tagName==="TR"?b.parentElement:box; if(nh.querySelector("textarea")) return;
+    const ta=document.createElement("textarea"); ta.rows=2; ta.value=t.note||""; ta.setAttribute("aria-label","הערה"); ta.placeholder="מה נתקע? מה צריך לשפר?";
+    const ok=document.createElement("button"); ok.type="button"; ok.className="bt"; ok.textContent="שמירה";
+    ok.onclick=()=>saveTask({...t,note:ta.value.trim().slice(0,800)}); nh.append(ta,ok); ta.focus() }
+});
+/* team awareness of the board */
+function tasksContext(memberId){
+  const open=TASKS.filter(t=>t.status!=="done");
+  if(!open.length) return "לוח המשימות של הצוות ריק כרגע.";
+  const line=t=>`- [${STL[t.status]}] ${t.title} (אחראי/ת: ${OWNERS[t.owner]||t.owner}${t.due?", יעד "+t.due:""}${isLate(t)?", באיחור":""})`;
+  const mine = memberId ? open.filter(t=>t.owner===memberId||t.owner==="shared") : open;
+  return (memberId?"המשימות הפתוחות שלך ושל הצוות המשותף בלוח המשימות:\n":"המשימות הפתוחות בלוח המשימות של הצוות:\n")+(mine.slice(0,30).map(line).join("\n")||"(אין)");
+}
+function splitTasks(text){
+  const tk=[]; const m=text.match(/\[משימות\]([\s\S]*?)(\[\/משימות\]|$)/);
+  if(!m) return {t:text,tk};
+  for(const line of m[1].split("\n")){ const p=line.split("|").map(x=>x.trim()); if(p.length>=2&&OWNERS[p[0]]&&p[1]) tk.push({o:p[0],title:p.slice(1).join(" | ").slice(0,160)}) }
+  return {t:text.replace(m[0],"").trim(),tk:tk.slice(0,5)};
+}
+function tkHTML(x,i){
+  if(!x.tk||!x.tk.length) return "";
+  return `<div class="tks">${x.tk.map((t,j)=>`<div class="tk"><span>📋 <b>${esc(OWNERS[t.o]||"")}</b>: ${esc(t.title)}</span>${t.added?'<span class="ok">✓ בלוח</span>':`<button type="button" data-tk="${i}:${j}">להוסיף ללוח</button>`}</div>`).join("")}</div>`;
+}
+$("#msgs").addEventListener("click",async e=>{ const b=e.target.closest("button[data-tk]"); if(!b) return;
+  const [i,j]=b.dataset.tk.split(":").map(Number); const id=current, msgs=await load(id); const t=msgs[i]?.tk?.[j]; if(!t||t.added) return;
+  b.disabled=true; if(await addTask(t.o,t.title,"todo","",msgs[i].who||id)){ t.added=true; await store.put(id,msgs); if(current===id) render() } else b.disabled=false });
+/* Tamar's control review */
+$("#reviewBtn").addEventListener("click",async()=>{
+  const out=$("#review"); const btn=$("#reviewBtn");
+  if(!sample){ out.innerHTML=`<div class="review">הבקרה של תמר עובדת רק כשהדף פתוח באפליקציה של Claude.</div>`; return }
+  if(!TASKS.length){ out.innerHTML=`<div class="review">אין עדיין משימות בלוח, אז אין מה לבדוק.</div>`; return }
+  btn.disabled=true; out.innerHTML=`<div class="review"><div class="rh">${img("tamar")}<b>תמר בודקת את הלוח…</b></div></div>`;
+  const rows=TASKS.map(t=>`- ${t.title} | אחראי/ת: ${OWNERS[t.owner]||t.owner} | סטטוס: ${STL[t.status]} | יעד: ${t.due||"אין"}${isLate(t)?" (באיחור)":""} | הערה: ${t.note||"-"} | עודכן: ${new Date(t.updated||t.created).toISOString().slice(0,10)}`).join("\n");
+  const roles=TEAM.map(m=>`- ${m.name}: ${m.role}`).join("\n");
+  const prompt=`את תמר, מנהלת הצוות של אפרת. ${BIZ}
+תפקידי הצוות:\n${roles}
+היום ${today()}. זה לוח המשימות:\n${rows}
+
+כתבי לאפרת סקירת בקרה קצרה וברורה בעברית פשוטה, בלשון נקבה, בלי מונחים טכניים, במבנה הזה:
+**מה תקוע או באיחור** (ומה הצעד הבא לשחרר כל אחד)
+**מה דורש עוד עבודה או התייחסות שלך**
+**מה עוד לא התחיל וכדאי לקדם השבוע**
+**שיפור בחלוקת התפקידים** (מי עמוס מדי, משימה שכדאי להעביר, משימה שחסרה)
+עד 15 שורות. אל תמציאי משימות שלא בלוח.`;
+  try{ const {text}=await sample(prompt,{cache:false,...tierOpt(),onText:({text})=>{ out.innerHTML=`<div class="review"><div class="rh">${img("tamar")}<b>הבקרה של תמר</b></div>${fmt(text)}</div>` }});
+    out.innerHTML=`<div class="review"><div class="rh">${img("tamar")}<b>הבקרה של תמר</b></div>${fmt(text)}</div>` }
+  catch(e){ out.innerHTML=`<div class="review">${esc(errText(e&&e.code))}</div>` }
+  finally{ btn.disabled=false }
+});
+
+/* ---------- strategy meeting: what to push now ---------- */
+const AREAS=[["dev","פיתוח מוצר","tamir"],["mkt","שיווק","noa"],["str","אסטרטגיה","tamar"],["sales","מכירות","lia"]];
+let BRIEF=null;
+async function loadBrief(){ if(!db) return; try{ const s=await db.doc(`data/users/${uid}/brief`).get(); if(s.exists){ BRIEF=JSON.parse(JSON.stringify(s.data())); if(!$("#brief").hidden) renderBrief() } }catch(e){} }
+function renderBrief(){
+  const out=$("#briefOut");
+  if(!BRIEF){ out.innerHTML=`<div class="bsum">עוד לא הייתה ישיבת צוות. לחצי "ישיבת צוות עכשיו", והצוות יחזור אלייך עם ההמלצות. זה לוקח בערך דקה, כי הם חושבים לעומק.</div>`; return }
+  const b=BRIEF;
+  out.innerHTML=`<div class="bmeta">ישיבה מתאריך ${new Date(b.at).toLocaleDateString("he-IL")} ${new Date(b.at).toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"})}</div>
+    ${b.summary?`<div class="bsum">${fmt(b.summary)}</div>`:""}
+    ${b.focus?`<div class="bfocus"><b>🎯 הדבר האחד לשבוע הזה:</b><br>${fmt(b.focus)}</div>`:""}
+    ${AREAS.map(([k,label,def])=>{ const a=(b.areas||{})[k]; if(!a||!a.items||!a.items.length) return "";
+      const who=byId[a.owner]?a.owner:def;
+      return `<section class="barea" style="--oc:${oc(who)}"><h3>${img(who)} ${label} <small class="bmeta">· ${esc(byId[who].name)}</small></h3>
+      ${a.items.map((it,j)=>`<div class="bitem" style="--oc:${oc(it.owner&&OWNERS[it.owner]?it.owner:who)}"><b>${esc(it.title||"")}</b>
+        ${it.why?`<div class="why">${fmt(it.why)}</div>`:""}${it.step?`<div class="step">👣 צעד ראשון: ${fmt(it.step)}</div>`:""}
+        <div class="act">${it.added?'<span class="ok">✓ בלוח המשימות</span>':`<button type="button" data-bi="${k}:${j}">להוסיף ללוח</button>`}</div></div>`).join("")}</section>`; }).join("")}`;
+}
+async function saveBrief(){ if(db){ try{ await db.doc(`data/users/${uid}/brief`).set(BRIEF) }catch(e){} } }
+$("#briefOut").addEventListener("click",async e=>{ const btn=e.target.closest("button[data-bi]"); if(!btn) return;
+  const [k,j]=btn.dataset.bi.split(":"); const a=BRIEF.areas[k]; const it=a.items[+j]; if(!it||it.added) return; btn.disabled=true;
+  const who=it.owner&&OWNERS[it.owner]?it.owner:(byId[a.owner]?a.owner:AREAS.find(x=>x[0]===k)[2]);
+  if(await addTask(who,it.title.slice(0,160),"todo","",AREAS.find(x=>x[0]===k)[2])){ it.added=true; await saveBrief(); renderBrief() } else btn.disabled=false });
+function openBrief(){ $("#brief").hidden=false; document.body.style.overflow="hidden"; renderBrief() }
+$("#briefBtn").addEventListener("click",openBrief);
+$("#briefBack").addEventListener("click",()=>{ $("#brief").hidden=true; document.body.style.overflow="" });
+$("#briefRun").addEventListener("click",async()=>{
+  const out=$("#briefOut"), btn=$("#briefRun");
+  if(!sample){ out.innerHTML=`<div class="bsum">ישיבת הצוות עובדת רק כשהדף פתוח באפליקציה של Claude.</div>`; return }
+  btn.disabled=true; btn.textContent="הצוות בישיבה…";
+  out.innerHTML=`<div class="bsum">תמר כינסה את הצוות. תמיר, נועה, ליה וירון עוברים על העסק, הלוח והיומן… זה לוקח בערך דקה.</div>`;
+  let cal=""; try{ cal=await calendarContext() }catch(e){}
+  const roster=TEAM.map(m=>`- ${m.id}: ${m.name}, ${m.role}`).join("\n");
+  const prompt=`זו ישיבת צוות אסטרטגית של הצוות האישי של אפרת. ${BIZ}
+${EXCEL}
+${KB.all?"=== תיק העסק ===\n"+KB.all+"\n=== סוף ===":""}
+${KB.noa?"=== ידע השיווק ===\n"+KB.noa.slice(0,6000)+"\n=== סוף ===":""}
+${MB.length?mbPick("נקודת המוצא עכשיו עדיפות גבוהה לפני יצירת עוד תוכן איך נבחר מבין האפשרויות מה למדוד מדריך חינמי רשימת תפוצה הרצאות ייעוץ שיתופי פעולה",12000,["נקודת המוצא עכשיו","עדיפות גבוהה לפני יצירת עוד ועוד תוכן","איך נבחר מבין האפשרויות"]):""}
+${tasksContext(null)}
+היומן בימים הקרובים:\n${cal||"לא זמין"}
+היום ${today()}.
+חברי הצוות:\n${roster}
+
+המטרה: להפוך את העסק של אפרת לעסק מצליח מאוד, בדרך שלה ובלי מניפולציות. תחשבו כמו היועצים הטובים ביותר. תנו לה את מה שהכי כדאי לקדם עכשיו, בארבעה תחומים:
+- dev: פיתוח מוצר (הקורס, סולם מוצרים, מוצר הבא). אחראי: tamir.
+- mkt: שיווק (תוכן, חשיפה, רשימת תפוצה, הוכחות). אחראית: noa.
+- str: אסטרטגיה (מיקוד, יעדים, מה לא לעשות, חלוקת זמן). אחראית: tamar.
+- sales: מכירות (המרה, פולואפ, הצעה, התנגדויות). אחראית: lia.
+בכל תחום 2-3 המלצות, מסודרות מהחשובה לפחות חשובה. כל המלצה: title (משפט קצר שאפשר לשים בלוח המשימות), why (למה זה יקדם את העסק, עם הנתונים שיש, עד 2 משפטים), step (צעד ראשון שאפשר לעשות השבוע), owner (id של חבר הצוות המתאים, או efrat אם רק היא יכולה).
+בנוסף: summary (3-4 משפטים: איפה העסק עומד ומה ההזדמנות הגדולה ביותר) ו-focus (הדבר האחד שהכי כדאי לה לעשות השבוע, ולמה).
+עברית פשוטה וחמה, לשון נקבה כלפי אפרת, בלי מונחים טכניים. אל תמציאו נתונים או מחירים. אל תחזרו על משימות שכבר בלוח, אלא אם צריך לשנות בהן משהו.
+החזירו JSON בלבד: {"summary":"...","focus":"...","areas":{"dev":{"owner":"tamir","items":[{"title":"...","why":"...","step":"...","owner":"tamir"}]},"mkt":{...},"str":{...},"sales":{...}}}`;
+  try{
+    const res=await sample.json(prompt,{cache:false,...tierOpt()});
+    if(!res||!res.areas) throw {code:"empty_completion"};
+    for(const k in res.areas){ const a=res.areas[k]; if(!a||!Array.isArray(a.items)) delete res.areas[k]; else a.items=a.items.filter(i=>i&&i.title).slice(0,4) }
+    BRIEF={summary:String(res.summary||""),focus:String(res.focus||""),areas:res.areas,at:Date.now()};
+    await saveBrief(); renderBrief();
+  }catch(e){ out.innerHTML=`<div class="bsum">${esc(errText(e&&e.code))}</div>` }
+  finally{ btn.disabled=false; btn.textContent="✨ ישיבת צוות עכשיו" }
+});
+
+/* ---------- boot ---------- */
+renderGrid(); fillForm();
+if(location.hash==="#board") openBoard();
+(async()=>{
+  if(!window.claude?.use){ subscribeTasks(); return }
+  dlog("boot",{});
+  claude.use("sample").then(async s=>{ sample=s; dlog("sample_ready",{ok:!!s}); try{ const l=await s.limits(); const t=l&&l.modelTiers; TIER=(!t||t.includes("complex"))?"complex":null }catch(e){} });
+  claude.use("mcp").then(m=>{ mcp=m });
+  claude.use("dictation").then(d=>{ dict=d; setupVoice() });
+  claude.use("tts").then(t=>{ tts=t; if(current) render() });
+  try{
+    const [d,u]=await Promise.all([claude.use("db"),claude.use("user")]);
+    if(d&&u){ const i=await u.id(); if(i){ db=d; uid=i; for(const k in cache) delete cache[k]; if(current) render(); loadKB(); loadBrief(); loadMB(); dlog("db_ready") } }
+    if(d&&u&&typeof u.can==="function"){ const w=await u.can("data.write"); if(w===false){ canWrite=false; document.body.classList.add("ro") } }
+  }catch(e){}
+  subscribeTasks();
+})();
+</script>

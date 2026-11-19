@@ -73,4 +73,5 @@ Pushing to `main` triggers GitHub Actions (workflow "Deploy", file `deploy.yml`)
 - `index.html` (root): only redirects to `atzmaiot/index.html`. Leave alone.
 - `atzmaiot/index.html`: the whole page, CSS/JS/images inlined. Sections are `<section class="reel ..." id="...">` (welcome, intro, about, intro2, curriculum, video-reviews, reviews, fit, community, meetups, faq, here4u, price).
 - `CNAME`: custom domain. Never touch.
+- `my-team/`: separate project, Efrat's private AI team page (a claude.ai Artifact, not part of the website and never deployed). Its own `my-team/.claude/CLAUDE.md` and skill `my-team`. Her business documents stay out of this public repo.
 - Tests: `npm test` (smoke + links + the check). First local run needs `npx playwright install chromium`.
