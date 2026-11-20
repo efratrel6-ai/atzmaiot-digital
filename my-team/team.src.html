@@ -1062,6 +1062,14 @@ ${tasksContext(null)}
 function parseJSONLoose(t){ t=String(t||""); const a=t.indexOf("{"), b=t.lastIndexOf("}"); if(a<0||b<=a) return null;
   try{ return JSON.parse(t.slice(a,b+1)) }catch(e){ return null } }
 
+/* ---------- keep the chat above the phone keyboard (iOS: fixed sheets don't shrink with the keyboard) ---------- */
+function fitViewport(){ const vv=window.visualViewport, c=document.getElementById("chat"); if(!vv||!c||c.hidden) return;
+  c.style.top=vv.offsetTop+"px"; c.style.height=vv.height+"px"; c.style.bottom="auto";
+  const m=document.getElementById("msgs"); if(m&&document.activeElement===input) m.scrollTop=m.scrollHeight }
+if(window.visualViewport){ visualViewport.addEventListener("resize",fitViewport); visualViewport.addEventListener("scroll",fitViewport) }
+input.addEventListener("focus",()=>{ setTimeout(fitViewport,50); setTimeout(fitViewport,350) });
+input.addEventListener("blur",()=>setTimeout(()=>{ const c=document.getElementById("chat"); if(c){ c.style.top=""; c.style.height=""; c.style.bottom="" } fitViewport() },100));
+
 /* ---------- boot ---------- */
 renderGrid(); fillForm();
 if(location.hash==="#board") openBoard();
