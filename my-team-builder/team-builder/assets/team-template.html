@@ -467,7 +467,7 @@ function turns(m,msgs){
   return cut;
 }
 function groupPrompt(msgs,text){
-  const roster=TEAM.map(m=>`- ${m.id}: ${m.name} (${m.f?"אישה":"גבר"}), ${m.role}. ${m.how}`).join("\n");
+  const roster=TEAM.map(m=>`- ${m.id}: ${m.name} (${m.f?"אישה":"גבר"}), ${m.role}. ${m.how.slice(0,350)}`).join("\n");
   const hist=msgs.slice(-24).map(x=>`${x.r==="me"?"{{OWNER}}":(byId[x.who]?.name||"")}: ${x.t}`).join("\n");
   return `זו קבוצת וואטסאפ של הצוות האישי של {{OWNER}}. ${BIZ}
 חברי הצוות:
@@ -481,7 +481,7 @@ ${hist||"(אין עדיין)"}
 כתוב/כתבי את התגובות של הצוות. ${byId[R.lead].name} (${R.lead}) ${byId[R.lead].f?"מנהלת הצוות עונה ראשונה":"מנהל הצוות עונה ראשון"}: בקצרה, מחלקת את העבודה ואומרת למי היא מעבירה. אחריה עונים 1 עד 3 חברי צוות שהנושא באמת בתחום שלהם, כל אחד עם תרומה מעשית קצרה מהתחום שלו (עד 6 שורות), בגוף ראשון, בלשון המתאימה למגדר שלו, ופונים ל{{OWNER}} בלשון נקבה. עברית פשוטה וחמה, בלי מונחים טכניים, בלי להמציא מחירים או תאריכים. אם זו רק ברכה או שאלה קטנה, מספיקה תשובה של ${byId[R.lead].name} לבד.
 ${EXCEL}
 ${KB.all?"\n=== תיק העסק של {{OWNER}} ===\n"+KB.all+"\n=== סוף ===":""}
-${Object.keys(KB).filter(k=>byId[k]).map(k=>`\n=== הידע של ${byId[k].name} על העסק (להשתמש בו בתשובות מהתחום שלה/שלו) ===\n${KB[k]}\n=== סוף ===`).join("")}
+
 ${tasksContext(null)}
 אם סוכמו משימות ברורות, הוסף/הוסיפי שדה "tasks" (עד 6) עם owner = id של חבר צוות, או shared, או me.
 החזר/י JSON בלבד בצורה: {"replies":[{"id":"${R.lead}","text":"..."},{"id":"${R.marketing}","text":"..."}],"tasks":[{"owner":"${R.marketing}","title":"..."}]} עם id מתוך הרשימה.`;
@@ -687,7 +687,14 @@ async function send(retry=false){
     if(id==="group"){
       const gopts={signal:ctl.signal,cache:false}; if(imgs.length) gopts.images=imgs;
       dlog("group_call_start");
-      const res=await sample.json((MB.length?mbPick(fullText,7000,[]):"")+groupPrompt(msgs.slice(0,-1),fullText+(imgs.length?"\n({{OWNER}} צירפה תמונה, היא מצורפת לבקשה)":"")),gopts);
+      const gp=(MB.length?mbPick(fullText,5000,[]):"")+groupPrompt(msgs.slice(0,-1),fullText+(imgs.length?"\n({{OWNER}} צירפה תמונה, היא מצורפת לבקשה)":""))+"\nחשוב: החזר/י רק את ה-JSON, בלי שום טקסט לפניו או אחריו.";
+      let gStream="", gTick=0; const g0=Date.now(); dlog("group_call_start",{chars:gp.length});
+      const gStall=new Promise(res=>{ const iv=setInterval(()=>{ if(!busy||myCtl.signal.aborted){ clearInterval(iv); return }
+        if(gStream&&Date.now()-gTick>12000){ clearInterval(iv); res({text:gStream,stalled:true}) } },1000) });
+      const gCall=sample(gp,{...gopts,onText:({text})=>{ if(!gStream){ dlog("group_first_text",{ms:Date.now()-g0}); const ty=$("#typing"); if(ty) ty.textContent="הצוות כותב…" } gStream=text; gTick=Date.now(); }});
+      gCall.then(r=>dlog("group_resolved",{ms:Date.now()-g0}),e=>dlog("group_rejected",{ms:Date.now()-g0,code:e&&e.code}));
+      const gOut=await Promise.race([gCall,gStall]); if(gOut.stalled){ dlog("group_stalled_finish"); gCall.catch(()=>{}); try{ myCtl.abort() }catch(e){} }
+      const res=parseJSONLoose(gOut.text); if(!res) { dlog("group_bad_json",{head:String(gOut.text).slice(0,80)}); throw {code:"invalid_json"} }
       const replies=(res&&Array.isArray(res.replies)?res.replies:[]).filter(r=>byId[r.id]&&r.text);
       for(const r of replies){ msgs.push({r:"them",who:r.id,t:String(r.text),at:Date.now()}) }
       if(!replies.length) throw {code:"empty_completion"};
@@ -986,6 +993,9 @@ ${tasksContext(null)}
   finally{ btn.disabled=false; btn.textContent="✨ ישיבת צוות עכשיו" }
 });
 
+function parseJSONLoose(t){ t=String(t||""); const a=t.indexOf("{"), b=t.lastIndexOf("}"); if(a<0||b<=a) return null;
+  try{ return JSON.parse(t.slice(a,b+1)) }catch(e){ return null } }
+
 /* ---------- boot ---------- */
 renderGrid(); fillForm();
 if(location.hash==="#board") openBoard();
@@ -998,7 +1008,9 @@ if(location.hash==="#board") openBoard();
   claude.use("tts").then(t=>{ tts=t; if(current) render() });
   try{
     const [d,u]=await Promise.all([claude.use("db"),claude.use("user")]);
-    if(d&&u){ const i=await u.id(); if(i){ db=d; uid=i; for(const k in cache) delete cache[k]; if(current) render(); loadKB(); loadBrief(); loadMB(); dlog("db_ready") } }
+    if(d&&u){ const i=await u.id(); if(i){ db=d; uid=i; for(const k in cache) delete cache[k]; if(current) render(); loadKB(); loadBrief(); loadMB();
+      try{ const prev=await db.doc(`data/users/${uid}/debug`).get(); if(prev.exists){ const old=JSON.parse(JSON.stringify(prev.data().log||[])); DBG.unshift(...old.slice(-80)) } }catch(e){}
+      dlog("db_ready") } }
     if(d&&u&&typeof u.can==="function"){ const w=await u.can("data.write"); if(w===false){ canWrite=false; document.body.classList.add("ro") } }
   }catch(e){}
   subscribeTasks();
