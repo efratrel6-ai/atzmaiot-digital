@@ -22,6 +22,7 @@ test("טופס יום הצילום: מחיר, הנחה לחוזרות וחתימ
   await expect(page.locator("#err")).not.toHaveText("");
 
   await page.locator("#name").fill("בדיקה");
+  await page.locator("#pubno").check();
   // סעיף חובה: להתחייב לשלוח את הקובץ לאפרת
   await page.locator("#save").click();
   await expect(page.locator("#err"), "אפשר לשמור בלי לאשר את סעיף שליחת הקובץ").toContainText("לשלוח");
@@ -100,6 +101,7 @@ test("טופס יום הצילום: אחרי השמירה קופץ חלון של
   await page.mouse.down();
   await page.mouse.move(box.x + 100, box.y + 70, { steps: 4 });
   await page.mouse.up();
+  await page.locator("#pubno").check();
   await page.locator("#save").click();
   await expect(page.locator("#sendDlg"), "חלון השליחה לא נפתח").toBeVisible();
   await expect(page.locator('#sendDlg a[href^="https://wa.me/972523115049"]')).toBeVisible();
@@ -118,10 +120,9 @@ test("טופס יום הצילום: בגוש עציון אין תוספת נסי
   await expect(page.locator("#total")).toHaveText("6,500 ₪");
 });
 
-test("טופס יום הצילום: תיבת אישור פרסום ברשתות היא רשות ולא חובה", async ({ page }) => {
+test("טופס יום הצילום: חובה לבחור מאשר/ת או לא מאשר/ת פרסום ברשתות", async ({ page }) => {
   await page.addInitScript(() => { window.print = () => {}; });
   await page.goto("/atzmaiot/shoot-agreement.html");
-  await expect(page.locator("#pubok")).not.toBeChecked();
   await page.locator("#name").fill("בדיקה");
   await page.locator("#sendok").check();
   await page.locator("#box").scrollIntoViewIfNeeded();
@@ -131,5 +132,9 @@ test("טופס יום הצילום: תיבת אישור פרסום ברשתות 
   await page.mouse.move(box.x + 100, box.y + 70, { steps: 4 });
   await page.mouse.up();
   await page.locator("#save").click();
-  await expect(page.locator("#sendDlg"), "אי אפשר לשמור בלי לסמן אישור פרסום, אבל זו רשות").toBeVisible();
+  await expect(page.locator("#err"), "אפשר לשמור בלי לבחור לגבי פרסום ברשתות").toContainText("פרסום");
+  await expect(page.locator("#sendDlg")).toBeHidden();
+  await page.locator("#pubyes").check();
+  await page.locator("#save").click();
+  await expect(page.locator("#sendDlg")).toBeVisible();
 });
