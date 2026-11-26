@@ -117,3 +117,19 @@ test("טופס יום הצילום: בגוש עציון אין תוספת נסי
   await page.locator("#calc").click();
   await expect(page.locator("#total")).toHaveText("6,500 ₪");
 });
+
+test("טופס יום הצילום: תיבת אישור פרסום ברשתות היא רשות ולא חובה", async ({ page }) => {
+  await page.addInitScript(() => { window.print = () => {}; });
+  await page.goto("/atzmaiot/shoot-agreement.html");
+  await expect(page.locator("#pubok")).not.toBeChecked();
+  await page.locator("#name").fill("בדיקה");
+  await page.locator("#sendok").check();
+  await page.locator("#box").scrollIntoViewIfNeeded();
+  const box = await page.locator("#box").boundingBox();
+  await page.mouse.move(box.x + 20, box.y + 40);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 100, box.y + 70, { steps: 4 });
+  await page.mouse.up();
+  await page.locator("#save").click();
+  await expect(page.locator("#sendDlg"), "אי אפשר לשמור בלי לסמן אישור פרסום, אבל זו רשות").toBeVisible();
+});
