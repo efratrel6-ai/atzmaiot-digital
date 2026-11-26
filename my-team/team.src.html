@@ -237,9 +237,18 @@ header.top p{margin:0;color:var(--muted);font-size:.95rem}
 .cl select{font:14px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
 .csearch{font:15px var(--body);color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 14px;width:100%;margin-top:10px}
 .addc{display:grid;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:10px}
-@media (min-width:640px){.addc{grid-template-columns:1fr 1fr 2fr auto}}
+@media (min-width:640px){.addc{grid-template-columns:1fr 1fr 1fr 2fr auto}}
+.addc select{font:15px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
 .addc input{font:15px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
 .addc[hidden]{display:none!important}
+.ctag{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:999px;font-size:.82rem;font-weight:700;color:#fff;background:var(--tc)}
+.cfilters{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.cfilters button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:.88rem;background:var(--card);border:1px solid var(--line)}
+.cfilters button i{width:10px;height:10px;border-radius:50%;background:var(--tc)}
+.cfilters button[aria-pressed="true"]{background:var(--tc);color:#fff;border-color:var(--tc)}
+.cfilters button[aria-pressed="true"] i{background:#fff}
+.cfilters button:focus-visible{outline:2px solid var(--fg)}
+.cl{border-inline-start:5px solid var(--tc)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -282,9 +291,11 @@ header.top p{margin:0;color:var(--muted);font-size:.95rem}
     <form class="addc" id="addClientForm" hidden>
       <input id="ncName" placeholder="שם הלקוחה" aria-label="שם הלקוחה" required maxlength="60">
       <input id="ncWhat" placeholder="מה היא עושה (למשל: צלמת)" aria-label="תחום" maxlength="80">
+      <select id="ncType" aria-label="סוג השירות"></select>
       <input id="ncUrl" placeholder="הקישור לדף שלה" aria-label="קישור" type="url" required>
       <button class="bt" type="submit">הוספה</button>
     </form>
+    <div class="cfilters" id="cfilters" aria-label="סינון לפי סוג שירות"></div>
     <input class="csearch" id="csearch" type="search" placeholder="חיפוש לקוחה…" aria-label="חיפוש לקוחה">
     <div id="clientsMsg" class="note" hidden></div>
     <div class="clist" id="clist"></div>
@@ -1115,7 +1126,10 @@ input.addEventListener("blur",()=>setTimeout(()=>{ const c=document.getElementBy
 /* ---------- clients area (private doc data/users/<uid>/clients) ---------- */
 const CSTATUS=[["lead","מתעניינת"],["active","בליווי"],["paused","בהפסקה"],["done","סיימה"]];
 const CCOL=["#7a2e4a","#2a9d8f","#d6457a","#6b4fbb","#e0632f","#3b6fd8","#5e8c4a","#a0527a","#0f8fb3","#8a6a50"];
-let CLIENTS=[], clientsVer=0;
+let CLIENTS=[], clientsVer=0, ctypeFilter=null;
+/* service types: each gets its own color */
+const CTYPES=[["social","צילומי סושיאל","#d0743c"],["coaching","ליווי לעצמאיות","#6b4fbb"],["other","אחר","#5f6b73"]];
+const ctype=k=>CTYPES.find(t=>t[0]===k)||CTYPES[2];
 async function loadClients(){ if(!db) return; try{ const s=await db.doc(`data/users/${uid}/clients`).get(); CLIENTS=s.exists?JSON.parse(JSON.stringify(s.data().list||[])):[]; }catch(e){ CLIENTS=[] } renderClientsCount(); if(!$("#clients").hidden) renderClients() }
 async function saveClients(){ if(!db){ $("#clientsMsg").textContent="הלקוחות נשמרים רק כשהדף פתוח באפליקציה של Claude."; $("#clientsMsg").hidden=false; return false }
   try{ await db.doc(`data/users/${uid}/clients`).set({list:CLIENTS,updated:Date.now()}); renderClientsCount(); return true }catch(e){ $("#clientsMsg").textContent="השמירה לא הצליחה. נסי שוב."; $("#clientsMsg").hidden=false; return false } }
@@ -1123,15 +1137,18 @@ function renderClientsCount(){ const n=CLIENTS.length; $("#clientsCnt").textCont
 const safeUrl=u=>/^https:\/\//.test(String(u||""))?String(u):"";
 function renderClients(){
   const q=($("#csearch").value||"").trim();
-  const list=CLIENTS.filter(c=>!q||(c.name+" "+(c.what||"")+" "+(c.summary||"")).includes(q)).sort((a,b)=>(b.added||0)-(a.added||0));
+  $("#cfilters").innerHTML=[["","כולן","#7a2e4a"],...CTYPES.filter(t=>CLIENTS.some(c=>(c.type||"other")===t[0]))].map(([k,l,col])=>`<button type="button" data-ct="${k}" style="--tc:${col}" aria-pressed="${(ctypeFilter||"")===k}"><i></i>${l} ${k?`(${CLIENTS.filter(c=>(c.type||"other")===k).length})`:""}</button>`).join("");
+  const list=CLIENTS.filter(c=>!ctypeFilter||(c.type||"other")===ctypeFilter).filter(c=>!q||(c.name+" "+(c.what||"")+" "+(c.summary||"")).includes(q)).sort((a,b)=>(b.added||0)-(a.added||0));
   if(!CLIENTS.length){ $("#clist").innerHTML=`<div class="review">עוד אין לקוחות כאן. שלחי לי בשיחה קישור לדף של לקוחה, ואני אוסיף אותה. אפשר גם ללחוץ "+ לקוחה חדשה".</div>`; return }
-  $("#clist").innerHTML=list.map((c,i)=>{ const col=CCOL[Math.abs([...c.id].reduce((h,ch)=>h*31+ch.charCodeAt(0)|0,7))%CCOL.length]; const u=safeUrl(c.url);
-    return `<article class="cl" data-c="${esc(c.id)}">
+  $("#clist").innerHTML=list.map((c,i)=>{ const T=ctype(c.type||"other"); const col=T[2]; const u=safeUrl(c.url);
+    return `<article class="cl" data-c="${esc(c.id)}" style="--tc:${col}">
       <div class="ch"><span class="av2" style="--cc:${col}">${esc(c.name.slice(0,1))}</span>
         <div class="nm"><b>${esc(c.name)}</b><small>${esc(c.what||"")}</small></div></div>
+      <div><span class="ctag" style="--tc:${col}">${esc(T[1])}</span></div>
       ${c.summary?`<div class="sum">${esc(c.summary)}</div>`:""}
       <div class="meta2">${c.added?`<span>נוספה ${new Date(c.added).toLocaleDateString("he-IL")}</span>`:""}${c.next?`<span>· הבא: ${esc(c.next)}</span>`:""}</div>
       <div class="row3">${u?`<a class="open" href="${esc(u)}" target="_blank" rel="noopener">פתיחת הדף ↗</a>`:""}
+        <select data-cact="type" aria-label="סוג השירות">${CTYPES.map(([k,l])=>`<option value="${k}" ${k===(c.type||"other")?"selected":""}>${l}</option>`).join("")}</select>
         <select data-cact="status" aria-label="סטטוס">${CSTATUS.map(([k,l])=>`<option value="${k}" ${k===(c.status||"active")?"selected":""}>${l}</option>`).join("")}</select>
         <button class="lnk" type="button" data-cact="del">מחיקה</button></div>
     </article>`}).join("")||`<div class="empty">לא נמצאה לקוחה בשם הזה</div>`;
@@ -1142,10 +1159,12 @@ $("#clientsBack").addEventListener("click",()=>{ $("#clients").hidden=true; docu
 $("#csearch").addEventListener("input",renderClients);
 $("#addClientToggle").addEventListener("click",()=>{ const f=$("#addClientForm"); f.hidden=!f.hidden; if(!f.hidden) $("#ncName").focus() });
 $("#addClientForm").addEventListener("submit",async e=>{ e.preventDefault(); const u=$("#ncUrl").value.trim(); if(!safeUrl(u)){ $("#clientsMsg").textContent="הקישור צריך להתחיל ב-https://"; $("#clientsMsg").hidden=false; return }
-  CLIENTS.push({id:"c"+Date.now().toString(36),name:$("#ncName").value.trim(),what:$("#ncWhat").value.trim(),url:u,status:"active",added:Date.now()});
+  CLIENTS.push({id:"c"+Date.now().toString(36),name:$("#ncName").value.trim(),what:$("#ncWhat").value.trim(),type:$("#ncType").value,url:u,status:"active",added:Date.now()});
   if(await saveClients()){ $("#addClientForm").reset(); $("#addClientForm").hidden=true; $("#clientsMsg").hidden=true } renderClients() });
 let cDelArm=null;
-$("#clist").addEventListener("change",async e=>{ const s=e.target.closest("select[data-cact]"); if(!s) return; const c=CLIENTS.find(x=>x.id===s.closest(".cl").dataset.c); if(!c) return; c.status=s.value; await saveClients() });
+$("#clist").addEventListener("change",async e=>{ const s=e.target.closest("select[data-cact]"); if(!s) return; const c=CLIENTS.find(x=>x.id===s.closest(".cl").dataset.c); if(!c) return; c[s.dataset.cact]=s.value; await saveClients(); renderClients() });
+$("#cfilters").addEventListener("click",e=>{ const b=e.target.closest("button[data-ct]"); if(!b) return; const k=b.dataset.ct||null; ctypeFilter=(ctypeFilter===k?null:k); renderClients() });
+$("#ncType").innerHTML=CTYPES.map(([k,l])=>`<option value="${k}">${l}</option>`).join("");
 $("#clist").addEventListener("click",async e=>{ const b=e.target.closest("button[data-cact='del']"); if(!b) return; const id=b.closest(".cl").dataset.c;
   if(cDelArm!==id){ cDelArm=id; b.textContent="ללחוץ שוב כדי למחוק"; setTimeout(()=>{ if(cDelArm===id){ cDelArm=null; b.textContent="מחיקה" } },4000); return }
   cDelArm=null; CLIENTS=CLIENTS.filter(x=>x.id!==id); await saveClients(); renderClients() });
