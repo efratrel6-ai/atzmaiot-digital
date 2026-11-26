@@ -55,6 +55,13 @@ ul { margin: 0; padding-inline-start: 1.3rem; display: flex; flex-direction: col
 summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: var(--burgundy); }
 .sigrow { display: flex; justify-content: space-between; gap: 1rem; margin-top: .5rem; }
 .print-only { display: none; }
+.dlg { border: 0; border-radius: 1.2rem; padding: 1.5rem; max-width: 24rem; width: calc(100% - 2rem); color: var(--ink); font-family: var(--f-body); text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+.dlg::backdrop { background: rgba(51,43,40,.55); }
+.dlg h2 { margin: 0 0 .5rem; }
+.send { display: flex; gap: .75rem; justify-content: center; margin: 1.1rem 0; flex-wrap: wrap; }
+.sbtn { display: flex; flex-direction: column; align-items: center; gap: .35rem; text-decoration: none; color: var(--ink); font-family: var(--f-head); font-weight: 700; border: 1px solid var(--line); border-radius: 1rem; padding: .9rem 1.4rem; min-width: 8rem; }
+.sbtn svg { width: 2.6rem; height: 2.6rem; }
+@media print { .dlg { display: none !important; } }
 @media (max-width: 30rem) { .fields { grid-template-columns: 1fr; } }
 @media print {
   @page { size: A4; margin: 15mm; }
@@ -197,6 +204,19 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 <p class="note screen-only" id="after" hidden>אחרי ששמרת את ה-PDF, שלחי אותו לאפרת: <a href="https://wa.me/972523115049" target="_blank" rel="noopener">בוואטסאפ</a> או <a href="mailto:Efratrel6@gmail.com">במייל</a>.</p>
 </form>
 </main>
+<dialog id="sendDlg" class="dlg" aria-labelledby="sendTtl">
+<h2 id="sendTtl">עכשיו שולחים לאפרת</h2>
+<p>שמרת את ה-PDF? נהדר. בחרי איך לשלוח אותו לאפרת וצרפי את הקובץ שנשמר:</p>
+<div class="send">
+<a class="sbtn wa" href="https://wa.me/972523115049?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A4%D7%A8%D7%AA%2C%20%D7%9E%D7%A6%D7%95%D7%A8%D7%A3%20%D7%94%D7%94%D7%A1%D7%9B%D7%9D%20%D7%94%D7%97%D7%AA%D7%95%D7%9D" target="_blank" rel="noopener">
+<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#25D366"/><path fill="#fff" d="M16 6.5a9.4 9.4 0 0 0-8 14.3L6.6 25.4l4.8-1.3A9.4 9.4 0 1 0 16 6.5zm5.4 13.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.9 2.100c.1.200.1.400 0 .600l-.4.600c-.1.200-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.5.100.600-.1l.9-1.100c.2-.3.400-.2.700-.1l2 .9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg>
+<span>וואטסאפ</span></a>
+<a class="sbtn gm" href="mailto:Efratrel6@gmail.com?subject=%D7%94%D7%A1%D7%9B%D7%9D%20%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%97%D7%AA%D7%95%D7%9D&amp;body=%D7%94%D7%99%D7%99%20%D7%90%D7%A4%D7%A8%D7%AA%2C%20%D7%9E%D7%A6%D7%95%D7%A8%D7%A3%20%D7%94%D7%94%D7%A1%D7%9B%D7%9D%20%D7%94%D7%97%D7%AA%D7%95%D7%9D">
+<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="6" width="28" height="20" rx="3" fill="#fff" stroke="#d9d9d9"/><path d="M3 9l13 9.500L29 9" fill="none" stroke="#EA4335" stroke-width="3"/><path d="M3 8v17M29 8v17" stroke="#4285F4" stroke-width="3"/><path d="M3 8l2-1M29 8l-2-1" stroke="#FBBC04" stroke-width="3"/></svg>
+<span>Gmail</span></a>
+</div>
+<button type="button" class="ghost" id="closeDlg">סגירה</button>
+</dialog>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
@@ -280,6 +300,7 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
   function end() { if (path) { strokes++; path = null; } }
   box.addEventListener("pointerup", end);
   box.addEventListener("pointercancel", end);
+  $("closeDlg").addEventListener("click", function () { $("sendDlg").close(); });
   $("clear").addEventListener("click", function () {
     while (svg.firstChild) svg.removeChild(svg.firstChild);
     strokes = 0; $("hint").hidden = false; $("err").textContent = "";
@@ -300,6 +321,7 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
     var det = document.querySelector("details"); if (!$("name2").value.trim()) det.open = false;
     window.print();
     $("after").hidden = false;
+    var dlg = $("sendDlg"); if (dlg.showModal) dlg.showModal();
     document.title = old;
   });
 })();

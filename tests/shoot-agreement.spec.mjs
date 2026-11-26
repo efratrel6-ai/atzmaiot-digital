@@ -88,3 +88,22 @@ test("טופס יום הצילום: אם החישוב האוטומטי נכשל 
   await page.locator("#km").fill("10");
   await expect(page.locator("#total")).toHaveText("6,520 ₪");
 });
+
+test("טופס יום הצילום: אחרי השמירה קופץ חלון שליחה לאפרת עם וואטסאפ וג׳ימייל", async ({ page }) => {
+  await page.addInitScript(() => { window.print = () => {}; });
+  await page.goto("/atzmaiot/shoot-agreement.html");
+  await page.locator("#name").fill("בדיקה");
+  await page.locator("#sendok").check();
+  await page.locator("#box").scrollIntoViewIfNeeded();
+  const box = await page.locator("#box").boundingBox();
+  await page.mouse.move(box.x + 20, box.y + 40);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 100, box.y + 70, { steps: 4 });
+  await page.mouse.up();
+  await page.locator("#save").click();
+  await expect(page.locator("#sendDlg"), "חלון השליחה לא נפתח").toBeVisible();
+  await expect(page.locator('#sendDlg a[href^="https://wa.me/972523115049"]')).toBeVisible();
+  await expect(page.locator('#sendDlg a[href^="mailto:Efratrel6@gmail.com"]')).toBeVisible();
+  await page.locator("#closeDlg").click();
+  await expect(page.locator("#sendDlg")).toBeHidden();
+});
