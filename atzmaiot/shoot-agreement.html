@@ -131,9 +131,9 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 <ul>
 <li>4 שעות צילומי וידאו</li>
 <li>12-14 סרטוני רילס ערוכים</li>
-<li>תוספת נסיעות: ללא תוספת באזור ירושלים. מחוץ לירושלים: 2 ₪ לכל קילומטר, הלוך וחזור מנוקדים ליעד הצילום</li>
+<li>תוספת נסיעות: ללא תוספת באזור ירושלים וגוש עציון. מחוץ לירושלים ולגוש עציון: 2 ₪ לכל קילומטר, הלוך וחזור מנוקדים ליעד הצילום</li>
 </ul>
-<label class="km">מרחק הנסיעה הלוך וחזור (בק״מ). מתמלא לבד אחרי "חישוב נסיעות", ואפשר גם לכתוב ידנית. באזור ירושלים: 0.<input type="number" id="km" min="0" step="1" inputmode="numeric" value="0"></label>
+<label class="km">מרחק הנסיעה הלוך וחזור (בק״מ). מתמלא לבד אחרי "חישוב נסיעות", ואפשר גם לכתוב ידנית. באזור ירושלים וגוש עציון: 0.<input type="number" id="km" min="0" step="1" inputmode="numeric" value="0"></label>
 <div class="price" aria-live="polite">
 <div class="row"><span>יום צילום</span><bdi>6,500 ₪</bdi></div>
 <div class="row disc" id="discRow" hidden><span>הנחת לקוחה חוזרת (10%)</span><bdi>-650 ₪</bdi></div>
@@ -236,6 +236,7 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 
   // Travel: free-map lookup (OpenStreetMap search + OSRM driving route). If it fails, the km box can be typed by hand.
   var HOME = [35.241, 31.654]; // approximate start point (lon, lat)
+  var FREE_PLACES = ["אפרת", "אלון שבות", "כפר עציון", "נווה דניאל", "אלעזר", "תקוע", "נוקדים", "מגדל עוז", "כרמי צור", "בת עין", "ראש צורים", "שדה בר", "מעלה עמוס"];
   function msg(t) { $("calcMsg").textContent = t; }
   function getJSON(url) {
     return fetch(url, { headers: { "Accept": "application/json" } }).then(function (r) {
@@ -250,8 +251,10 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
       .then(function (res) {
         if (!res.length) throw new Error("notfound");
         var a = res[0].address || {}, city = a.city || a.town || a.village || a.municipality || "";
-        if (city.indexOf("ירושלים") === 0 && city.length <= 8) {
-          $("km").value = 0; price(); msg("הצילומים בירושלים, ללא תוספת נסיעות."); return null;
+        var all = JSON.stringify(a) + " " + (res[0].display_name || "");
+        var etzion = FREE_PLACES.indexOf(city) > -1 || all.indexOf("גוש עציון") > -1;
+        if ((city.indexOf("ירושלים") === 0 && city.length <= 8) || etzion) {
+          $("km").value = 0; price(); msg("הצילומים באזור ירושלים או גוש עציון, ללא תוספת נסיעות."); return null;
         }
         var to = res[0].lon + "," + res[0].lat;
         return getJSON("https://router.project-osrm.org/route/v1/driving/" + HOME.join(",") + ";" + to + "?overview=false")

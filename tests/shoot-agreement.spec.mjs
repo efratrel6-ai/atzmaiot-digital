@@ -107,3 +107,13 @@ test("טופס יום הצילום: אחרי השמירה קופץ חלון של
   await page.locator("#closeDlg").click();
   await expect(page.locator("#sendDlg")).toBeHidden();
 });
+
+test("טופס יום הצילום: בגוש עציון אין תוספת נסיעות", async ({ page }) => {
+  await page.route("**/nominatim.openstreetmap.org/**", (r) =>
+    r.fulfill({ json: [{ lon: "35.13", lat: "31.65", address: { town: "אפרת" } }] }));
+  await page.goto("/atzmaiot/shoot-agreement.html");
+  await page.locator("#km").fill("30");
+  await page.locator("#place").fill("אפרת");
+  await page.locator("#calc").click();
+  await expect(page.locator("#total")).toHaveText("6,500 ₪");
+});
