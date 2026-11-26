@@ -85,7 +85,6 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 <form class="doc" id="f" autocomplete="off" novalidate>
 <h1>הסכם יום צילום סושיאל לעסקים</h1>
 <p>אני שמחה שבחרת בי ללוות אותך ביום הצילום שלך. ההסכם נועד ליצור תיאום ציפיות, בהירות ושקט לשתינו, כדי שנוכל להגיע ליום הצילום פנויות ליצירה ולעשייה משותפת.</p>
-<p class="note screen-only">כתובת הצילומים נשלחת לשירות מפות חינמי כדי לחשב את מרחק הנסיעה. ממלאים, חותמים, לוחצים "שמירה כ-PDF" ושולחים לאפרת.</p>
 <p>שנערך ונחתם ביום <strong class="today"></strong></p>
 <p>בין: אפרת כהן (להלן: "הצלמת")</p>
 
@@ -150,11 +149,12 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 </ul>
 <label class="km">מרחק הנסיעה הלוך וחזור (בק״מ). מתמלא לבד אחרי "חישוב נסיעות", ואפשר גם לכתוב ידנית. באזור ירושלים וגוש עציון: 0.<input type="number" id="km" min="0" step="1" inputmode="numeric" value="0"></label>
 <div class="price" aria-live="polite">
-<div class="row"><span>יום צילום</span><bdi>6,500 ₪</bdi></div>
+<div class="row"><span>יום צילום*</span><bdi>6,500 ₪</bdi></div>
 <div class="row disc" id="discRow" hidden><span>הנחת לקוחה חוזרת (10%)</span><bdi>-650 ₪</bdi></div>
 <div class="row" id="kmRow" hidden><span id="kmLbl">נסיעות</span><bdi id="kmAmt">0 ₪</bdi></div>
 <div class="row total"><span>סה״כ</span><bdi id="total">6,500 ₪</bdi></div>
 </div>
+<p style="margin-top:.6rem"><strong>* תוספת שעת צילום מעבר ל-4 שעות: 700 ₪</strong></p>
 <label class="check" style="margin-top:.75rem"><input type="checkbox" id="ret"> אני לקוחה חוזרת (הנחה של 10%)</label>
 <p id="shared" hidden style="margin-top:.75rem">הסרטונים מתבצעים עבור שתי המצולמות ועל כן החומרים והמחיר מתחלקים בין שתיהן.</p>
 </section>
