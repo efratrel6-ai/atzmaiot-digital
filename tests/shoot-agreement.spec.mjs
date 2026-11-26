@@ -22,6 +22,10 @@ test("טופס יום הצילום: מחיר, הנחה לחוזרות וחתימ
   await expect(page.locator("#err")).not.toHaveText("");
 
   await page.locator("#name").fill("בדיקה");
+  // סעיף חובה: להתחייב לשלוח את הקובץ לאפרת
+  await page.locator("#save").click();
+  await expect(page.locator("#err"), "אפשר לשמור בלי לאשר את סעיף שליחת הקובץ").toContainText("לשלוח");
+  await page.locator("#sendok").check();
   await page.locator("#box").scrollIntoViewIfNeeded();
   const box = await page.locator("#box").boundingBox();
   await page.mouse.move(box.x + 20, box.y + 40);

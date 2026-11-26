@@ -169,6 +169,14 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 </section>
 
 <section>
+<h2>שליחת ההסכם החתום</h2>
+<ul>
+<li>המצולם/ת מתחייב/ת לשלוח לצלמת את קובץ ה-PDF של ההסכם החתום, מיד לאחר החתימה, בוואטסאפ למספר 052-3115049 או במייל Efratrel6@gmail.com.</li>
+</ul>
+<label class="check" style="margin-top:.5rem"><input type="checkbox" id="sendok"> קראתי ואני מתחייב/ת לשלוח את הקובץ לאפרת מיד אחרי החתימה</label>
+</section>
+
+<section>
 <h2>ועל כך באנו על החתום</h2>
 <p class="note screen-only" style="margin-bottom:.5rem">המצולם/ת חותם/ת עם האצבע או העכבר בתוך המסגרת.</p>
 <div class="sign-box" id="box" tabindex="0" role="img" aria-label="אזור חתימה">
@@ -185,6 +193,7 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 <button type="button" class="primary" id="save">שמירה כ-PDF</button>
 <button type="button" class="ghost" id="clear">ניקוי החתימה</button>
 </div>
+<p class="note screen-only" id="after" hidden>אחרי ששמרת את ה-PDF, שלחי אותו לאפרת: <a href="https://wa.me/972523115049" target="_blank" rel="noopener">בוואטסאפ</a> או <a href="mailto:Efratrel6@gmail.com">במייל</a>.</p>
 </form>
 </main>
 <script>
@@ -278,6 +287,7 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
   $("save").addEventListener("click", function () {
     var name = $("name").value.trim();
     if (!name) { $("err").textContent = "נא למלא שם מלא."; $("name").focus(); return; }
+    if (!$("sendok").checked) { $("err").textContent = "נא לאשר שאת מתחייבת לשלוח את הקובץ החתום לאפרת."; $("sendok").focus(); return; }
     if (!strokes) { $("err").textContent = "נא לחתום בתוך המסגרת."; box.focus(); return; }
     $("err").textContent = "";
     // The file name suggested when saving the PDF
@@ -288,6 +298,7 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
     document.querySelectorAll("input").forEach(function (el) { if (el.type !== "checkbox") el.setAttribute("value", el.value); });
     var det = document.querySelector("details"); if (!$("name2").value.trim()) det.open = false;
     window.print();
+    $("after").hidden = false;
     document.title = old;
   });
 })();
