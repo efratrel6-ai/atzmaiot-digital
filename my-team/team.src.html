@@ -219,6 +219,27 @@ header.top p{margin:0;color:var(--muted);font-size:.95rem}
 .bitem .act button{all:unset;cursor:pointer;background:var(--plum);color:#fff;padding:6px 12px;border-radius:999px;font-size:.85rem;font-weight:700}
 .bitem .act .ok{color:var(--sage);font-weight:700;font-size:.88rem}
 .bmeta{color:var(--muted);font-size:.85rem;margin-top:6px}
+.clients-btn{all:unset;cursor:pointer;margin-top:14px;display:inline-flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);padding:10px 16px;border-radius:999px;font-weight:700;color:var(--plum)}
+.clients-btn:focus-visible{outline:3px solid var(--plum);outline-offset:2px}
+.clist{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+@media (min-width:640px){.clist{grid-template-columns:1fr 1fr}}
+.cl{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cl .ch{display:flex;gap:12px;align-items:center}
+.cl .av2{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;font:800 1.4rem var(--display);flex:none;background:var(--cc)}
+.cl .nm{min-width:0;flex:1}
+.cl .nm b{display:block;font-family:var(--display);font-size:1.15rem}
+.cl .nm small{color:var(--muted);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cl .sum{font-size:.92rem;line-height:1.5;color:var(--fg)}
+.cl .meta2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:.82rem;color:var(--muted)}
+.cl .row3{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cl a.open{display:inline-flex;align-items:center;gap:6px;background:var(--plum);color:#fff;text-decoration:none;padding:9px 16px;border-radius:999px;font-weight:700;font-size:.95rem}
+.cl a.open:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.cl select{font:14px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.csearch{font:15px var(--body);color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 14px;width:100%;margin-top:10px}
+.addc{display:grid;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:10px}
+@media (min-width:640px){.addc{grid-template-columns:1fr 1fr 2fr auto}}
+.addc input{font:15px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+.addc[hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -229,6 +250,7 @@ header.top p{margin:0;color:var(--muted);font-size:.95rem}
     <div class="toprow">
       <button class="brief-btn" id="briefBtn" type="button">💡 מה כדאי לי לקדם עכשיו?</button>
       <button class="board-btn" id="boardBtn" type="button">📋 לוח המשימות <span class="cnt" id="boardCnt" hidden></span></button>
+      <button class="clients-btn" id="clientsBtn" type="button">👥 הלקוחות שלי <span id="clientsCnt"></span></button>
     </div>
   </header>
   <div id="leadSlot"></div>
@@ -246,6 +268,26 @@ header.top p{margin:0;color:var(--muted);font-size:.95rem}
     <p class="bmeta">הצוות עובר על תיק העסק, לוח המשימות והיומן, ומייעץ לך מה הכי כדאי לעשות עכשיו בפיתוח, שיווק, אסטרטגיה ומכירות.</p>
     <div class="btools"><button class="bt" id="briefRun" type="button">✨ ישיבת צוות עכשיו</button></div>
     <div id="briefOut"></div>
+  </div>
+</section>
+
+<section class="sheet" id="clients" hidden aria-label="הלקוחות שלי">
+  <div class="inner">
+    <div class="bhead">
+      <button class="icon-btn" id="clientsBack" type="button" aria-label="חזרה לצוות">→</button>
+      <h2>הלקוחות שלי</h2>
+    </div>
+    <p class="bmeta">כל לקוחה עם הדף שלה. לחיצה על "פתיחת הדף" פותחת את הקישור. רק את רואה את האזור הזה.</p>
+    <div class="btools"><button class="bt" id="addClientToggle" type="button">+ לקוחה חדשה</button></div>
+    <form class="addc" id="addClientForm" hidden>
+      <input id="ncName" placeholder="שם הלקוחה" aria-label="שם הלקוחה" required maxlength="60">
+      <input id="ncWhat" placeholder="מה היא עושה (למשל: צלמת)" aria-label="תחום" maxlength="80">
+      <input id="ncUrl" placeholder="הקישור לדף שלה" aria-label="קישור" type="url" required>
+      <button class="bt" type="submit">הוספה</button>
+    </form>
+    <input class="csearch" id="csearch" type="search" placeholder="חיפוש לקוחה…" aria-label="חיפוש לקוחה">
+    <div id="clientsMsg" class="note" hidden></div>
+    <div class="clist" id="clist"></div>
   </div>
 </section>
 
@@ -1070,6 +1112,44 @@ if(window.visualViewport){ visualViewport.addEventListener("resize",fitViewport)
 input.addEventListener("focus",()=>{ setTimeout(fitViewport,50); setTimeout(fitViewport,350) });
 input.addEventListener("blur",()=>setTimeout(()=>{ const c=document.getElementById("chat"); if(c){ c.style.top=""; c.style.height=""; c.style.bottom="" } fitViewport() },100));
 
+/* ---------- clients area (private doc data/users/<uid>/clients) ---------- */
+const CSTATUS=[["lead","מתעניינת"],["active","בליווי"],["paused","בהפסקה"],["done","סיימה"]];
+const CCOL=["#7a2e4a","#2a9d8f","#d6457a","#6b4fbb","#e0632f","#3b6fd8","#5e8c4a","#a0527a","#0f8fb3","#8a6a50"];
+let CLIENTS=[], clientsVer=0;
+async function loadClients(){ if(!db) return; try{ const s=await db.doc(`data/users/${uid}/clients`).get(); CLIENTS=s.exists?JSON.parse(JSON.stringify(s.data().list||[])):[]; }catch(e){ CLIENTS=[] } renderClientsCount(); if(!$("#clients").hidden) renderClients() }
+async function saveClients(){ if(!db){ $("#clientsMsg").textContent="הלקוחות נשמרים רק כשהדף פתוח באפליקציה של Claude."; $("#clientsMsg").hidden=false; return false }
+  try{ await db.doc(`data/users/${uid}/clients`).set({list:CLIENTS,updated:Date.now()}); renderClientsCount(); return true }catch(e){ $("#clientsMsg").textContent="השמירה לא הצליחה. נסי שוב."; $("#clientsMsg").hidden=false; return false } }
+function renderClientsCount(){ const n=CLIENTS.length; $("#clientsCnt").textContent=n?`(${n})`:"" }
+const safeUrl=u=>/^https:\/\//.test(String(u||""))?String(u):"";
+function renderClients(){
+  const q=($("#csearch").value||"").trim();
+  const list=CLIENTS.filter(c=>!q||(c.name+" "+(c.what||"")+" "+(c.summary||"")).includes(q)).sort((a,b)=>(b.added||0)-(a.added||0));
+  if(!CLIENTS.length){ $("#clist").innerHTML=`<div class="review">עוד אין לקוחות כאן. שלחי לי בשיחה קישור לדף של לקוחה, ואני אוסיף אותה. אפשר גם ללחוץ "+ לקוחה חדשה".</div>`; return }
+  $("#clist").innerHTML=list.map((c,i)=>{ const col=CCOL[Math.abs([...c.id].reduce((h,ch)=>h*31+ch.charCodeAt(0)|0,7))%CCOL.length]; const u=safeUrl(c.url);
+    return `<article class="cl" data-c="${esc(c.id)}">
+      <div class="ch"><span class="av2" style="--cc:${col}">${esc(c.name.slice(0,1))}</span>
+        <div class="nm"><b>${esc(c.name)}</b><small>${esc(c.what||"")}</small></div></div>
+      ${c.summary?`<div class="sum">${esc(c.summary)}</div>`:""}
+      <div class="meta2">${c.added?`<span>נוספה ${new Date(c.added).toLocaleDateString("he-IL")}</span>`:""}${c.next?`<span>· הבא: ${esc(c.next)}</span>`:""}</div>
+      <div class="row3">${u?`<a class="open" href="${esc(u)}" target="_blank" rel="noopener">פתיחת הדף ↗</a>`:""}
+        <select data-cact="status" aria-label="סטטוס">${CSTATUS.map(([k,l])=>`<option value="${k}" ${k===(c.status||"active")?"selected":""}>${l}</option>`).join("")}</select>
+        <button class="lnk" type="button" data-cact="del">מחיקה</button></div>
+    </article>`}).join("")||`<div class="empty">לא נמצאה לקוחה בשם הזה</div>`;
+}
+function openClients(){ $("#clients").hidden=false; document.body.style.overflow="hidden"; renderClients() }
+$("#clientsBtn").addEventListener("click",openClients);
+$("#clientsBack").addEventListener("click",()=>{ $("#clients").hidden=true; document.body.style.overflow="" });
+$("#csearch").addEventListener("input",renderClients);
+$("#addClientToggle").addEventListener("click",()=>{ const f=$("#addClientForm"); f.hidden=!f.hidden; if(!f.hidden) $("#ncName").focus() });
+$("#addClientForm").addEventListener("submit",async e=>{ e.preventDefault(); const u=$("#ncUrl").value.trim(); if(!safeUrl(u)){ $("#clientsMsg").textContent="הקישור צריך להתחיל ב-https://"; $("#clientsMsg").hidden=false; return }
+  CLIENTS.push({id:"c"+Date.now().toString(36),name:$("#ncName").value.trim(),what:$("#ncWhat").value.trim(),url:u,status:"active",added:Date.now()});
+  if(await saveClients()){ $("#addClientForm").reset(); $("#addClientForm").hidden=true; $("#clientsMsg").hidden=true } renderClients() });
+let cDelArm=null;
+$("#clist").addEventListener("change",async e=>{ const s=e.target.closest("select[data-cact]"); if(!s) return; const c=CLIENTS.find(x=>x.id===s.closest(".cl").dataset.c); if(!c) return; c.status=s.value; await saveClients() });
+$("#clist").addEventListener("click",async e=>{ const b=e.target.closest("button[data-cact='del']"); if(!b) return; const id=b.closest(".cl").dataset.c;
+  if(cDelArm!==id){ cDelArm=id; b.textContent="ללחוץ שוב כדי למחוק"; setTimeout(()=>{ if(cDelArm===id){ cDelArm=null; b.textContent="מחיקה" } },4000); return }
+  cDelArm=null; CLIENTS=CLIENTS.filter(x=>x.id!==id); await saveClients(); renderClients() });
+
 /* ---------- boot ---------- */
 renderGrid(); fillForm();
 if(location.hash==="#board") openBoard();
@@ -1082,7 +1162,7 @@ if(location.hash==="#board") openBoard();
   claude.use("tts").then(t=>{ tts=t; if(current) render() });
   try{
     const [d,u]=await Promise.all([claude.use("db"),claude.use("user")]);
-    if(d&&u){ const i=await u.id(); if(i){ db=d; uid=i; for(const k in cache) delete cache[k]; if(current) render(); loadKB(); loadBrief(); loadMB();
+    if(d&&u){ const i=await u.id(); if(i){ db=d; uid=i; for(const k in cache) delete cache[k]; if(current) render(); loadKB(); loadBrief(); loadMB(); loadClients();
       try{ const prev=await db.doc(`data/users/${uid}/debug`).get(); if(prev.exists){ const old=JSON.parse(JSON.stringify(prev.data().log||[])); DBG.unshift(...old.slice(-80)) } }catch(e){}
       dlog("db_ready") } }
     if(d&&u&&typeof u.can==="function"){ const w=await u.can("data.write"); if(w===false){ canWrite=false; document.body.classList.add("ro") } }

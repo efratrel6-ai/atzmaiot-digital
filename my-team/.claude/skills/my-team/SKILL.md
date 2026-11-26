@@ -72,6 +72,7 @@ Everything personal is under `data/users/<uid>/`. Each viewer's tree is private,
 | `mb1`, `mb2` | `{sections:[{p,t,b}]}`: the full marketing brief Efrat wrote for Noa, 93 sections including 40 content units. Noa gets ~7k chars of the best-matching sections per message (`mbPick`), always plus "איך נשמע טקסט של אפרת" and "עריכה שמקרבת לקול שלה". |
 | `brief` | The last strategy meeting. |
 | `debug` | The troubleshooting log (see below). |
+| `clients` | `{list:[{id,name,what,url,status,added,summary,next}]}`: the "👥 הלקוחות שלי" area. Use skill `add-client` to add one from a link. |
 
 The shared collection `tasks` is the board.
 
