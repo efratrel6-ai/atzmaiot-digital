@@ -29,13 +29,14 @@ p { margin: 0; }
 .fields { display: grid; gap: .9rem; grid-template-columns: 1fr 1fr; }
 .fields .full { grid-column: 1 / -1; }
 label { display: flex; flex-direction: column; gap: .25rem; font-family: var(--f-head); font-weight: 500; font-size: .95rem; }
-input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"] {
+input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"], input[type="number"] {
   font: inherit; font-family: var(--f-body); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: .6rem; padding: .6rem .75rem; min-height: 2.75rem; width: 100%; }
 input:focus-visible, button:focus-visible, .sign-box:focus-visible { outline: 3px solid var(--burgundy); outline-offset: 2px; }
 .price { background: var(--ground); border-radius: .9rem; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: .4rem; }
 .price .row { display: flex; justify-content: space-between; gap: 1rem; }
 .price .total { font-family: var(--f-head); font-weight: 800; font-size: 1.3rem; border-top: 1px solid var(--line); padding-top: .5rem; margin-top: .25rem; }
-.price .disc[hidden] { display: none; }
+.price .disc[hidden], .price [hidden] { display: none; }
+.km { margin-bottom: .75rem; }
 .check { flex-direction: row; align-items: center; gap: .6rem; font-weight: 500; }
 .check input { width: 1.4rem; height: 1.4rem; accent-color: var(--burgundy); }
 .sign-box { border: 2px dashed var(--line); border-radius: .9rem; background: #fff; height: 11rem; touch-action: none; position: relative; cursor: crosshair; }
@@ -64,7 +65,7 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
   details:not([open]) { display: none; }
   .terms { font-size: .92rem; }
   h2 { break-after: avoid; } li, .sigrow { break-inside: avoid; }
-  input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"] { border: 0; border-bottom: 1px solid #999; border-radius: 0; padding-inline: 0; }
+  input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"], input[type="number"] { border: 0; border-bottom: 1px solid #999; border-radius: 0; padding-inline: 0; }
   .sign-box { border: 0; border-bottom: 1px solid #333; border-radius: 0; height: 7rem; }
   .price { border: 1px solid #ccc; background: #fff; }
 }
@@ -122,11 +123,13 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 <ul>
 <li>4 שעות צילומי וידאו</li>
 <li>10-12 סרטוני רילס ערוכים</li>
-<li>תוספת נסיעות: ללא תוספת באזור ירושלים</li>
+<li>תוספת נסיעות: ללא תוספת באזור ירושלים. מחוץ לירושלים: 2 ₪ לכל קילומטר, מירושלים ליעד הצילום, לכיוון אחד</li>
 </ul>
+<label class="km">מרחק נסיעה מירושלים ליעד הצילום, לכיוון אחד (בק״מ). באזור ירושלים משאירים 0.<input type="number" id="km" min="0" step="1" inputmode="numeric" value="0"></label>
 <div class="price" aria-live="polite">
 <div class="row"><span>יום צילום</span><bdi>6,500 ₪</bdi></div>
 <div class="row disc" id="discRow" hidden><span>הנחת לקוחה חוזרת (10%)</span><bdi>-650 ₪</bdi></div>
+<div class="row" id="kmRow" hidden><span id="kmLbl">נסיעות</span><bdi id="kmAmt">0 ₪</bdi></div>
 <div class="row total"><span>סה״כ</span><bdi id="total">6,500 ₪</bdi></div>
 </div>
 <label class="check" style="margin-top:.75rem"><input type="checkbox" id="ret"> אני לקוחה חוזרת (הנחה של 10%)</label>
@@ -187,10 +190,19 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   var ret = $("ret"), total = $("total"), disc = $("discRow");
+  var fmt = function (n) { return n.toLocaleString("en-US") + " ₪"; };
   function price() {
+    // The 10% discount applies to the shoot price only, not to travel
+    var base = 6500, off = ret.checked ? base * 0.1 : 0;
+    var km = Math.max(0, Math.floor(Number($("km").value) || 0));
+    var travel = km * 2;
     disc.hidden = !ret.checked;
-    total.textContent = ret.checked ? "5,850 ₪" : "6,500 ₪";
+    $("kmRow").hidden = km === 0;
+    $("kmLbl").textContent = "נסיעות (" + km + " ק״מ × 2 ₪)";
+    $("kmAmt").textContent = fmt(travel);
+    total.textContent = fmt(base - off + travel);
   }
+  $("km").addEventListener("input", price);
   ret.addEventListener("change", price);
   var d = new Date().toLocaleDateString("he-IL");
   document.querySelectorAll(".today").forEach(function (el) { el.textContent = d; });

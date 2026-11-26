@@ -9,7 +9,12 @@ test("טופס יום הצילום: מחיר, הנחה לחוזרות וחתימ
   await expect(page.locator("#total")).toHaveText("6,500 ₪");
   await page.locator("#ret").check();
   await expect(page.locator("#total"), "ההנחה ללקוחה חוזרת לא חושבה נכון").toHaveText("5,850 ₪");
+  // נסיעות: 2 ₪ לק"מ, ההנחה רק על מחיר הצילום
+  await page.locator("#km").fill("50");
+  await expect(page.locator("#total"), "הנסיעות או ההנחה חושבו לא נכון").toHaveText("5,950 ₪");
   await page.locator("#ret").uncheck();
+  await expect(page.locator("#total")).toHaveText("6,600 ₪");
+  await page.locator("#km").fill("0");
   await expect(page.locator("#total")).toHaveText("6,500 ₪");
 
   // בלי שם וחתימה לא נותנים לשמור
