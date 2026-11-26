@@ -33,3 +33,17 @@ test("טופס יום הצילום לא מופיע בחיפוש ולא מקוש�
   await page.goto("/atzmaiot/");
   expect(await page.locator('a[href*="shoot-agreement"]').count()).toBe(0);
 });
+
+test("טופס יום הצילום: אין בו פרטים אישיים של אף אחד", async () => {
+  const { readFileSync } = await import("node:fs");
+  const html = readFileSync("atzmaiot/shoot-agreement.html", "utf8");
+  expect(html, "נמצא מספר שנראה כמו תעודת זהות בעמוד ציבורי").not.toMatch(/\b\d{9}\b/);
+});
+
+test("טופס יום הצילום: הסעיף על שתי מצולמות מופיע רק כשיש מצולמת נוספת", async ({ page }) => {
+  await page.goto("/atzmaiot/shoot-agreement.html");
+  await expect(page.locator("#shared")).toBeHidden();
+  await page.locator("summary").click();
+  await page.locator("#name2").fill("בדיקה");
+  await expect(page.locator("#shared")).toBeVisible();
+});

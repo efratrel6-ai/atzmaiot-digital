@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>הסכם יום צילום</title>
+<title>הסכם צילום אפרת כהן</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Varela+Round&display=swap">
@@ -29,7 +29,7 @@ p { margin: 0; }
 .fields { display: grid; gap: .9rem; grid-template-columns: 1fr 1fr; }
 .fields .full { grid-column: 1 / -1; }
 label { display: flex; flex-direction: column; gap: .25rem; font-family: var(--f-head); font-weight: 500; font-size: .95rem; }
-input[type="text"], input[type="tel"], input[type="email"], input[type="date"] {
+input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"] {
   font: inherit; font-family: var(--f-body); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: .6rem; padding: .6rem .75rem; min-height: 2.75rem; width: 100%; }
 input:focus-visible, button:focus-visible, .sign-box:focus-visible { outline: 3px solid var(--burgundy); outline-offset: 2px; }
 .price { background: var(--ground); border-radius: .9rem; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: .4rem; }
@@ -48,13 +48,23 @@ button { font: inherit; font-family: var(--f-head); font-weight: 700; border-rad
 .primary { background: var(--burgundy); color: #fff; }
 .ghost { background: #fff; color: var(--burgundy); }
 .error { color: #9b1c1c; font-weight: 700; min-height: 1.4em; }
+ul { margin: 0; padding-inline-start: 1.3rem; display: flex; flex-direction: column; gap: .4rem; }
+.terms { display: flex; flex-direction: column; gap: .6rem; }
+.terms h2 { margin-top: .6rem; }
+summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: var(--burgundy); }
+.sigrow { display: flex; justify-content: space-between; gap: 1rem; margin-top: .5rem; }
+.print-only { display: none; }
 @media (max-width: 30rem) { .fields { grid-template-columns: 1fr; } }
 @media print {
   @page { size: A4; margin: 15mm; }
   body { background: #fff; padding: 0; }
   .doc { border: 0; padding: 0; }
   .actions, .error, .sign-hint, .screen-only { display: none !important; }
-  input[type="text"], input[type="tel"], input[type="email"], input[type="date"] { border: 0; border-bottom: 1px solid #999; border-radius: 0; padding-inline: 0; }
+  .print-only { display: block; text-align: center; color: #555; font-size: .9rem; }
+  details:not([open]) { display: none; }
+  .terms { font-size: .92rem; }
+  h2 { break-after: avoid; } li, .sigrow { break-inside: avoid; }
+  input[type="text"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"] { border: 0; border-bottom: 1px solid #999; border-radius: 0; padding-inline: 0; }
   .sign-box { border: 0; border-bottom: 1px solid #333; border-radius: 0; height: 7rem; }
   .price { border: 1px solid #ccc; background: #fff; }
 }
@@ -63,41 +73,109 @@ button { font: inherit; font-family: var(--f-head); font-weight: 700; border-rad
 <body>
 <main class="wrap">
 <form class="doc" id="f" autocomplete="off" novalidate>
-<h1>הסכם יום צילום</h1>
-<p class="note screen-only">הפרטים נשארים רק במכשיר שלך ולא נשלחים לאף מקום. בסוף לוחצים על "שמירה כ-PDF" ושולחים לאפרת.</p>
+<h1>הסכם צילום אפרת כהן</h1>
+<p class="note screen-only">הפרטים נשארים רק במכשיר שלך ולא נשלחים לאף מקום. ממלאים, חותמים, לוחצים "שמירה כ-PDF" ושולחים לאפרת.</p>
+<p>שנערך ונחתם ביום <strong class="today"></strong></p>
+<p>בין: אפרת כהן (להלן: "הצלמת")</p>
 
 <section>
-<h2>פרטי הלקוחה</h2>
+<h2>לבין (להלן: "המצולם/ת")</h2>
 <div class="fields">
 <label class="full">שם מלא<input type="text" id="name" required></label>
-<label>שם העסק<input type="text" id="biz"></label>
-<label>תעודת זהות / ח.פ.<input type="text" id="idn" inputmode="numeric"></label>
+<label>תעודת זהות<input type="text" id="idn" inputmode="numeric"></label>
 <label>טלפון<input type="tel" id="tel"></label>
-<label>אימייל<input type="email" id="mail"></label>
-<label class="full">תאריך יום הצילום<input type="date" id="shoot"></label>
+<label class="full">אימייל<input type="email" id="mail"></label>
+<label class="full">שם העסק (אם יש)<input type="text" id="biz"></label>
+</div>
+<details class="screen-open" style="margin-top:.9rem">
+<summary>יש מצולמת נוספת? (לא חובה)</summary>
+<div class="fields" style="margin-top:.7rem">
+<label class="full">שם מלא<input type="text" id="name2"></label>
+<label>תעודת זהות<input type="text" id="idn2" inputmode="numeric"></label>
+<label>טלפון<input type="tel" id="tel2"></label>
+<label class="full">אימייל<input type="email" id="mail2"></label>
+</div>
+</details>
+</section>
+
+<section class="terms">
+<p>הואיל והמצולם/ת נותן/ת את הסכמתו/ה להצטלם ע"י הצלמת לאחר שראה את תוצריה וסגנון עבודתה;</p>
+<p>והואיל והצלם/ת עוסק/ת בצילום למטרות אמנותיות שונות ואחרות ויש לו/ה הכישורים לצלם</p>
+<p><strong>אי לכך הותנה והוסכם בין הצדדים כדלקמן:</strong></p>
+<ul>
+<li>ההצהרות במבוא לחוזה זה ונספחיו מהווים חלק בלתי נפרד ממנו.</li>
+<li>כל האמור בלשון נקבה או ההיפך חל על שני המינים.</li>
+</ul>
+</section>
+
+<section>
+<h2>מועד ומקום הצילום</h2>
+<div class="fields">
+<label>תאריך<input type="date" id="shoot"></label>
+<label>שעה<input type="time" id="stime"></label>
+<label class="full">מיקום<input type="text" id="place"></label>
 </div>
 </section>
 
 <section>
-<h2>מחיר</h2>
+<h2>החבילה והמחיר</h2>
+<ul>
+<li>4 שעות צילומי וידאו</li>
+<li>10-12 סרטוני רילס ערוכים</li>
+<li>תוספת נסיעות: ללא תוספת באזור ירושלים</li>
+</ul>
 <div class="price" aria-live="polite">
 <div class="row"><span>יום צילום</span><bdi>6,500 ₪</bdi></div>
 <div class="row disc" id="discRow" hidden><span>הנחת לקוחה חוזרת (10%)</span><bdi>-650 ₪</bdi></div>
 <div class="row total"><span>סה״כ</span><bdi id="total">6,500 ₪</bdi></div>
 </div>
 <label class="check" style="margin-top:.75rem"><input type="checkbox" id="ret"> אני לקוחה חוזרת (הנחה של 10%)</label>
+<p id="shared" hidden style="margin-top:.75rem">הסרטונים מתבצעים עבור שתי המצולמות ועל כן החומרים והמחיר מתחלקים בין שתיהן.</p>
+</section>
+
+<section class="terms">
+<h2>תשלום</h2>
+<ul>
+<li>עם שריון התאריך המצולם ישלם לצלמת 500 ₪ לשריון יום הצילומים. ושאר התשלום יתבצע ביום הצילומים עצמו.</li>
+<li>התשלום יועבר בהעברה בנקאית או באפליקציית תשלומים BIT, PEPPER, PAYBOX. (בכל תשלום ישלח המצולם צילום מסך של ביצוע ההעברה לצורך אסמכתא ורישום קבלה).</li>
+<li>עלות לכל שעת צילום נוספת ותוספת התוצרים אשר יצולמו בשעה הנוספת 700₪</li>
+<li>יש לציין כי לא ישלח ללקוח כל חומר מצולם באם לא הסדיר את התשלום עבור הצילומים.</li>
+</ul>
+<h2>מסירת סרטונים ללקוח</h2>
+<ul>
+<li>הצלמת תעבד את הסרטונים עפ"י שיקול דעת מקצועי.</li>
+<li>הצלמת תעביר למצולם את כל הסרטונים בקבצים דיגיטליים תוך 28 ימי עסקים מיום הצילומים.</li>
+<li>במידה ויבקש המצולם להקדים את מועד קבלת הסרטונים, ובכפוף לפניות הצלמת, יוכל לקבלן תוך 7 ימי עסקים בתוספת של 650 ₪</li>
+<li>הצלמת מתחייבת לשמור את חומרי הגלם במשך שלושה חודשים. בתום שלושה חודשים הצלמת רשאית למחוק את כל חומר הגלם ללא הודעה נוספת מראש.</li>
+<li>הובהר ללקוח כי הצלמת מצלמת באור טבעי בלבד והוסברו לו מראש מגבלות המקום וכניסת האור הטבעי. והובהר כי יש חללים עם אור מלאכותי המרצד או משפיע על איכות הסרטונים</li>
+</ul>
+<h2>זכויות יוצרים</h2>
+<ul>
+<li>מוסכם בזאת כי בהתאם להוראותיו של חוק זכויות יוצרים תש"ח 2007, הצלמת תישאר בכל עת הבעלים של מלוא אגד זכויות היוצרים בכלל תוצריה לרבות ומבלי להגביל בחומרי הגלם ו\או בתמונות המעובדת. הלקוח יוכל להשתמש בכל הסרטונים לשימוש פרטי ומסחרי אך לא יוכל למכור את החומר לגורם שלישי.</li>
+</ul>
+<h2>פרטיות</h2>
+<ul>
+<li>מוסכם כי הצלמת תשמור על פרטיות המצולם ועל קבצי התמונות ולא תעביר ו/או תפרסם את התמונות ו/או חלקן ללא אישור מפורש של המצולם</li>
+</ul>
+<h2>ביטול ודחית מועד</h2>
+<ul>
+<li>במקרה של כח עליון שאינו מאפשר לצלמת לבצע את העבודה כמתואר לעיל, הצלמת תיתן למצולמים אפשרות למצוא מועד אחר לצילומים.</li>
+<li>למען הסר ספק, המקדמה שתתקבל במועד חתימת הסכם זה נועדה לשריין תאריך ולא תוחזר במקרה של ביטול הצילומים מכל סיבה שהיא.</li>
+</ul>
 </section>
 
 <section>
-<h2>חתימה</h2>
-<p class="note screen-only" style="margin-bottom:.5rem">חותמים עם האצבע או העכבר בתוך המסגרת.</p>
+<h2>ועל כך באנו על החתום</h2>
+<p class="note screen-only" style="margin-bottom:.5rem">המצולם/ת חותם/ת עם האצבע או העכבר בתוך המסגרת.</p>
 <div class="sign-box" id="box" tabindex="0" role="img" aria-label="אזור חתימה">
 <svg id="sig" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
 <div class="sign-hint" id="hint">חתמי כאן</div>
 </div>
-<p style="margin-top:.5rem">תאריך חתימה: <strong id="today"></strong></p>
+<div class="sigrow"><span>המצולם/ת: <strong id="signame"></strong></span><span>אפרת כהן</span></div>
+<p style="margin-top:.5rem">תאריך חתימה: <strong class="today"></strong></p>
 </section>
 
+<p class="foot print-only">אפרת כהן | Efratrel6@gmail.com | 052-3115049</p>
 <p class="error" id="err" role="alert"></p>
 <div class="actions">
 <button type="button" class="primary" id="save">שמירה כ-PDF</button>
@@ -114,7 +192,10 @@ button { font: inherit; font-family: var(--f-head); font-weight: 700; border-rad
     total.textContent = ret.checked ? "5,850 ₪" : "6,500 ₪";
   }
   ret.addEventListener("change", price);
-  $("today").textContent = new Date().toLocaleDateString("he-IL");
+  var d = new Date().toLocaleDateString("he-IL");
+  document.querySelectorAll(".today").forEach(function (el) { el.textContent = d; });
+  function side() { $("shared").hidden = !$("name2").value.trim(); $("signame").textContent = $("name").value.trim(); }
+  ["name", "name2"].forEach(function (id) { $(id).addEventListener("input", side); });
 
   // Signature drawn as SVG paths so it stays sharp at any size in the PDF
   var box = $("box"), svg = $("sig"), path = null, pts = [], strokes = 0;
@@ -159,7 +240,9 @@ button { font: inherit; font-family: var(--f-head); font-weight: 700; border-rad
     var old = document.title;
     document.title = "הסכם יום צילום - " + name;
     // Copy typed values into attributes so they print reliably
-    ["name", "biz", "idn", "tel", "mail", "shoot"].forEach(function (id) { $(id).setAttribute("value", $(id).value); });
+    side();
+    document.querySelectorAll("input").forEach(function (el) { if (el.type !== "checkbox") el.setAttribute("value", el.value); });
+    var det = document.querySelector("details"); if (!$("name2").value.trim()) det.open = false;
     window.print();
     document.title = old;
   });
