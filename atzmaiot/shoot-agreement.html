@@ -75,7 +75,7 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 <main class="wrap">
 <form class="doc" id="f" autocomplete="off" novalidate>
 <h1>הסכם צילום אפרת כהן</h1>
-<p class="note screen-only">הפרטים נשארים רק במכשיר שלך ולא נשלחים לאף מקום. ממלאים, חותמים, לוחצים "שמירה כ-PDF" ושולחים לאפרת.</p>
+<p class="note screen-only">הפרטים נשארים במכשיר שלך. רק כתובת הצילומים נשלחת לשירות מפות חינמי כדי לחשב את מרחק הנסיעה. ממלאים, חותמים, לוחצים "שמירה כ-PDF" ושולחים לאפרת.</p>
 <p>שנערך ונחתם ביום <strong class="today"></strong></p>
 <p>בין: אפרת כהן (להלן: "הצלמת")</p>
 
@@ -114,7 +114,8 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 <div class="fields">
 <label>תאריך<input type="date" id="shoot"></label>
 <label>שעה<input type="time" id="stime"></label>
-<label class="full">מיקום<input type="text" id="place"></label>
+<label class="full">כתובת / עיר הצילומים<input type="text" id="place" placeholder="למשל: רחוב הרצל 5, רחובות"></label>
+<div class="full screen-only"><button type="button" class="ghost" id="calc">חישוב נסיעות</button> <span id="calcMsg" class="note" role="status"></span></div>
 </div>
 </section>
 
@@ -123,9 +124,9 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 <ul>
 <li>4 שעות צילומי וידאו</li>
 <li>10-12 סרטוני רילס ערוכים</li>
-<li>תוספת נסיעות: ללא תוספת באזור ירושלים. מחוץ לירושלים: 2 ₪ לכל קילומטר, מירושלים ליעד הצילום, לכיוון אחד</li>
+<li>תוספת נסיעות: ללא תוספת באזור ירושלים. מחוץ לירושלים: 2 ₪ לכל קילומטר, הלוך וחזור מנקודת היציאה של הצלמת ליעד הצילום</li>
 </ul>
-<label class="km">מרחק נסיעה מירושלים ליעד הצילום, לכיוון אחד (בק״מ). באזור ירושלים משאירים 0.<input type="number" id="km" min="0" step="1" inputmode="numeric" value="0"></label>
+<label class="km">מרחק הנסיעה הלוך וחזור (בק״מ). מתמלא לבד אחרי "חישוב נסיעות", ואפשר גם לכתוב ידנית. באזור ירושלים: 0.<input type="number" id="km" min="0" step="1" inputmode="numeric" value="0"></label>
 <div class="price" aria-live="polite">
 <div class="row"><span>יום צילום</span><bdi>6,500 ₪</bdi></div>
 <div class="row disc" id="discRow" hidden><span>הנחת לקוחה חוזרת (10%)</span><bdi>-650 ₪</bdi></div>
@@ -198,11 +199,42 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
     var travel = km * 2;
     disc.hidden = !ret.checked;
     $("kmRow").hidden = km === 0;
-    $("kmLbl").textContent = "נסיעות (" + km + " ק״מ × 2 ₪)";
+    $("kmLbl").textContent = "נסיעות (" + km + " ק״מ הלוך וחזור × 2 ₪)";
     $("kmAmt").textContent = fmt(travel);
     total.textContent = fmt(base - off + travel);
   }
   $("km").addEventListener("input", price);
+
+  // Travel: free-map lookup (OpenStreetMap search + OSRM driving route). If it fails, the km box can be typed by hand.
+  var HOME = [35.241, 31.654]; // approximate start point (lon, lat)
+  function msg(t) { $("calcMsg").textContent = t; }
+  function getJSON(url) {
+    return fetch(url, { headers: { "Accept": "application/json" } }).then(function (r) {
+      if (!r.ok) throw new Error("http " + r.status); return r.json();
+    });
+  }
+  $("calc").addEventListener("click", function () {
+    var q = $("place").value.trim();
+    if (!q) { msg("נא לכתוב קודם את כתובת הצילומים."); $("place").focus(); return; }
+    msg("מחשב...");
+    getJSON("https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&countrycodes=il&accept-language=he&q=" + encodeURIComponent(q))
+      .then(function (res) {
+        if (!res.length) throw new Error("notfound");
+        var a = res[0].address || {}, city = a.city || a.town || a.village || a.municipality || "";
+        if (city.indexOf("ירושלים") === 0 && city.length <= 8) {
+          $("km").value = 0; price(); msg("הצילומים בירושלים, ללא תוספת נסיעות."); return null;
+        }
+        var to = res[0].lon + "," + res[0].lat;
+        return getJSON("https://router.project-osrm.org/route/v1/driving/" + HOME.join(",") + ";" + to + "?overview=false")
+          .then(function (r) {
+            if (!r.routes || !r.routes.length) throw new Error("noroute");
+            var km = Math.round(r.routes[0].distance * 2 / 1000);
+            $("km").value = km; price();
+            msg("המרחק הלוך וחזור: " + km + " ק״מ. אפשר לתקן ידנית אם צריך.");
+          });
+      })
+      .catch(function () { msg("לא הצלחתי לחשב אוטומטית. אפשר לכתוב את הק״מ (הלוך וחזור) ידנית בשדה למטה."); });
+  });
   ret.addEventListener("change", price);
   var d = new Date().toLocaleDateString("he-IL");
   document.querySelectorAll(".today").forEach(function (el) { el.textContent = d; });
