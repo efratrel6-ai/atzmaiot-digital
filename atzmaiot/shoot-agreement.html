@@ -64,6 +64,18 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 .sbtn { display: flex; flex-direction: column; align-items: center; gap: .35rem; text-decoration: none; color: var(--ink); font-family: var(--f-head); font-weight: 700; border: 1px solid var(--line); border-radius: 1rem; padding: .9rem 1.4rem; min-width: 8rem; }
 .sbtn svg { width: 2.6rem; height: 2.6rem; }
 @media print { .dlg { display: none !important; } }
+button[hidden] { display: none; }
+.fbtns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin: .8rem 0; }
+.abtn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-family: var(--f-head); font-weight: 700; border: 1px solid var(--burgundy); color: var(--burgundy); border-radius: 2rem; padding: .75rem 1.5rem; min-height: 2.75rem; background: #fff; }
+.pdfroot { position: fixed; left: 0; top: 0; width: 680px; z-index: -1; background: #fff; color: var(--ink); font-size: 14px; pointer-events: none; }
+.pdfroot .doc { border: 0; padding: 0; border-radius: 0; }
+.pdfroot .actions, .pdfroot .error, .pdfroot .sign-hint, .pdfroot .screen-only { display: none !important; }
+.pdfroot .print-only { display: block; text-align: center; color: #555; font-size: .9rem; }
+.pdfroot details:not([open]) { display: none; }
+.pdfroot .fields { grid-template-columns: 1fr 1fr !important; }
+.pdfroot input[type="text"], .pdfroot input[type="tel"], .pdfroot input[type="email"], .pdfroot input[type="date"], .pdfroot input[type="time"], .pdfroot input[type="number"] { border: 0; border-bottom: 1px solid #999; border-radius: 0; padding-inline: 0; }
+.pdfroot .sign-box { border: 0; border-bottom: 1px solid #333; border-radius: 0; height: 7rem; }
+.pdfroot .price { border: 1px solid #ccc; background: #fff; }
 @media (max-width: 30rem) { .fields { grid-template-columns: 1fr; } }
 @media print {
   @page { size: A4; margin: 15mm; }
@@ -237,7 +249,15 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
 </main>
 <dialog id="sendDlg" class="dlg" aria-labelledby="sendTtl">
 <h2 id="sendTtl">עכשיו שולחים לאפרת</h2>
-<p>שמרת את ה-PDF? נהדר. בחרי איך לשלוח אותו לאפרת וצרפי את הקובץ שנשמר:</p>
+<div id="fileBtns" hidden>
+<p id="fileMsg">הקובץ מוכן. לחצי על "שיתוף" ובחרי וואטסאפ או Gmail, והקובץ יצורף לבד.</p>
+<div class="fbtns">
+<button type="button" class="primary" id="shareBtn" hidden>שיתוף הקובץ</button>
+<a class="abtn" id="dlBtn" href="#" download>הורדת הקובץ</a>
+</div>
+<p class="note">אפשר גם לפתוח הודעה ולצרף ידנית את הקובץ שהורד:</p>
+</div>
+<p id="noFile">בחרי איך לשלוח את ה-PDF לאפרת, וצרפי את הקובץ ששמרת:</p>
 <div class="send">
 <a class="sbtn wa" href="https://wa.me/972523115049?text=%D7%94%D7%99%D7%99%20%D7%90%D7%A4%D7%A8%D7%AA%2C%20%D7%9E%D7%A6%D7%95%D7%A8%D7%A3%20%D7%94%D7%94%D7%A1%D7%9B%D7%9D%20%D7%94%D7%97%D7%AA%D7%95%D7%9D" target="_blank" rel="noopener">
 <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#25D366"/><path fill="#fff" d="M16 6.5a9.4 9.4 0 0 0-8 14.3L6.6 25.4l4.8-1.3A9.4 9.4 0 1 0 16 6.5zm5.4 13.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.9 2.100c.1.200.1.400 0 .600l-.4.600c-.1.200-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.5.100.600-.1l.9-1.100c.2-.3.400-.2.700-.1l2 .9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg>
@@ -340,24 +360,83 @@ summary { cursor: pointer; font-family: var(--f-head); font-weight: 500; color: 
     strokes = 0; $("hint").hidden = false; $("err").textContent = "";
   });
 
-  $("save").addEventListener("click", function () {
+  var pdfFile = null, pdfUrl = null;
+  function loadScript(src) {
+    return new Promise(function (ok, bad) {
+      var el = document.createElement("script"); el.src = src; el.onload = ok;
+      el.onerror = function () { bad(new Error("load " + src)); };
+      document.head.appendChild(el);
+    });
+  }
+  // Builds a sharp A4 PDF from the form (each block is drawn at 2.5x, so text stays crisp)
+  async function makePdf(name) {
+    if (!window.html2canvas) await loadScript("vendor/html2canvas.min.js");
+    if (!window.jspdf) await loadScript("vendor/jspdf.umd.min.js");
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    var root = document.createElement("div"); root.className = "pdfroot";
+    var form = $("f").cloneNode(true); form.removeAttribute("id");
+    root.appendChild(form); document.body.appendChild(root);
+    try {
+      var blocks = [];
+      Array.prototype.forEach.call(form.children, function (el) {
+        if (el.classList.contains("terms")) Array.prototype.forEach.call(el.children, function (c) { blocks.push(c); });
+        else blocks.push(el);
+      });
+      blocks = blocks.filter(function (el) { return el.offsetHeight > 0; });
+      var SC = 2.5, M = 40, W = 595.28 - 2 * M, H = 841.89 - 2 * M, f = W / 680, gap = 8, y = 0;
+      var doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4", compress: true });
+      for (var i = 0; i < blocks.length; i++) {
+        var cv = await window.html2canvas(blocks[i], { scale: SC, backgroundColor: "#ffffff", logging: false });
+        var wpt = cv.width / SC * f, hpt = cv.height / SC * f;
+        if (hpt > H) { wpt = wpt * H / hpt; hpt = H; }
+        if (y > 0 && y + hpt > H) { doc.addPage(); y = 0; }
+        doc.addImage(cv.toDataURL("image/jpeg", 0.92), "JPEG", M + (W - wpt) / 2, M + y, wpt, hpt, undefined, "FAST");
+        y += hpt + gap;
+      }
+      return new File([doc.output("blob")], "הסכם יום צילום - " + name + ".pdf", { type: "application/pdf" });
+    } finally { root.remove(); }
+  }
+  function showDlg(file) {
+    if (pdfUrl) { URL.revokeObjectURL(pdfUrl); pdfUrl = null; }
+    pdfFile = file;
+    $("fileBtns").hidden = !file; $("noFile").hidden = !!file;
+    if (file) {
+      pdfUrl = URL.createObjectURL(file);
+      $("dlBtn").href = pdfUrl; $("dlBtn").download = file.name;
+      var canShare = !!(navigator.canShare && navigator.canShare({ files: [file] }));
+      $("shareBtn").hidden = !canShare;
+      $("fileMsg").textContent = canShare ? "הקובץ מוכן. לחצי על \"שיתוף\" ובחרי וואטסאפ או Gmail, והקובץ יצורף לבד." : "הקובץ מוכן. הורידי אותו ושלחי אותו לאפרת.";
+    }
+    $("after").hidden = false;
+    var dlg = $("sendDlg"); if (dlg.showModal && !dlg.open) dlg.showModal();
+  }
+  $("shareBtn").addEventListener("click", function () {
+    if (!pdfFile) return;
+    navigator.share({ files: [pdfFile], title: "הסכם יום צילום", text: "היי אפרת, מצורף ההסכם החתום" }).catch(function () {});
+  });
+  $("save").addEventListener("click", async function () {
     var name = $("name").value.trim();
     if (!name) { $("err").textContent = "נא למלא שם מלא."; $("name").focus(); return; }
     if (!$("pubyes").checked && !$("pubno").checked) { $("err").textContent = "נא לבחור אם את מאשרת פרסום ברשתות החברתיות (מאשר/ת או לא מאשר/ת)."; $("pubyes").focus(); return; }
     if (!$("sendok").checked) { $("err").textContent = "נא לאשר שאת מתחייבת לשלוח את הקובץ החתום לאפרת."; $("sendok").focus(); return; }
     if (!strokes) { $("err").textContent = "נא לחתום בתוך המסגרת."; box.focus(); return; }
     $("err").textContent = "";
-    // The file name suggested when saving the PDF
-    var old = document.title;
-    document.title = "הסכם יום צילום - " + name;
-    // Copy typed values into attributes so they print reliably
+    // Copy typed values and choices into attributes so the copy keeps them
     side();
-    document.querySelectorAll("input").forEach(function (el) { if (el.type !== "checkbox") el.setAttribute("value", el.value); });
+    document.querySelectorAll("input").forEach(function (el) {
+      if (el.type === "checkbox" || el.type === "radio") { if (el.checked) el.setAttribute("checked", ""); else el.removeAttribute("checked"); }
+      else el.setAttribute("value", el.value);
+    });
     var det = document.querySelector("details"); if (!$("name2").value.trim()) det.open = false;
-    window.print();
-    $("after").hidden = false;
-    var dlg = $("sendDlg"); if (dlg.showModal) dlg.showModal();
-    document.title = old;
+    var btn = $("save"); btn.disabled = true; $("err").style.color = "inherit"; $("err").textContent = "מכינה את הקובץ, רק רגע...";
+    try {
+      showDlg(await makePdf(name));
+    } catch (e) {
+      // Fallback: the phone's own print window
+      var old = document.title; document.title = "הסכם יום צילום - " + name;
+      window.print(); document.title = old; showDlg(null);
+    }
+    $("err").textContent = ""; $("err").style.color = ""; btn.disabled = false;
   });
 })();
 </script>

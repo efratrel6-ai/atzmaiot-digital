@@ -103,7 +103,7 @@ test("טופס יום הצילום: אחרי השמירה קופץ חלון של
   await page.mouse.up();
   await page.locator("#pubno").check();
   await page.locator("#save").click();
-  await expect(page.locator("#sendDlg"), "חלון השליחה לא נפתח").toBeVisible();
+  await expect(page.locator("#sendDlg"), "חלון השליחה לא נפתח").toBeVisible({ timeout: 25000 });
   await expect(page.locator('#sendDlg a[href^="https://wa.me/972523115049"]')).toBeVisible();
   await expect(page.locator('#sendDlg a[href^="mailto:Efratrel6@gmail.com"]')).toBeVisible();
   await page.locator("#closeDlg").click();
@@ -136,5 +136,31 @@ test("טופס יום הצילום: חובה לבחור מאשר/ת או לא מ
   await expect(page.locator("#sendDlg")).toBeHidden();
   await page.locator("#pubyes").check();
   await page.locator("#save").click();
-  await expect(page.locator("#sendDlg")).toBeVisible();
+  await expect(page.locator("#sendDlg")).toBeVisible({ timeout: 25000 });
+});
+
+test("טופס יום הצילום: נוצר קובץ PDF אמיתי שאפשר להוריד ולשתף", async ({ page }) => {
+  test.setTimeout(60000);
+  await page.addInitScript(() => { window.print = () => { window.__printed = true; }; });
+  await page.goto("/atzmaiot/shoot-agreement.html");
+  await page.locator("#name").fill("בדיקה");
+  await page.locator("#pubno").check();
+  await page.locator("#sendok").check();
+  await page.locator("#box").scrollIntoViewIfNeeded();
+  const box = await page.locator("#box").boundingBox();
+  await page.mouse.move(box.x + 20, box.y + 40);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 100, box.y + 70, { steps: 4 });
+  await page.mouse.up();
+  await page.locator("#save").click();
+  await expect(page.locator("#sendDlg")).toBeVisible({ timeout: 25000 });
+  await expect(page.locator("#dlBtn"), "לא נוצר קישור להורדת הקובץ").toHaveAttribute("href", /^blob:/);
+  const head = await page.evaluate(async () => {
+    const r = await fetch(document.getElementById("dlBtn").href);
+    const b = new Uint8Array(await r.arrayBuffer());
+    return { magic: String.fromCharCode(...b.slice(0, 4)), size: b.length, printed: !!window.__printed };
+  });
+  expect(head.magic, "הקובץ שנוצר אינו PDF").toBe("%PDF");
+  expect(head.printed, "נפל לחלון ההדפסה במקום ליצור PDF").toBe(false);
+  expect(head.size).toBeGreaterThan(20000);
 });
