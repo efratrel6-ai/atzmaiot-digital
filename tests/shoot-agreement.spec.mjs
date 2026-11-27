@@ -9,11 +9,11 @@ test("טופס יום הצילום: מחיר, הנחה לחוזרות וחתימ
   await expect(page.locator("#total")).toHaveText("6,500 ₪");
   await page.locator("#ret").check();
   await expect(page.locator("#total"), "ההנחה ללקוחה חוזרת לא חושבה נכון").toHaveText("5,850 ₪");
-  // נסיעות: 2 ₪ לק"מ, ההנחה רק על מחיר הצילום
+  // נסיעות: 2.3 ₪ לק"מ, ההנחה רק על מחיר הצילום
   await page.locator("#km").fill("50");
-  await expect(page.locator("#total"), "הנסיעות או ההנחה חושבו לא נכון").toHaveText("5,950 ₪");
+  await expect(page.locator("#total"), "הנסיעות או ההנחה חושבו לא נכון").toHaveText("5,965 ₪");
   await page.locator("#ret").uncheck();
-  await expect(page.locator("#total")).toHaveText("6,600 ₪");
+  await expect(page.locator("#total")).toHaveText("6,615 ₪");
   await page.locator("#km").fill("0");
   await expect(page.locator("#total")).toHaveText("6,500 ₪");
 
@@ -58,7 +58,7 @@ test("טופס יום הצילום: הסעיף על שתי מצולמות מופ
   await expect(page.locator("#shared")).toBeVisible();
 });
 
-test("טופס יום הצילום: חישוב נסיעות אוטומטי מכתובת (הלוך וחזור × 2 ₪)", async ({ page }) => {
+test("טופס יום הצילום: חישוב נסיעות אוטומטי מכתובת (הלוך וחזור × 2.3 ₪)", async ({ page }) => {
   await page.route("**/nominatim.openstreetmap.org/**", (r) =>
     r.fulfill({ json: [{ lon: "34.81", lat: "31.89", address: { city: "רחובות" } }] }));
   await page.route("**/router.project-osrm.org/**", (r) =>
@@ -67,7 +67,7 @@ test("טופס יום הצילום: חישוב נסיעות אוטומטי מכ�
   await page.locator("#place").fill("רחובות");
   await page.locator("#calc").click();
   await expect(page.locator("#km"), "הק״מ לא חושב אוטומטית").toHaveValue("140");
-  await expect(page.locator("#total")).toHaveText("6,780 ₪");
+  await expect(page.locator("#total")).toHaveText("6,822 ₪");
 });
 
 test("טופס יום הצילום: בירושלים אין תוספת נסיעות", async ({ page }) => {
@@ -87,7 +87,7 @@ test("טופס יום הצילום: אם החישוב האוטומטי נכשל 
   await page.locator("#calc").click();
   await expect(page.locator("#calcMsg")).toContainText("ידנית");
   await page.locator("#km").fill("10");
-  await expect(page.locator("#total")).toHaveText("6,520 ₪");
+  await expect(page.locator("#total")).toHaveText("6,523 ₪");
 });
 
 test("טופס יום הצילום: אחרי השמירה קופץ חלון שיתוף הקובץ לאפרת", async ({ page }) => {

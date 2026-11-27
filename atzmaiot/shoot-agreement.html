@@ -157,7 +157,7 @@ button[hidden] { display: none; }
 <ul>
 <li>4 שעות צילומי וידאו</li>
 <li>12-14 סרטוני רילס ערוכים</li>
-<li>תוספת נסיעות: ללא תוספת באזור ירושלים וגוש עציון. מחוץ לירושלים ולגוש עציון: 2 ₪ לכל קילומטר, הלוך וחזור מנוקדים ליעד הצילום</li>
+<li>תוספת נסיעות: ללא תוספת באזור ירושלים וגוש עציון. מחוץ לירושלים ולגוש עציון: 2.3 ₪ לכל קילומטר, הלוך וחזור מנוקדים ליעד הצילום</li>
 </ul>
 <label class="km">מרחק הנסיעה הלוך וחזור (בק״מ). מתמלא לבד אחרי "חישוב נסיעות", ואפשר גם לכתוב ידנית. באזור ירושלים וגוש עציון: 0.<input type="number" id="km" min="0" step="1" inputmode="numeric" value="0"></label>
 <div class="price" aria-live="polite">
@@ -267,10 +267,10 @@ button[hidden] { display: none; }
     // The 10% discount applies to the shoot price only, not to travel
     var base = 6500, off = ret.checked ? base * 0.1 : 0;
     var km = Math.max(0, Math.floor(Number($("km").value) || 0));
-    var travel = km * 2;
+    var travel = Math.round(km * 2.3);
     disc.hidden = !ret.checked;
     $("kmRow").hidden = km === 0;
-    $("kmLbl").textContent = "נסיעות (" + km + " ק״מ הלוך וחזור × 2 ₪)";
+    $("kmLbl").textContent = "נסיעות (" + km + " ק״מ הלוך וחזור × 2.3 ₪)";
     $("kmAmt").textContent = fmt(travel);
     total.textContent = fmt(base - off + travel);
   }
