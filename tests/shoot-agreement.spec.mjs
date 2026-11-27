@@ -90,7 +90,7 @@ test("טופס יום הצילום: אם החישוב האוטומטי נכשל 
   await expect(page.locator("#total")).toHaveText("6,520 ₪");
 });
 
-test("טופס יום הצילום: אחרי השמירה קופץ חלון שליחה לאפרת עם וואטסאפ וג׳ימייל", async ({ page }) => {
+test("טופס יום הצילום: אחרי השמירה קופץ חלון שיתוף הקובץ לאפרת", async ({ page }) => {
   await page.addInitScript(() => { window.print = () => {}; });
   await page.goto("/atzmaiot/shoot-agreement.html");
   await page.locator("#name").fill("בדיקה");
@@ -104,8 +104,9 @@ test("טופס יום הצילום: אחרי השמירה קופץ חלון של
   await page.locator("#pubno").check();
   await page.locator("#save").click();
   await expect(page.locator("#sendDlg"), "חלון השליחה לא נפתח").toBeVisible({ timeout: 25000 });
-  await expect(page.locator('#sendDlg a[href^="https://wa.me/972523115049"]')).toBeVisible();
-  await expect(page.locator('#sendDlg a[href^="mailto:Efratrel6@gmail.com"]')).toBeVisible();
+  await expect(page.locator("#dlBtn"), "אין כפתור הורדה כשאי אפשר לשתף").toBeVisible();
+  await expect(page.locator('#sendDlg a[href^="https://wa.me/"]'), "אייקון וואטסאפ אמור להיות מוסר").toHaveCount(0);
+  await expect(page.locator('#sendDlg a[href^="mailto:"]'), "אייקון המייל אמור להיות מוסר").toHaveCount(0);
   await page.locator("#closeDlg").click();
   await expect(page.locator("#sendDlg")).toBeHidden();
 });
