@@ -53,7 +53,8 @@ button { font: inherit; color: inherit; }
 
 /* the phone-sized feed */
 .phone { position: relative; height: 100%; max-height: 58rem; aspect-ratio: 9 / 16.5; max-width: 100%; border-radius: 1.6rem; overflow: hidden; background: #000; box-shadow: 0 40px 90px -40px rgba(110,52,69, .7); }
-.feed { position: absolute; inset: 0; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; overscroll-behavior: contain; }
+.feed { position: absolute; inset: 0; overflow-y: auto; scroll-behavior: smooth; scrollbar-width: none; overscroll-behavior: contain; }
+@media (prefers-reduced-motion: reduce) { .feed { scroll-behavior: auto; } }
 .feed::-webkit-scrollbar { display: none; }
 
 @media (max-width: 62rem) {
@@ -219,7 +220,7 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
 /* entrance: plays each time a reel becomes the active one; content is visible by default */
 /* long-read intro: white page that scrolls freely instead of reel by reel */
 .reel.read { height: auto; min-height: 100%; scroll-snap-stop: normal; container-type: inline-size; background: #fff; color: var(--ink); overflow: visible; }
-.read-in { padding: 7rem max(1.4rem, 7cqi) 8.5rem; max-width: 36rem; margin-inline: auto; display: flex; flex-direction: column; gap: 1.25rem; }
+.read-in { padding: 3.5rem max(1.4rem, 7cqi) 3.5rem; max-width: 36rem; margin-inline: auto; display: flex; flex-direction: column; gap: 1.25rem; }
 .read h2 { font-size: 2.15rem; font-weight: 900; line-height: 1.15; }
 .read p { margin: 0; font-size: 1.04rem; line-height: 1.75; color: #5b5262; }
 .read p b { color: var(--ink); font-weight: 700; }
@@ -283,7 +284,7 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
 
 /* a reel that holds a longer list: scrolls freely as one part, no reel-to-reel stop inside */
 .reel.tall { height: auto; min-height: 100%; scroll-snap-stop: normal; container-type: inline-size; overflow: visible; }
-.tall .flow { padding: 9rem max(1.3rem, 6cqi) 8.5rem; max-width: 36rem; margin-inline: auto; display: flex; flex-direction: column; gap: 1.2rem; }
+.tall .flow { padding: 3.5rem max(1.3rem, 6cqi) 3.5rem; max-width: 36rem; margin-inline: auto; display: flex; flex-direction: column; gap: 1.2rem; }
 .tall h2 { font-size: max(1.7rem, 8.6cqi); }
 .tall .checks, #fit.tall .checks { gap: .9rem; }
 .tall .checks li { font-size: 1.06rem; grid-template-columns: 1.7rem minmax(0, 1fr); gap: .7rem; }
@@ -293,7 +294,7 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
 
 /* light variant of a tall section: white page, cards instead of a plain list */
 .reel.tall.light { background: #fff; background-image: linear-gradient(180deg, #fff 0%, #FAF4EE 55%, #EFF1E9 100%); color: var(--ink); }
-.light .flow { gap: 1.1rem; padding-bottom: 8.5rem; }
+.light .flow { gap: 1.1rem; padding-bottom: 3.5rem; }
 .light h2 { font-size: max(1.9rem, 9cqi); font-weight: 900; line-height: 1.12; }
 .light .hi { font-weight: 900; background: linear-gradient(90deg, #6E3445, #8E4556 55%, #BE8C72); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .light .small { color: #5b5262; font-size: 1.05rem; line-height: 1.6; opacity: 1; }
@@ -307,10 +308,10 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
 .light .say { color: var(--ink); font-size: max(1.5rem, 7cqi); font-weight: 700; line-height: 1.3; margin-top: .8rem; }
 
 /* curriculum: each heading opens to show its text */
-#curriculum .flow { padding-bottom: 8.5rem; }
+#curriculum .flow { padding-bottom: 3.5rem; }
 .cur-lead { margin: 0; font-family: var(--f-head); font-size: 1.32rem; font-weight: 500; line-height: 1.55; }
 .cur-lead b { font-weight: 800; }
-#intro2 .flow { padding-bottom: 8.5rem; gap: 1.4rem; }
+#intro2 .flow { padding-bottom: 3.5rem; gap: 1.4rem; }
 #intro2 .say { font-size: max(1.5rem, 6.8cqi); line-height: 1.35; }
 #intro2 .mid { margin: 0; font-family: var(--f-head); font-size: 1.3rem; font-weight: 500; line-height: 1.55; }
 #intro2 .small { font-size: 1.12rem; line-height: 1.65; }
@@ -1009,7 +1010,9 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
   const prog = document.getElementById("prog");
   const joinbar = document.getElementById("joinbar");
   const priceIdx = reels.findIndex(r => r.id === "price");
-  const go = i => { i = Math.max(0, Math.min(reels.length - 1, i)); feed.scrollTo({ top: reels[i].offsetTop, behavior: calm ? "auto" : "smooth" }); };
+  const hlBar = document.querySelector(".hl");
+  // long reading parts have little top space, so a jump stops just below the highlights bar
+  const go = i => { i = Math.max(0, Math.min(reels.length - 1, i)); const r = reels[i]; const below = i > 0 && hlBar && (r.classList.contains("tall") || r.classList.contains("read")) ? hlBar.offsetHeight + 3 : 0; feed.scrollTo({ top: r.offsetTop - below, behavior: calm ? "auto" : "smooth" }); };
   const current = () => { const mid = feed.scrollTop + feed.clientHeight / 2; let k = 0; reels.forEach((r, j) => { if (r.offsetTop <= mid) k = j; }); return k; };
 
   // Action rail on every reel, plus the double-tap heart
@@ -1124,27 +1127,7 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
     homefab.classList.toggle("show", i > 0);
     if (i === 0) countUp();
     floatHearts(i === 0);
-    // questions & answers scroll freely (no reel snapping), so opening an answer never pulls the page
-    updateSnap();
   }
-  // long reading parts scroll freely; reel snapping returns only after scrolling stops on a reel
-  const FREE = new Set(["about", "intro2", "outcomes", "faq"]);
-  let snapT = null;
-  function updateSnap() {
-    const r = reels[active]; if (!r) return;
-    clearTimeout(snapT);
-    if (FREE.has(r.id)) { feed.style.scrollSnapType = "none"; return; }
-    if (feed.style.scrollSnapType !== "none") return;
-    snapT = setTimeout(() => {
-      const cur = reels[active]; if (!cur || FREE.has(cur.id)) return;
-      const long = cur.classList.contains("tall") || (cur.classList.contains("read") && !cur.classList.contains("snap"));
-      if (!long && Math.abs(feed.scrollTop - cur.offsetTop) > 2) {
-        feed.scrollTo({ top: cur.offsetTop, behavior: calm ? "auto" : "smooth" });
-        snapT = setTimeout(() => { if (!FREE.has(reels[active].id)) feed.style.scrollSnapType = ""; }, 500);
-      } else feed.style.scrollSnapType = "";
-    }, 180);
-  }
-  feed.addEventListener("scroll", () => { if (feed.style.scrollSnapType === "none") updateSnap(); }, { passive: true });
   // active = the reel covering the middle of the screen (works for the tall intro page too)
   let scrollTick = false;
   let hlIdle;
