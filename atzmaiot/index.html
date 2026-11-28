@@ -386,6 +386,21 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
 
 .here-big { font-size: 14cqi !important; line-height: 1.05; }
 
+/* outcomes: what you leave the course with, each check draws itself in */
+#outcomes .flow { gap: 1.3rem; }
+#outcomes h2 em { font-style: normal; color: #F3E7DD; }
+.outcomes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .75rem; }
+.outcomes li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: .75rem; align-items: center; background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.28); border-radius: 1rem; padding: .85rem 1rem; font-size: 1.04rem; line-height: 1.45; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.outcomes li b { font-weight: 700; color: #fff; }
+.outcomes .ok { width: 2rem; height: 2rem; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 4px 14px -6px rgba(0,0,0,.45); }
+.outcomes .ok svg { width: 1.05rem; height: 1.05rem; fill: none; stroke: #8E4556; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 0; }
+.reel.enter .outcomes .ok { animation: okpop .5s cubic-bezier(.3,1.6,.5,1) both; animation-delay: calc(var(--d, 0) * 110ms + 380ms); }
+.reel.enter .outcomes .ok svg { animation: okdraw .45s ease-out both; animation-delay: calc(var(--d, 0) * 110ms + 560ms); }
+@keyframes okpop { from { transform: scale(0); } to { transform: none; } }
+@keyframes okdraw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .reel.enter .outcomes .ok, .reel.enter .outcomes .ok svg { animation: none; } }
+
+
 .meta-note { position: absolute; inset-inline: 1.2rem; bottom: calc(env(safe-area-inset-bottom, 0px) + .8rem); margin: 0; font-size: .7rem; line-height: 1.4; opacity: .75; text-align: center; z-index: 3; }
 
 .reel.enter .in { animation: rise .7s cubic-bezier(.2,.7,.1,1) both; animation-delay: calc(var(--d, 0) * 110ms + 80ms); }
@@ -637,6 +652,19 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
           <p class="t-xl cont">הוא פשוט <span class="hi">גשר בין העסק שלך לבין העולם.</span></p>
           <p class="t-l">הקורס הזה יעזור לך <b class="hi">לקדם את העסק שלך</b> באינסטגרם, להישאר את, ולהביא אלייך את <b class="pk">הלקוחות שהכי מתאימים לך.</b></p>
           <p class="t-l" style="font-weight:700;font-size:1.5rem">מרוב פרסומות ושיטות שיווקיות הקהל שלך שבע מהבטחות, והוא מחפש <b class="hi">כנות ואמת</b> שיאפשרו לו לסמוך עלייך ולהרגיש ממך ביטחון.</p>
+        </div>
+      </section>
+
+      <section class="reel g1 tall" id="outcomes" aria-label="עם מה תצאי מהקורס">
+        <div class="flow">
+          <h2 class="in">עם מה <em>תצאי</em> מהקורס?</h2>
+          <ul class="outcomes">
+            <li class="in" style="--d:1"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תזהי את <b>החסמים שמונעים ממך לשווק</b> באינסטגרם ותלמדי לשחרר אותם.</span></li>
+            <li class="in" style="--d:2"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תפתחי <b>ביטחון ליצור, להיחשף</b> ולהביא את עצמך לידי ביטוי.</span></li>
+            <li class="in" style="--d:3"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תלמדי לאפיין את העסק שלך וליצור <b>תוכן שמספר את הסיפור הייחודי שלו.</b></span></li>
+            <li class="in" style="--d:4"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תבני מערכת יחסים עם העוקבים שלך ותלמדי <b>להפוך אותם ללקוחות.</b></span></li>
+            <li class="in" style="--d:5"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תרכשי <b>כלים מעשיים לצילום, עריכה ויצירת תוכן</b> באופן עצמאי, בלי להיות תלויה באחרים.</span></li>
+          </ul>
         </div>
       </section>
 

@@ -42,3 +42,15 @@ test("הצהרת הנגישות קיימת ויש אליה קישור מדף ה�
   await expect(page.locator('a[href^="mailto:"]'), "חסרה כתובת מייל לפניות נגישות").toHaveCount(1);
   await expect(page.locator('a[href^="https://wa.me/"]'), "חסר קישור וואטסאפ לפניות נגישות").toHaveCount(1);
 });
+
+test("החלק \"עם מה תצאי מהקורס?\" מופיע לפני ההמלצה של מוריה, עם חמש שורות", async ({ page }) => {
+  await page.goto("/atzmaiot/");
+  const sec = page.locator("#outcomes");
+  expect(await sec.count(), "החלק \"עם מה תצאי מהקורס?\" חסר בעמוד").toBe(1);
+  await expect(sec.locator("h2"), "הכותרת של החלק לא נכונה").toHaveText("עם מה תצאי מהקורס?");
+  expect(await sec.locator(".outcomes li").count(), "צריכות להיות חמש שורות").toBe(5);
+  const nextIsMoriya = await sec.evaluate((s) => (s.nextElementSibling?.textContent || "").includes("מוריה"));
+  expect(nextIsMoriya, "החלק צריך להופיע מיד לפני ההמלצה של מוריה").toBe(true);
+  await sec.scrollIntoViewIfNeeded();
+  await expect(sec.locator(".outcomes li").last(), "השורה האחרונה לא נראית על המסך").toBeVisible();
+});
