@@ -135,9 +135,9 @@ test("טופס יום הצילום: חובה לבחור מאשר/ת או לא מ
   await page.locator("#save").click();
   await expect(page.locator("#err"), "אפשר לשמור בלי לבחור לגבי פרסום ברשתות").toContainText("פרסום");
   await expect(page.locator("#sendDlg")).toBeHidden();
-  await page.locator("#pubyes").check();
+  await page.locator("#pubmid").check();
   await page.locator("#save").click();
-  await expect(page.locator("#sendDlg")).toBeVisible({ timeout: 25000 });
+  await expect(page.locator("#sendDlg"), "האפשרות מאשרת לאחר אישור על כל תוכן לא התקבלה").toBeVisible({ timeout: 25000 });
 });
 
 test("טופס יום הצילום: נוצר קובץ PDF אמיתי שאפשר להוריד ולשתף", async ({ page }) => {

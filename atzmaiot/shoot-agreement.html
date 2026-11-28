@@ -38,7 +38,7 @@ input:focus-visible, button:focus-visible, .sign-box:focus-visible { outline: 3p
 .price .disc[hidden], .price [hidden] { display: none; }
 .km { margin-bottom: .75rem; }
 .pub { border: 1px solid var(--line); border-radius: .9rem; margin: .75rem 0 0; padding: .75rem 1rem; display: flex; flex-direction: column; gap: .4rem; }
-.pub legend { font-family: var(--f-head); font-weight: 700; padding: 0 .4rem; }
+.pub .pubq { font-family: var(--f-head); font-weight: 700; }
 .check { flex-direction: row; align-items: center; gap: .6rem; font-weight: 500; }
 .check input { width: 1.4rem; height: 1.4rem; accent-color: var(--burgundy); }
 .sign-box { border: 2px dashed var(--line); border-radius: .9rem; background: #fff; height: 11rem; touch-action: none; position: relative; cursor: crosshair; }
@@ -200,11 +200,12 @@ button[hidden] { display: none; }
 <ul>
 <li>מוסכם כי הצלמת תשמור על פרטיות הלקוחה ועל קבצי חומרי הגלם והסרטונים ולא תעביר ו/או תפרסם את הסרטונים ו/או חלקם ללא אישור מפורש של הלקוחה</li>
 </ul>
-<fieldset class="pub" id="pub">
-<legend>האם אני מאשרת לאפרת לפרסם את התוצרים ברשתות החברתיות שלה? (חובה לבחור)</legend>
+<div class="pub" id="pub" role="radiogroup" aria-labelledby="pubq">
+<p class="pubq" id="pubq">האם אני מאשרת לאפרת לפרסם את התוצרים ברשתות החברתיות שלה? (חובה לבחור)</p>
 <label class="check"><input type="radio" name="pub" id="pubyes" value="yes"> מאשרת</label>
+<label class="check"><input type="radio" name="pub" id="pubmid" value="each"> מאשרת לאחר אישור שלי על כל תוכן בנפרד</label>
 <label class="check"><input type="radio" name="pub" id="pubno" value="no"> לא מאשרת</label>
-</fieldset>
+</div>
 <h2>ביצועי הסרטונים ברשתות</h2>
 <ul>
 <li>אין התחייבות לכמות צפיות, חשיפה, פניות או מכירות בעקבות פרסום הסרטונים.</li>
@@ -408,7 +409,7 @@ button[hidden] { display: none; }
   $("save").addEventListener("click", async function () {
     var name = $("name").value.trim();
     if (!name) { $("err").textContent = "נא למלא שם מלא."; $("name").focus(); return; }
-    if (!$("pubyes").checked && !$("pubno").checked) { $("err").textContent = "נא לבחור אם את מאשרת פרסום ברשתות החברתיות (מאשרת או לא מאשרת)."; $("pubyes").focus(); return; }
+    if (!document.querySelector('input[name="pub"]:checked')) { $("err").textContent = "נא לבחור אם את מאשרת פרסום ברשתות החברתיות (מאשרת או לא מאשרת)."; $("pubyes").focus(); return; }
     if (!$("sendok").checked) { $("err").textContent = "נא לאשר שאת מתחייבת לשלוח את הקובץ החתום לאפרת."; $("sendok").focus(); return; }
     if (!strokes) { $("err").textContent = "נא לחתום בתוך המסגרת."; box.focus(); return; }
     $("err").textContent = "";
