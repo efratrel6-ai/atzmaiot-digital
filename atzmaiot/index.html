@@ -386,19 +386,31 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
 
 .here-big { font-size: 14cqi !important; line-height: 1.05; }
 
-/* outcomes: what you leave the course with, each check draws itself in */
-#outcomes .flow { gap: 1.3rem; }
-#outcomes h2 em { font-style: normal; color: #F3E7DD; }
-.outcomes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .75rem; }
-.outcomes li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: .75rem; align-items: center; background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.28); border-radius: 1rem; padding: .85rem 1rem; font-size: 1.04rem; line-height: 1.45; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-.outcomes li b { font-weight: 700; color: #fff; }
-.outcomes .ok { width: 2rem; height: 2rem; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 4px 14px -6px rgba(0,0,0,.45); }
-.outcomes .ok svg { width: 1.05rem; height: 1.05rem; fill: none; stroke: #8E4556; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 0; }
-.reel.enter .outcomes .ok { animation: okpop .5s cubic-bezier(.3,1.6,.5,1) both; animation-delay: calc(var(--d, 0) * 110ms + 380ms); }
-.reel.enter .outcomes .ok svg { animation: okdraw .45s ease-out both; animation-delay: calc(var(--d, 0) * 110ms + 560ms); }
+/* outcomes: an Instagram story with a quiz sticker; bars fill and each answer gets checked in turn */
+#outcomes { background: #fff; background-image: var(--g-soft); color: var(--ink); }
+.ig-story { border-radius: 1.5rem; padding: .8rem .9rem 1.2rem; background: linear-gradient(165deg, #98A288, #7F8C6E 45%, #5B6150 80%, #3A3530); color: #fff; box-shadow: 0 30px 60px -30px rgba(58,53,48,.7); display: flex; flex-direction: column; gap: 1rem; }
+.st-bars { display: flex; gap: 4px; }
+.st-bars i { flex: 1; height: 3px; border-radius: 3px; background: rgba(255,255,255,.35); overflow: hidden; }
+.st-bars i::after { content: ""; display: block; height: 100%; background: #fff; transform-origin: right center; }
+.st-head { display: flex; align-items: center; gap: .55rem; font-family: var(--f-head); font-weight: 700; font-size: .92rem; }
+.st-head .ring { width: 2.2rem; height: 2.2rem; }
+.st-head .ring > * { border-color: #fff; }
+.st-head small { font-family: var(--f-body); font-weight: 400; font-size: .8rem; opacity: .75; }
+.st-quiz { background: #fff; color: var(--ink); border-radius: 1.2rem; overflow: hidden; box-shadow: 0 18px 40px -22px rgba(0,0,0,.6); }
+.st-quiz h2 { background: linear-gradient(135deg, #6E3445, #8E4556 55%, #BE8C72); color: #fff; text-align: center; padding: 1rem; font-size: max(1.4rem, 6.4cqi); font-weight: 800; line-height: 1.2; }
+.outcomes { list-style: none; margin: 0; padding: .9rem; display: flex; flex-direction: column; gap: .6rem; }
+.outcomes li { display: grid; grid-template-columns: 1.9rem minmax(0, 1fr); gap: .7rem; align-items: center; border: 1.5px solid #A9B196; background: #F4F6EF; border-radius: .95rem; padding: .7rem .85rem; font-size: 1rem; line-height: 1.45; color: #4a4150; }
+.outcomes li b { color: var(--pink); font-weight: 700; }
+.outcomes .ok { width: 1.9rem; height: 1.9rem; border-radius: 50%; background: #7F8C6E; display: grid; place-items: center; }
+.outcomes .ok svg { width: 1.05rem; height: 1.05rem; fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 0; }
+.reel.enter .st-bars i::after { animation: stbar .55s linear both; animation-delay: calc(var(--d, 0) * 110ms + 300ms); }
+.reel.enter .outcomes li { animation: rise .7s cubic-bezier(.2,.7,.1,1) both, okpick .35s ease both; animation-delay: calc(var(--d, 0) * 110ms + 80ms), calc(var(--d, 0) * 110ms + 560ms); }
+.reel.enter .outcomes .ok { animation: okpop .5s cubic-bezier(.3,1.6,.5,1) both; animation-delay: calc(var(--d, 0) * 110ms + 520ms); }
+.reel.enter .outcomes .ok svg { animation: okdraw .45s ease-out both; animation-delay: calc(var(--d, 0) * 110ms + 680ms); }
+@keyframes stbar { from { transform: scaleX(0); } to { transform: none; } }
+@keyframes okpick { from { border-color: #ECE4DF; background: #fff; } to { border-color: #A9B196; background: #F4F6EF; } }
 @keyframes okpop { from { transform: scale(0); } to { transform: none; } }
 @keyframes okdraw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
-@media (prefers-reduced-motion: reduce) { .reel.enter .outcomes .ok, .reel.enter .outcomes .ok svg { animation: none; } }
 
 
 .meta-note { position: absolute; inset-inline: 1.2rem; bottom: calc(env(safe-area-inset-bottom, 0px) + .8rem); margin: 0; font-size: .7rem; line-height: 1.4; opacity: .75; text-align: center; z-index: 3; }
@@ -655,16 +667,22 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
         </div>
       </section>
 
-      <section class="reel g1 tall" id="outcomes" aria-label="עם מה תצאי מהקורס">
+      <section class="reel tall" id="outcomes" aria-label="עם מה תצאי מהקורס">
         <div class="flow">
-          <h2 class="in">עם מה <em>תצאי</em> מהקורס?</h2>
-          <ul class="outcomes">
-            <li class="in" style="--d:1"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תזהי את <b>החסמים שמונעים ממך לשווק</b> באינסטגרם ותלמדי לשחרר אותם.</span></li>
-            <li class="in" style="--d:2"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תפתחי <b>ביטחון ליצור, להיחשף</b> ולהביא את עצמך לידי ביטוי.</span></li>
-            <li class="in" style="--d:3"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תלמדי לאפיין את העסק שלך וליצור <b>תוכן שמספר את הסיפור הייחודי שלו.</b></span></li>
-            <li class="in" style="--d:4"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תבני מערכת יחסים עם העוקבים שלך ותלמדי <b>להפוך אותם ללקוחות.</b></span></li>
-            <li class="in" style="--d:5"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תרכשי <b>כלים מעשיים לצילום, עריכה ויצירת תוכן</b> באופן עצמאי, בלי להיות תלויה באחרים.</span></li>
-          </ul>
+          <div class="ig-story in">
+            <div class="st-bars" aria-hidden="true"><i style="--d:1"></i><i style="--d:2"></i><i style="--d:3"></i><i style="--d:4"></i><i style="--d:5"></i></div>
+            <div class="st-head"><span class="ring"><img data-avatar alt=""></span>efrat_cohen_photographer <small>עכשיו</small></div>
+            <div class="st-quiz">
+              <h2>עם מה תצאי מהקורס?</h2>
+              <ul class="outcomes">
+                <li class="in" style="--d:1"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תזהי את <b>החסמים שמונעים ממך לשווק</b> באינסטגרם ותלמדי לשחרר אותם.</span></li>
+                <li class="in" style="--d:2"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תפתחי <b>ביטחון ליצור, להיחשף</b> ולהביא את עצמך לידי ביטוי.</span></li>
+                <li class="in" style="--d:3"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תלמדי לאפיין את העסק שלך וליצור <b>תוכן שמספר את הסיפור הייחודי שלו.</b></span></li>
+                <li class="in" style="--d:4"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תבני מערכת יחסים עם העוקבים שלך ותלמדי <b>להפוך אותם ללקוחות.</b></span></li>
+                <li class="in" style="--d:5"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>תרכשי <b>כלים מעשיים לצילום, עריכה ויצירת תוכן</b> באופן עצמאי, בלי להיות תלויה באחרים.</span></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1110,7 +1128,7 @@ h1, h2, h3 { margin: 0; font-family: var(--f-head); text-wrap: balance; }
     updateSnap();
   }
   // long reading parts scroll freely; reel snapping returns only after scrolling stops on a reel
-  const FREE = new Set(["about", "intro2", "faq"]);
+  const FREE = new Set(["about", "intro2", "outcomes", "faq"]);
   let snapT = null;
   function updateSnap() {
     const r = reels[active]; if (!r) return;
